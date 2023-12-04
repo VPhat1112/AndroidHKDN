@@ -74,6 +74,7 @@ public class CategoryAdapter extends BaseAdapter {
                     .placeholder(R.drawable.baseline_image_not_supported_24)
                     .error(R.drawable.baseline_error_24)
                     .into(viewHolder.imgcategory);
+
         }
         return convertView;
     }

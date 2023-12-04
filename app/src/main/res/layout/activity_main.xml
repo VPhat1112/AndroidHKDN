@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/img"
     tools:context=".activity.MainActivity">
+
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawableLO"
         android:layout_width="match_parent"
@@ -15,19 +17,66 @@
             android:layout_height="match_parent">
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/ToolBar"
-                android:background="#17B1F6"
-                android:drawableLeft="@drawable/ic_launcher_background"
-                app:title="| Tốt &amp; nhanh"
+                app:title="Tốt &amp; nhanh"
+                app:titleTextColor="#0083EC"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize">
 
             </androidx.appcompat.widget.Toolbar>
-            <ViewFlipper
-                android:id="@+id/ViewFlipper"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"></ViewFlipper>
             <LinearLayout
-                android:background="#03A9F4"
+                android:orientation="horizontal"
+                android:weightSum="10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/searchtxt"
+                    android:background="@drawable/rounded_corner_edt"
+                    android:padding="5dp"
+                    android:hint="100% Đồ tuyển chọn"
+                    android:layout_weight="9"
+                    android:drawableLeft="@drawable/baseline_search_24"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+                <ImageButton
+                    android:src="@drawable/baseline_shopping_cart_24"
+                    android:id="@+id/CartBtn"
+                    android:background="@drawable/cart_btn_circle"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:cardCornerRadius="15dp">
+                <ViewFlipper
+                    android:id="@+id/viewFlipper"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp">
+
+                    <!-- Add images to flip through -->
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/img_1"
+                        android:scaleType="centerCrop" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/img_2"
+                        android:scaleType="centerCrop" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/img_3"
+                        android:scaleType="centerCrop" />
+
+                </ViewFlipper>
+            </androidx.cardview.widget.CardView>
+            <LinearLayout
+                android:background="@drawable/rounded_corner"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

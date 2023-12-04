@@ -1,6 +1,7 @@
 package com.example.apphkdn.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,10 +41,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ItemHold
         holder.txtProduct_name.setText(product.getProduct_name());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         holder.txtProduct_price.setText(decimalFormat.format(product.getProduct_price())+"đ");
-        Picasso.get().load(product.getProduct_image())
+
+        Picasso.get()
+                .load(product.getProduct_image())
                 .placeholder(R.drawable.baseline_image_not_supported_24)
                 .error(R.drawable.baseline_error_24)
                 .into(holder.imageProduct);
+        Log.d("url",product.getProduct_image());
     }
 
     @Override

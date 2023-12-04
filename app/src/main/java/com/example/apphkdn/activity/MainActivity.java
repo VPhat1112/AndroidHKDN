@@ -1,10 +1,10 @@
 package com.example.apphkdn.activity;
 
-import static com.example.apphkdn.R.*;
+import static com.example.apphkdn.R.layout;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +30,6 @@ import com.example.apphkdn.model.Product;
 import com.example.apphkdn.ultil.Checkconnection;
 import com.example.apphkdn.ultil.Server;
 import com.google.android.material.navigation.NavigationView;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Category> categories;
     CategoryAdapter categoryAdapter;
     int id =0;
+    private float initialX;
     String Category_name="";
     String Category_image="";
     ArrayList<Product> productArrayList;
@@ -148,27 +148,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void ActionViewFiller() {
-        if (viewFlipper != null) {
-            ArrayList<String> mangquangcao = new ArrayList<>();
-            mangquangcao.add("https://salt.tikicdn.com/cache/w750/ts/tikimsp/24/ba/29/90d8cdefbf348cfd7bc53e6f1ca4c55c.jpg.webp");
-            mangquangcao.add("https://salt.tikicdn.com/cache/w280/ts/tikimsp/bb/46/1d/495362fba97c4bfa89d79a85c5f0ebeb.png.webp");
-            mangquangcao.add("https://salt.tikicdn.com/cache/w280/ts/tikimsp/5c/50/30/f7c0cbebc7a9a73236f6c85d9bcee091.png.webp");
-            mangquangcao.add("https://salt.tikicdn.com/cache/w280/ts/tikimsp/5c/50/30/f7c0cbebc7a9a73236f6c85d9bcee091.png.webp");
+        // Set auto-flipping interval (optional)
+        viewFlipper.setFlipInterval(3000); // 3 seconds
+        viewFlipper.startFlipping();
 
-            for (String imageUrl : mangquangcao) {
-                ImageView imageView = new ImageView(this);
-                Picasso.get().load(imageUrl).into(imageView);
-                viewFlipper.addView(imageView);
+        // Pause flipping when touched (optional)
+        viewFlipper.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    initialX = event.getX();
+                    viewFlipper.stopFlipping();
+                    break;
+
+                case MotionEvent.ACTION_UP:
+                    float finalX = event.getX();
+                    if (initialX < finalX) {
+                        viewFlipper.setInAnimation(this, R.anim.slide_in_left);
+                        viewFlipper.setOutAnimation(this, R.anim.slide_out_right);
+                        viewFlipper.showPrevious();
+                    } else if (initialX > finalX) {
+                        viewFlipper.setInAnimation(this, R.anim.slide_in_right);
+                        viewFlipper.setOutAnimation(this, R.anim.slide_out_left);
+                        viewFlipper.showNext();
+                    }
+                    viewFlipper.startFlipping();
+                    break;
             }
-
-            // Set animation if needed
-            viewFlipper.setInAnimation(this, android.R.anim.slide_in_left);
-            viewFlipper.setOutAnimation(this, android.R.anim.slide_out_right);
-
-            // Set flip interval
-            viewFlipper.setFlipInterval(3000); // Change the interval as needed
-            viewFlipper.setAutoStart(true);
-        }
+            return true;
+        });
     }
 
     private void ActionBar() {
@@ -185,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void anhxa(){
         toolbar=findViewById(R.id.ToolBar);
-        viewFlipper=findViewById(R.id.ViewFlipper);
+        viewFlipper=findViewById(R.id.viewFlipper);
         recyclerView=findViewById(R.id.RCV);
         navigationView=findViewById(R.id.NavigationVMHC);
         listView=findViewById(R.id.LVManHinhChinh);
