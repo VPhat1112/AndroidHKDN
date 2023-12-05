@@ -38,7 +38,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email=emailEdt.getText().toString();
                 String pass=PassEdt.getText().toString();
-                String Type="Login";
                 new LoginTask().execute(email, pass);
             }
         });
@@ -52,9 +51,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
     public void anhxa(){
-        _BtnLog=findViewById(R.id.loginButton);
-        _BtnReg=findViewById(R.id.registerButton);
-        emailEdt=findViewById(R.id.EmailEdt);
+        _BtnLog=findViewById(R.id.loginButtonLog);
+        _BtnReg=findViewById(R.id.registerButtonLog);
+        emailEdt=findViewById(R.id.EmailEdtLog);
         PassEdt=findViewById(R.id.passwordLoginET);
     }
     private class LoginTask extends AsyncTask<String, Void, String> {

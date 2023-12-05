@@ -13,7 +13,7 @@
         android:id="@+id/imageView"/>
 
     <EditText
-        android:id="@+id/EmailEdt"
+        android:id="@+id/EmailEdtLog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/imageView"
@@ -27,7 +27,7 @@
         android:id="@+id/passwordLoginET"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/EmailEdt"
+        android:layout_below="@id/EmailEdtLog"
         android:layout_marginTop="8dp"
         android:hint="Password"
         android:inputType="textPassword"
@@ -36,7 +36,7 @@
         android:textColorHint="#FFFF" />
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/loginButtonLog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/passwordLoginET"
@@ -45,10 +45,10 @@
         android:textColor="#BF10DD"
         android:text="Login" />
     <Button
-        android:id="@+id/registerButton"
+        android:id="@+id/registerButtonLog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/loginButton"
+        android:layout_below="@id/loginButtonLog"
         android:layout_marginTop="16dp"
         android:backgroundTint="#DFAE1C"
         android:textColor="#BF10DD"

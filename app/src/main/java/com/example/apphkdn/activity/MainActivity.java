@@ -69,12 +69,9 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
         categories = new ArrayList<>();
-        categories.add(0, new Category(0, "Trang Chính", "https://th.bing.com/th?id=OIP.O23pWqRhxVaXwaMtN1j9vQHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"));
+        categories.add(0, new Category(0, "Trang Chính", "http://th.bing.com/th?id=OIP.O23pWqRhxVaXwaMtN1j9vQHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"));
         categoryAdapter = new CategoryAdapter(categories, getApplicationContext());
         listView.setAdapter(categoryAdapter);
-
-
-
     }
 
     private void GetnewProduct() {

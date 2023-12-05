@@ -42,7 +42,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ItemHold
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         holder.txtProduct_price.setText(decimalFormat.format(product.getProduct_price())+"đ");
 
-        Picasso.get()
+        Picasso.with(context)
                 .load(product.getProduct_image())
                 .placeholder(R.drawable.baseline_image_not_supported_24)
                 .error(R.drawable.baseline_error_24)
