@@ -5,8 +5,6 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
-import com.example.apphkdn.R;
-
 import java.io.InputStream;
 
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -34,7 +32,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
             imageView.setImageBitmap(result);
         } else {
             // Handle the case where the image couldn't be loaded
-            imageView.setImageResource(R.drawable.baseline_error_24);
+//            imageView.setImageResource(R.drawable.baseline_error_24);
         }
     }
 }

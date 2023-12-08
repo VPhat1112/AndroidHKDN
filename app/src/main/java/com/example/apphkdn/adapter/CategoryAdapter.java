@@ -71,7 +71,7 @@ public class CategoryAdapter extends BaseAdapter {
 
             // Load the image using Picasso with placeholder and error images
             Log.d("urlimage",imageUrl);
-            new DownloadImageTask(viewHolder.imgcategory).execute(category.category_image);
+            new DownloadImageTask(viewHolder.imgcategory).execute(imageUrl);
         }
         return convertView;
     }

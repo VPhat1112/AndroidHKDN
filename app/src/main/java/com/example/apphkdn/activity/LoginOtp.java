@@ -1,13 +1,16 @@
 package com.example.apphkdn.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.apphkdn.R;
@@ -23,62 +26,72 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class RegisterActivity extends AppCompatActivity {
-    Button _BtnReg,_BtnLogin;
-    EditText _txtName,_txtemail,_txtadd,_txtpass,_txtConfirm;
+public class LoginOtp extends AppCompatActivity {
+    EditText emails;
+    TextView Mess;
+    Button _BtnLoginOTP,_BtnReg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-
+        setContentView(R.layout.activity_login_otp);
         anhxa();
+        _BtnLoginOTP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email=emails.getText().toString();
+                if (email.isEmpty()){
+                    showInvalidOtpDialog();
+                }else {
+                    new LoginOTPTask().execute(email);
+                }
+            }
+        });
         _BtnReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name=_txtName.getText().toString();
-                String email=_txtemail.getText().toString();
-                String add=_txtadd.getText().toString();
-                String pass=_txtpass.getText().toString();
-                String confirm =_txtConfirm.getText().toString();
-                new RegisterTask().execute(email, name, add, pass,confirm);
-            }
-        });
-        _BtnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
+                Intent intent = new Intent(LoginOtp.this, RegisterActivity.class);
                 startActivity(intent);
             }
         });
+    }
+    private void showInvalidOtpDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Login OTP");
+        builder.setMessage("Email Required!!!");
 
+        // Adding a positive button click listener
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Handle the "OK" button click if needed
+                dialog.dismiss(); // Dismiss the dialog
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
     public void anhxa(){
-        _BtnLogin=findViewById(R.id.loginButton);
-        _BtnReg=findViewById(R.id.registerButton);
-        _txtemail=findViewById(R.id.EmailEdt);
-        _txtName=findViewById(R.id.usernameEditText);
-        _txtadd=findViewById(R.id.AdressEdt);
-        _txtpass=findViewById(R.id.passwordEditText);
-        _txtConfirm=findViewById(R.id.confirmPasswordEditText);
+        emails=findViewById(R.id.EmailEdtLogOTP);
+        _BtnLoginOTP=findViewById(R.id.loginButtonOTP);
+        _BtnReg=findViewById(R.id.registerButtonOTP);
+        Mess=findViewById(R.id.message);
     }
-    private class RegisterTask extends AsyncTask<String, Void, String> {
+    private class LoginOTPTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
             String email = params[0];
-            String name = params[1];
-            String address = params[2];
-            String password = params[3];
-            String Confirm=params[4];
+
 
             try {
-                URL url = new URL(Server.linkReg);
+                URL url = new URL(Server.linkSendOTP);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setDoOutput(true);
 
                 // Prepare the data to be sent to the server
-                String data = "email=" + email + "&Name=" + name + "&Address=" + address + "&Passwords=" + password + "&Confirm=" + Confirm;
+                String data = "email=" + email ;
                 OutputStream os = httpURLConnection.getOutputStream();
                 os.write(data.getBytes());
                 os.flush();
@@ -108,20 +121,19 @@ public class RegisterActivity extends AppCompatActivity {
                 boolean success = jsonObject.getBoolean("success");
 
                 if (success) {
-                    // Registration successful
-                    Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
+
+                    Intent intent = new Intent(LoginOtp.this, InputOTP.class);
+                    intent.putExtra("emailotp",emails.getText().toString());
+                    intent.putExtra("status","Đã gửi mail");
                     startActivity(intent);
-                    // Optionally, you can navigate to the login activity or perform other actions
                 } else {
-                    String check=jsonObject.getString("check");
-                    // Registration failed
-                    Toast.makeText(RegisterActivity.this, check, Toast.LENGTH_SHORT).show();
+                    //Send failed
+                    Toast.makeText(LoginOtp.this, "Send failed", Toast.LENGTH_SHORT).show();
                 }
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                Toast.makeText(RegisterActivity.this, "Error parsing JSON", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginOtp.this, "Error parsing JSON", Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -8,7 +8,7 @@
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/ic_launcher_foreground"
+        android:src="@drawable/baseline_person_pin_24"
         android:layout_centerHorizontal="true"
         android:id="@+id/imageView"/>
 
@@ -35,20 +35,37 @@
         android:textColor="#FFFF"
         android:textColorHint="#FFFF" />
 
-    <Button
-        android:id="@+id/loginButtonLog"
+    <LinearLayout
+        android:layout_below="@id/passwordLoginET"
+        android:id="@+id/chooseLogin"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/passwordLoginET"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#DFAE1C"
-        android:textColor="#BF10DD"
-        android:text="Login" />
+        android:weightSum="2">
+        <Button
+            android:id="@+id/loginButtonLog"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#DFAE1C"
+            android:textColor="#BF10DD"
+            android:text="Login" />
+        <Button
+            android:id="@+id/LoginWithOTP"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#DFAE1C"
+            android:textColor="#BF10DD"
+            android:text="LoginWithOTP" />
+    </LinearLayout>
     <Button
         android:id="@+id/registerButtonLog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/loginButtonLog"
+        android:layout_below="@id/chooseLogin"
         android:layout_marginTop="16dp"
         android:backgroundTint="#DFAE1C"
         android:textColor="#BF10DD"

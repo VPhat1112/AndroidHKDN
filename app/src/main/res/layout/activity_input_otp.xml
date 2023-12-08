@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:paddingLeft="50dp"
+    android:paddingRight="50dp"
+    tools:context=".activity.InputOTP">
+
+    <TextView
+        android:id="@+id/Messafter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:backgroundTint="#2CD533"
+        android:background="@drawable/rounded_corner"
+        android:gravity="center"
+        android:text="test"
+        android:textSize="20sp"></TextView>
+
+    <LinearLayout
+        android:id="@+id/layout_otp"
+        android:layout_below="@+id/Messafter"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:weightSum="6">
+        <EditText
+            android:id="@+id/editTextOtp1"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:inputType="number"
+            android:hint="."
+            android:maxLength="1"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/editTextOtp2"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:inputType="number"
+            android:maxLength="1"
+            android:hint="."
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/editTextOtp3"
+            android:layout_width="0dp"
+            android:hint="."
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:inputType="number"
+            android:maxLength="1"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/editTextOtp4"
+            android:layout_width="0dp"
+            android:hint="."
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:inputType="number"
+            android:maxLength="1"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/editTextOtp5"
+            android:layout_width="0dp"
+            android:hint="."
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:inputType="number"
+            android:maxLength="1"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/editTextOtp6"
+            android:layout_width="0dp"
+            android:hint="."
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:inputType="number"
+            android:maxLength="1"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+
+    <!-- Add three more EditTexts for other OTP digits -->
+
+    <Button
+        android:id="@+id/btnSubmitOTP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_otp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Submit" />
+</RelativeLayout>
