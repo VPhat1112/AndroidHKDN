@@ -9,4 +9,8 @@ public class Server {
     public static String linkReg=serverAddress+"/server/signup.php";
 
     public static String linkLog=serverAddress+"/server/login.php";
+
+    public static String linkSendOTP=serverAddress+"/server/sendOTP.php";
+
+    public static String linkLogOTP=serverAddress+"/server/LoginwithOtp.php";
 }

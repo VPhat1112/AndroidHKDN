@@ -69,9 +69,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this,"Vui lòng kiểm tra lại kết nối",Toast.LENGTH_SHORT).show();
             finish();
         }
-
-
-
     }
 
     private void GetDataCategory() {

@@ -1,6 +1,7 @@
 package com.example.apphkdn.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.apphkdn.R;
 import com.example.apphkdn.model.Category;
-import com.squareup.picasso.Picasso;
+import com.example.apphkdn.ultil.DownloadImageTask;
 
 import java.util.ArrayList;
 
@@ -51,7 +52,7 @@ public class CategoryAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.item_listview_category, null);
             viewHolder.txtcategory = convertView.findViewById(R.id.TxtCategory);
-            viewHolder.imgcategory = convertView.findViewById(R.id.ImgCategory);
+            viewHolder.imgcategory = convertView.findViewById(R.id.imageViewcategory);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -69,12 +70,8 @@ public class CategoryAdapter extends BaseAdapter {
             String imageUrl = category.category_image; // replace with the actual property
 
             // Load the image using Picasso with placeholder and error images
-            Picasso.get()
-                    .load(imageUrl)
-                    .placeholder(R.drawable.baseline_image_not_supported_24)
-                    .error(R.drawable.baseline_error_24)
-                    .into(viewHolder.imgcategory);
-
+            Log.d("urlimage",imageUrl);
+            new DownloadImageTask(viewHolder.imgcategory).execute(imageUrl);
         }
         return convertView;
     }
