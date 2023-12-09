@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/menu_tab_home" android:title="Trang Chủ" android:icon="@drawable/menu_home_icon"/>
+    <item android:id="@+id/menu_tab_category" android:title="Danh mục" android:icon="@drawable/menu_category_icon"/>
+    <item android:id="@+id/menu_tab_news" android:title="Tin Mới" android:icon="@drawable/menu_new_icon"/>
+    <item android:id="@+id/menu_tab_user" android:title="Tài Khoản" android:icon="@drawable/menu_user_icon"/>
+</menu>

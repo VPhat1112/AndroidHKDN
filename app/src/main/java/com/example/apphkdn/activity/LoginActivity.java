@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.apphkdn.R;
 import com.example.apphkdn.ultil.Server;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         anhxa();
-
         _BtnLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,12 +1,12 @@
 package com.example.apphkdn.model;
 
 public class Product {
-    private int id;
+    private Integer id;
     private String product_name,product_image,product_decs;
     private Integer product_price;
-    private int category_id;
+    private Integer category_id;
 
-    public Product(int id, String product_name, String product_image, String product_decs, Integer product_price, int category_id) {
+    public Product(Integer id, String product_name, String product_image, String product_decs, Integer product_price, Integer category_id) {
         this.id = id;
         this.product_name = product_name;
         this.product_image = product_image;
@@ -15,11 +15,11 @@ public class Product {
         this.category_id = category_id;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -55,13 +55,11 @@ public class Product {
         this.product_price = product_price;
     }
 
-    public int getCategory_id() {
+    public Integer getCategory_id() {
         return category_id;
     }
 
-    public void setCategory_id(int category_id) {
+    public void setCategory_id(Integer category_id) {
         this.category_id = category_id;
     }
-
-
 }

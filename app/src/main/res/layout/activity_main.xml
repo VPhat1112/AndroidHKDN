@@ -1,114 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img"
+    android:background="@drawable/app_bg"
     tools:context=".activity.MainActivity">
 
-    <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawableLO"
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_page"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/ToolBar"
-                app:title="Tốt &amp; nhanh"
-                app:titleTextColor="#0083EC"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize">
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_navigation"/>
 
-            </androidx.appcompat.widget.Toolbar>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:weightSum="10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/searchtxt"
-                    android:background="@drawable/rounded_corner_edt"
-                    android:padding="5dp"
-                    android:hint="100% Đồ tuyển chọn"
-                    android:layout_weight="9"
-                    android:drawableLeft="@drawable/baseline_search_24"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
-                <ImageButton
-                    android:src="@drawable/baseline_shopping_cart_24"
-                    android:id="@+id/CartBtn"
-                    android:background="@drawable/cart_btn_circle"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"/>
-            </LinearLayout>
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                app:cardCornerRadius="15dp">
-                <ViewFlipper
-                    android:id="@+id/viewFlipper"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp">
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        app:itemTextColor="@color/color_navigation"
+        app:itemIconTint="@color/color_navigation"
+        app:labelVisibilityMode="labeled"
+        style="@style/Widget.MaterialComponents.BottomNavigationView.PrimarySurface"
+        app:menu="@menu/menu_navigation"/>
 
-                    <!-- Add images to flip through -->
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/img_1"
-                        android:scaleType="centerCrop" />
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/img_2"
-                        android:scaleType="centerCrop" />
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/img_3"
-                        android:scaleType="centerCrop" />
-
-                </ViewFlipper>
-            </androidx.cardview.widget.CardView>
-            <LinearLayout
-                android:background="@drawable/rounded_corner"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:id="@+id/textchange"
-                    android:textSize="25dp"
-                    android:textColor="#FF0000"
-                    android:textStyle="bold"
-                    android:layout_margin="10dp"
-                    android:text="Sản phẩm mới nhât"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/RCV"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-            </LinearLayout>
-
-        </LinearLayout>
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/NavigationVMHC"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="start">
-            <ListView
-                android:id="@+id/LVManHinhChinh"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </ListView>
-        </com.google.android.material.navigation.NavigationView>
-        
-    </androidx.drawerlayout.widget.DrawerLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
