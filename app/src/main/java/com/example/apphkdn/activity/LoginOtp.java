@@ -34,7 +34,7 @@ public class LoginOtp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_otp);
-        anhxa();
+        initUI();
         _BtnLoginOTP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +71,7 @@ public class LoginOtp extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-    public void anhxa(){
+    public void initUI(){
         emails=findViewById(R.id.EmailEdtLogOTP);
         _BtnLoginOTP=findViewById(R.id.loginButtonOTP);
         _BtnReg=findViewById(R.id.registerButtonOTP);

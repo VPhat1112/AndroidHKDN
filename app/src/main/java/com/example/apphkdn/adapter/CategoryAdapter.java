@@ -1,78 +1,59 @@
 package com.example.apphkdn.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.apphkdn.R;
 import com.example.apphkdn.model.Category;
+import com.example.apphkdn.model.Product;
 import com.example.apphkdn.ultil.DownloadImageTask;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class CategoryAdapter extends BaseAdapter {
-    ArrayList<Category> categoryArrayList;
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemHolder> {
     Context context;
+    ArrayList<Category> categoryArrayList;
 
-    public CategoryAdapter(ArrayList<Category> categoryArrayList, Context context) {
-        this.categoryArrayList = categoryArrayList;
+    public CategoryAdapter(Context context, ArrayList<Category> categoryArrayList) {
         this.context = context;
+        this.categoryArrayList = categoryArrayList;
+    }
+
+    @NonNull
+    @Override
+    public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rcv_category,null);
+        ItemHolder itemHolder=new ItemHolder(v);
+        return itemHolder;
     }
 
     @Override
-    public int getCount() {
+    public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
+        Category category= categoryArrayList.get(position);
+        holder.txtCategory_name.setText(category.getCategory_name());
+        new DownloadImageTask(holder.imageCategory).execute(category.getCategory_image());
+    }
+
+    @Override
+    public int getItemCount() {
         return categoryArrayList.size();
     }
 
-    @Override
-    public Object getItem(int position) {
-        return categoryArrayList.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    public class ViewHolder {
-        TextView txtcategory;
-        ImageView imgcategory;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder = null;
-        if (convertView == null) {
-            viewHolder = new ViewHolder();
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.item_listview_category, null);
-            viewHolder.txtcategory = convertView.findViewById(R.id.TxtCategory);
-            viewHolder.imgcategory = convertView.findViewById(R.id.imageViewcategory);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+    public class ItemHolder extends RecyclerView.ViewHolder{
+        public ImageView imageCategory;
+        public TextView txtCategory_name;
+        public ItemHolder(View itemview){
+            super(itemview);
+            imageCategory=itemview.findViewById(R.id.imageViewcategory);
+            txtCategory_name=itemview.findViewById(R.id.TxtCategory);
         }
-
-        // Get the data for the current position
-        Category category = (Category) getItem(position);
-
-        // Check if the category is not null (added null check)
-        if (category != null) {
-            // Set data to the views in the ViewHolder
-            viewHolder.txtcategory.setText(category.category_name);
-
-            // Assuming you have an imageUrl property in your Category class
-            String imageUrl = category.category_image; // replace with the actual property
-
-            // Load the image using Picasso with placeholder and error images
-            Log.d("urlimage",imageUrl);
-            new DownloadImageTask(viewHolder.imgcategory).execute(imageUrl);
-        }
-        return convertView;
     }
 }

@@ -24,7 +24,7 @@ public class ProfileAccount extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_account);
-        anhxa();
+        initUI();
         if (Checkconnection.haveNetworkConnection(getApplicationContext())){
             ActionBar();
         }else {
@@ -52,7 +52,7 @@ public class ProfileAccount extends AppCompatActivity {
             }
         });
     }
-    public void anhxa(){
+    public void initUI(){
         setting=findViewById(R.id.ToolBarSetting);
         drawerLayout=findViewById(R.id.drawableInf);
         listView=findViewById(R.id.LVSetting);

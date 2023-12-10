@@ -1,5 +1,6 @@
 package com.example.apphkdn.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -19,6 +22,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.apphkdn.R;
+import com.example.apphkdn.activity.MainActivity;
+import com.example.apphkdn.activity.SearchActivity;
 import com.example.apphkdn.adapter.ProductAdapter;
 import com.example.apphkdn.model.Category;
 import com.example.apphkdn.model.Product;
@@ -46,6 +51,7 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    TextView searchBox;
     ArrayList<Product> productArrayList;
     ProductAdapter productAdapter;
 
@@ -89,18 +95,25 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
+
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
+        initUI(view);
+
+        //Search
+        Search();
+
+        //EditText
+        Search();
+
         //ViewFlipper
-        viewFlipper = view.findViewById(R.id.viewFlipper);
         ActionViewFiller();
 
         //RecycleView
-        recyclerView = view.findViewById(R.id.RCV);
         productArrayList = new ArrayList<>();
         productAdapter = new ProductAdapter(getContext(),productArrayList);
         recyclerView.setHasFixedSize(true);
@@ -108,6 +121,16 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(productAdapter);
 
         GetnewProduct();
+    }
+
+    private void Search(){
+        searchBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), SearchActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void GetnewProduct() {
@@ -121,6 +144,7 @@ public class HomeFragment extends Fragment {
                     Integer product_price=0;
                     String product_image="";
                     String product_decs="";
+                    Integer product_view=0;
                     Integer IDCategory=0;
                     for (int i =0; i<response.length();i++){
                         try {
@@ -131,7 +155,7 @@ public class HomeFragment extends Fragment {
                             product_image=jsonObject.getString("product_image");
                             product_decs=jsonObject.getString("product_decs");
                             IDCategory=jsonObject.getInt("IDcategory");
-                            productArrayList.add(new Product(id,product_name,product_image,product_decs,product_price,IDCategory));
+                            productArrayList.add(new Product(id,product_name,product_image,product_decs,product_price,product_view,IDCategory));
                             productAdapter.notifyDataSetChanged();
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
@@ -179,5 +203,11 @@ public class HomeFragment extends Fragment {
             }
             return true;
         });
+    }
+
+    private void initUI(View view){
+        searchBox = view.findViewById(R.id.searchtxt);
+        viewFlipper = view.findViewById(R.id.viewFlipper);
+        recyclerView = view.findViewById(R.id.RCV);
     }
 }

@@ -31,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        anhxa();
+        initUI();
         _BtnReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
     }
-    public void anhxa(){
+    public void initUI(){
         _BtnLogin=findViewById(R.id.loginButton);
         _BtnReg=findViewById(R.id.registerButton);
         _txtemail=findViewById(R.id.EmailEdt);

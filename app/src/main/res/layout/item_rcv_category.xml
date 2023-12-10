@@ -13,6 +13,7 @@
         <ImageView
             android:src="@mipmap/ic_launcher"
             android:id="@+id/imageViewcategory"
+            android:background="@drawable/round_corner_img"
             android:layout_width="100dp"
             android:layout_height="100dp"/>
     </LinearLayout>
@@ -22,7 +23,7 @@
         android:layout_height="0dp">
         <TextView
             android:id="@+id/TxtCategory"
-            android:textSize="25sp"
+            android:textSize="18sp"
             android:text="Category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

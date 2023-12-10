@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        anhxa();
+        initUI();
         _BtnLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-    public void anhxa(){
+    public void initUI(){
         _BtnLog=findViewById(R.id.loginButtonLog);
         _BtnReg=findViewById(R.id.registerButtonLog);
         emailEdt=findViewById(R.id.EmailEdtLog);

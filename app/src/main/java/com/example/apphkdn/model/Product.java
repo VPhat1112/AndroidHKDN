@@ -4,14 +4,16 @@ public class Product {
     private Integer id;
     private String product_name,product_image,product_decs;
     private Integer product_price;
+    private Integer product_review;
     private Integer category_id;
 
-    public Product(Integer id, String product_name, String product_image, String product_decs, Integer product_price, Integer category_id) {
+    public Product(Integer id, String product_name, String product_image, String product_decs, Integer product_price, Integer product_review, Integer category_id) {
         this.id = id;
         this.product_name = product_name;
         this.product_image = product_image;
         this.product_decs = product_decs;
         this.product_price = product_price;
+        this.product_review = product_review;
         this.category_id = category_id;
     }
 
@@ -53,6 +55,14 @@ public class Product {
 
     public void setProduct_price(Integer product_price) {
         this.product_price = product_price;
+    }
+
+    public Integer getProduct_review() {
+        return product_review;
+    }
+
+    public void setProduct_review(Integer product_review) {
+        this.product_review = product_review;
     }
 
     public Integer getCategory_id() {

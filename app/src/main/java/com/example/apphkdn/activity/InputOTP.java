@@ -39,7 +39,7 @@ public class InputOTP extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_otp);
-        anhxa();
+        initUI();
         setupOtpFieldListeners();
         Intent intent = getIntent();
         String emails = intent.getStringExtra("emailotp");
@@ -192,7 +192,7 @@ public class InputOTP extends AppCompatActivity {
         alertDialog.show();
     }
 
-    public void anhxa(){
+    public void initUI(){
         otp1=findViewById(R.id.editTextOtp1);
         otp2=findViewById(R.id.editTextOtp2);
         otp3=findViewById(R.id.editTextOtp3);
