@@ -4,10 +4,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.apphkdn.R;
+import com.example.apphkdn.adapter.SettingInfoAdapter;
+import com.example.apphkdn.ultil.Checkconnection;
+import com.google.android.material.navigation.NavigationView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +35,11 @@ public class UserFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    Toolbar setting;
+    ListView listView;
+    NavigationView navigationView;
+    DrawerLayout drawerLayout;
 
     public UserFragment() {
         // Required empty public constructor
@@ -61,5 +77,46 @@ public class UserFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_user, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        initUI(view);
+        if (Checkconnection.haveNetworkConnection(getContext())){
+            ActionBar();
+        }else {
+            Toast.makeText(getContext(),"Vui lòng kiểm tra lại kết nối",Toast.LENGTH_SHORT).show();
+        }
+
+        String[] data = {"Đến trang của tôi", "Chỉnh sửa thông tin"};
+        int[] imageResources = {
+                R.drawable.baseline_person_pin_24,
+                R.drawable.outline_edit_24,
+        };
+
+        SettingInfoAdapter adapter = new SettingInfoAdapter(getContext(), data, imageResources);
+        listView.setAdapter(adapter);
+    }
+
+    private void ActionBar() {
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(setting);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setting.setNavigationIcon(R.drawable.outline_settings_24);
+        setting.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+    }
+
+    public void initUI(View view){
+        setting = view.findViewById(R.id.ToolBarSetting);
+        drawerLayout = view.findViewById(R.id.drawableInf);
+        listView = view.findViewById(R.id.LVSetting);
+        navigationView = view.findViewById(R.id.NavigationSetting);
     }
 }

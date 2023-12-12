@@ -107,20 +107,20 @@ public class HomeFragment extends Fragment {
         //Search
         Search();
 
-        //EditText
-        Search();
-
         //ViewFlipper
         ActionViewFiller();
 
-        //RecycleView
+        RecyleviewSetting();
+
+        GetnewProduct();
+    }
+
+    private void RecyleviewSetting(){
         productArrayList = new ArrayList<>();
         productAdapter = new ProductAdapter(getContext(),productArrayList);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
         recyclerView.setAdapter(productAdapter);
-
-        GetnewProduct();
     }
 
     private void Search(){

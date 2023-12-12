@@ -1,11 +1,13 @@
 package com.example.apphkdn.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -17,9 +19,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.apphkdn.R;
+import com.example.apphkdn.activity.ShowProductSearchActivity;
 import com.example.apphkdn.adapter.CategoryAdapter;
 import com.example.apphkdn.adapter.ProductAdapter;
 import com.example.apphkdn.model.Category;
+import com.example.apphkdn.my_interface.RecycleViewItemClickListener;
 import com.example.apphkdn.ultil.Checkconnection;
 import com.example.apphkdn.ultil.Server;
 
@@ -51,6 +55,7 @@ public class CategoryFragment extends Fragment {
     ArrayList<Category> categoriesArrayList;
     CategoryAdapter categoryAdapter;
     int id =0;
+    Integer idCategory = 0;
     String Category_name="";
     String Category_image="";
 
@@ -97,16 +102,27 @@ public class CategoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         initUI(view);
-
-        categoriesArrayList = new ArrayList<>();
-        categoryAdapter = new CategoryAdapter(getContext(),categoriesArrayList);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
-        mRecyclerView.setAdapter(categoryAdapter);
-
+        SettingRecyleview();
         GetDataCategory();
     }
 
+    private void SettingRecyleview(){
+        categoriesArrayList = new ArrayList<>();
+        categoryAdapter = new CategoryAdapter(categoriesArrayList, new RecycleViewItemClickListener() {
+            @Override
+            public void onClickItemCategory(Category category) {
+                Integer idCategory = category.getId();
+                Intent intent = new Intent(getContext(), ShowProductSearchActivity.class);
+                intent.putExtra("id_category",idCategory);
+                startActivity(intent);
+            }
+        });
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+        mRecyclerView.setAdapter(categoryAdapter);
+    }
+
+    // Get data from table category
     private void GetDataCategory() {
         RequestQueue requestQueue= Volley.newRequestQueue(getContext());
         JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Server.linkCategory, new Response.Listener<JSONArray>() {

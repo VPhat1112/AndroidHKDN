@@ -19,6 +19,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/ToolBar"
                 android:layout_width="match_parent"
+                android:background="@color/whitee"
                 android:layout_height="?attr/actionBarSize"
                 app:title="Tốt &amp; nhanh"
                 app:titleTextColor="#0083EC">
@@ -29,7 +30,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="10">
+                android:weightSum="10"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/searchtxt"
@@ -53,7 +57,8 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                app:cardCornerRadius="15dp">
+                app:cardCornerRadius="10dp"
+                android:layout_margin="10dp">
 
                 <ViewFlipper
                     android:id="@+id/viewFlipper"
@@ -85,8 +90,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/rounded_corner"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/round_corner_rvc"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
 
                 <TextView
                     android:id="@+id/textchange"
