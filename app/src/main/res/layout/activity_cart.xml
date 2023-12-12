@@ -8,6 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <RelativeLayout
             android:id="@+id/navCarttop"
             android:layout_marginTop="50dp"
@@ -25,14 +26,15 @@
                 android:layout_marginBottom="10dp"
                 android:padding="6dp"
                 android:src="@drawable/icon_back"></ImageView>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:text="Giỏ hàng"
                 android:textColor="#424242"
-                android:textStyle="bold"
-                android:layout_centerInParent="true"
-                android:textSize="18dp"/>
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
         <ScrollView
@@ -64,25 +66,29 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginHorizontal="20dp">
+
                 <TextView
                     android:id="@+id/dachon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Đã chọn: 41"
-                    android:textSize="14dp">
+                    android:textSize="14dp"
+                    tools:ignore="TextSizeCheck">
 
                 </TextView>
+
                 <TextView
 
-                    android:layout_toRightOf="@+id/dachon"
+                    android:id="@+id/totalMoney"
                     android:layout_width="match_parent"
-                    android:gravity="right"
-
                     android:layout_height="wrap_content"
+
+                    android:layout_toRightOf="@+id/dachon"
+                    android:gravity="right"
+                    android:text="Tổng tiền: 41000"
                     android:textSize="14dp"
                     android:textStyle="bold"
-                    android:text="Tổng tiền: 41000"
-                    android:id="@+id/totalMoney">
+                    tools:ignore="TextSizeCheck">
 
                 </TextView>
             </RelativeLayout>
