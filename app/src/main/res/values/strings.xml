@@ -4,4 +4,6 @@
     <string name="home">Home</string>
     <string name="account">Account</string>
     <string name="search">Search</string>
+    <string name="open_nav">Open Navigation Drawer</string>
+    <string name="close_nav">Close Navigation Drawer</string>
 </resources>

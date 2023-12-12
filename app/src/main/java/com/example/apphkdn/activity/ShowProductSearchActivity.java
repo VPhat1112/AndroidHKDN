@@ -101,6 +101,10 @@ public class ShowProductSearchActivity extends AppCompatActivity {
                     String product_decs="";
                     Integer product_view=0;
                     Integer IDCategory=0;
+                    Integer IDShop=0;
+                    int product_review=0;
+                    Integer product_numbersell=0;
+                    Integer product_selled=0;
                     for (int i =0; i<response.length();i++){
                         try {
                             JSONObject jsonObject= response.getJSONObject(i);
@@ -110,7 +114,11 @@ public class ShowProductSearchActivity extends AppCompatActivity {
                             product_image=jsonObject.getString("product_image");
                             product_decs=jsonObject.getString("product_decs");
                             IDCategory=jsonObject.getInt("IDcategory");
-                            productArrayList.add(new Product(id,product_name,product_image,product_decs,product_price,product_view,IDCategory));
+                            IDShop=jsonObject.getInt("id_shop");
+                            product_review=jsonObject.getInt("product_review");
+                            product_numbersell=jsonObject.getInt("product_numbersell");
+                            product_selled=jsonObject.getInt("product_selled");
+                            productArrayList.add(new Product(id,product_name,product_image,product_decs,product_price,IDCategory,IDShop,product_review,product_numbersell,product_selled));
                             productAdapter.notifyDataSetChanged();
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
