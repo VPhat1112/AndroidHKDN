@@ -37,18 +37,10 @@ public class MainActivity extends AppCompatActivity {
         initUI();
         if (Checkconnection.haveNetworkConnection(getApplicationContext())){
             DisplayFragment();
-            //GetDataCategory();
         }else {
             Toast.makeText(MainActivity.this,"Vui lòng kiểm tra lại kết nối",Toast.LENGTH_SHORT).show();
             finish();
         }
-    }
-
-
-
-    private void ActionBar() {
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void DisplayFragment(){

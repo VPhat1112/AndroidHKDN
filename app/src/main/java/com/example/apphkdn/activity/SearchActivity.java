@@ -1,12 +1,17 @@
 package com.example.apphkdn.activity;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -14,9 +19,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.apphkdn.R;
 
+import java.lang.reflect.Array;
+
 public class SearchActivity extends AppCompatActivity {
 
-    EditText edtSearchBox;
+    AutoCompleteTextView atvSearchBox;
+
+    ArrayAdapter<String> arrayAdapter;
     Button btnBack;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,12 +35,12 @@ public class SearchActivity extends AppCompatActivity {
         initUI();
         openSearchBox();
         Back();
-        Search();
+        setAutoFillSearch();
     }
 
     // Focus on search box when start activity
     private void openSearchBox(){
-        edtSearchBox.requestFocus();
+        atvSearchBox.requestFocus();
         showKeyboard();
     }
     private void showKeyboard(){
@@ -39,6 +48,20 @@ public class SearchActivity extends AppCompatActivity {
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
+    // Set autotextview
+    private void setAutoFillSearch(){
+        String[] items = {"Asus 3","asus 1"};
+        arrayAdapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_activated_1,items);
+        atvSearchBox.setAdapter(arrayAdapter);
+
+        atvSearchBox.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(),0);
+            }
+        });
+    }
 
     // Return to homepage
     private void Back(){
@@ -50,12 +73,8 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    // Push search key to ProductSearchActivity
-    private void Search() {
-
-    }
     private void initUI(){
-        edtSearchBox=findViewById(R.id.edt_search);
+        atvSearchBox=findViewById(R.id.edt_search);
         btnBack=findViewById(R.id.btn_search_back);
     }
 }

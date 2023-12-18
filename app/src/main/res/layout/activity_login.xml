@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@drawable/app_bg">
+    android:background="@drawable/blue_bg"
+    android:gravity="center">
 
     <ImageView
         android:layout_width="100dp"
@@ -20,8 +21,8 @@
         android:layout_marginTop="16dp"
         android:hint="Email"
         android:minHeight="48dp"
-        android:textColor="#FFFF"
-        android:textColorHint="#FFFF" />
+        android:textColor="@color/black"
+        android:textColorHint="@color/black" />
 
     <EditText
         android:id="@+id/passwordLoginET"
@@ -32,8 +33,8 @@
         android:hint="Password"
         android:inputType="textPassword"
         android:minHeight="48dp"
-        android:textColor="#FFFF"
-        android:textColorHint="#FFFF" />
+        android:textColor="@color/black"
+        android:textColorHint="@color/black" />
 
     <LinearLayout
         android:layout_below="@id/passwordLoginET"
@@ -42,23 +43,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="2">
+
         <Button
             android:id="@+id/loginButtonLog"
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:backgroundTint="#DFAE1C"
-            android:textColor="#BF10DD"
-            android:text="Login" />
+            android:layout_weight="1"
+            android:backgroundTint="#042FAF"
+            android:text="Login"
+            android:textColor="#FFFFFF" />
+
         <Button
             android:id="@+id/LoginWithOTP"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:backgroundTint="#DFAE1C"
-            android:textColor="#BF10DD"
+            android:backgroundTint="#000000"
+            android:textColor="#FFFFFF"
             android:text="LoginWithOTP" />
     </LinearLayout>
     <Button
@@ -67,8 +70,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/chooseLogin"
         android:layout_marginTop="16dp"
-        android:backgroundTint="#DFAE1C"
-        android:textColor="#BF10DD"
+        android:backgroundTint="#F6001D"
+        android:textColor="#FFFFFF"
         android:text="Register" />
 
 </RelativeLayout>

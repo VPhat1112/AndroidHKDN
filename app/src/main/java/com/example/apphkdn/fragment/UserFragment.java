@@ -1,24 +1,27 @@
 package com.example.apphkdn.fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.FrameLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.apphkdn.R;
-import com.example.apphkdn.adapter.SettingInfoAdapter;
+import com.example.apphkdn.activity.ProfileActivity;
 import com.example.apphkdn.ultil.Checkconnection;
-import com.google.android.material.navigation.NavigationView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,10 +39,10 @@ public class UserFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    Toolbar setting;
-    ListView listView;
-    NavigationView navigationView;
-    DrawerLayout drawerLayout;
+    TextView txtProfile,txtStoreInfor;
+    ViewPager viewPager;
+    TextView txtGotoErrorSeller;
+    ScrollView scrollView;
 
     public UserFragment() {
         // Required empty public constructor
@@ -84,39 +87,53 @@ public class UserFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         initUI(view);
+        viewPager=view.findViewById(R.id.view_page);
         if (Checkconnection.haveNetworkConnection(getContext())){
-            ActionBar();
+            goToProfileActivity();
+            GotoErrorSellerFraggment();
         }else {
             Toast.makeText(getContext(),"Vui lòng kiểm tra lại kết nối",Toast.LENGTH_SHORT).show();
         }
-
-        String[] data = {"Đến trang của tôi", "Chỉnh sửa thông tin"};
-        int[] imageResources = {
-                R.drawable.baseline_person_pin_24,
-                R.drawable.outline_edit_24,
-        };
-
-        SettingInfoAdapter adapter = new SettingInfoAdapter(getContext(), data, imageResources);
-        listView.setAdapter(adapter);
     }
 
-    private void ActionBar() {
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(setting);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setting.setNavigationIcon(R.drawable.outline_settings_24);
-        setting.setNavigationOnClickListener(new View.OnClickListener() {
+    private void goToProfileActivity(){
+        txtProfile.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                drawerLayout.openDrawer(GravityCompat.START);
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), ProfileActivity.class));
             }
         });
     }
 
+    private void goToStoreInfor(){
+        txtStoreInfor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("MyProfile", MODE_PRIVATE);
+                int role_seller = preferences.getInt("role_seller",0);
+                if (role_seller == 0){
+
+                }
+            }
+        });
+    }
+
+    private void GotoErrorSellerFraggment(){
+        txtGotoErrorSeller.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollView.setVisibility(View.GONE);
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frgm_user, new ErrorSellerFragment()).commit();
+            }
+
+        });
+    }
+
     public void initUI(View view){
-        setting = view.findViewById(R.id.ToolBarSetting);
-        drawerLayout = view.findViewById(R.id.drawableInf);
-        listView = view.findViewById(R.id.LVSetting);
-        navigationView = view.findViewById(R.id.NavigationSetting);
+        txtProfile=view.findViewById(R.id.frpr_Profile);
+        txtStoreInfor=view.findViewById(R.id.frpr_storeinfor);
+        txtGotoErrorSeller=view.findViewById(R.id.frpr_storeinfor);
+        scrollView=view.findViewById(R.id.scrollViewProfile);
     }
 }

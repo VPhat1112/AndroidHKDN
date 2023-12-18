@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.apphkdn.R;
 import com.example.apphkdn.ultil.Server;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -144,6 +143,7 @@ public class LoginActivity extends AppCompatActivity {
                     String email = jsonObject.getString("email");
                     String Address = jsonObject.getString("Address");
                     int is_verified=jsonObject.getInt("is_verified");
+                    int role_seller=jsonObject.getInt("role_seller");
                     // You can save the user details in SharedPreferences or other storage
                     // and navigate to the next activity
                     if (is_verified==0){
@@ -156,6 +156,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("email", email);
                         editor.putString("Name", Name);
                         editor.putString("Address", Address);
+                        editor.putInt("role_seller", role_seller);
                         editor.apply();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);

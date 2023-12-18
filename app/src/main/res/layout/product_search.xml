@@ -20,12 +20,14 @@
             android:backgroundTint="@color/whitee"
             android:layout_marginRight="10dp"/>
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/edt_search"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:hint="Sản phẩm"
-            android:background="@android:color/transparent"/>
+            android:background="@android:color/transparent"
+            android:completionThreshold="1"
+            android:imeOptions="actionGo"
+            android:hint="Nhập từ khóa" />
 
     </LinearLayout>
 

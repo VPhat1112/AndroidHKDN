@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.fragment.app.Fragment;
@@ -160,11 +161,12 @@ public class HomeFragment extends Fragment {
                     String product_decs="";
                     Integer product_view=0;
                     Integer IDCategory=0;
-                    Integer IDShop=0;
+                    int IDShop=0;
                     int product_review=0;
                     Integer product_numbersell=0;
                     Integer product_selled=0;
-                    for (int i =0; i<response.length();i++){
+                    Integer i=0;
+                    for (i =0; i<response.length();i++){
                         try {
                             JSONObject jsonObject= response.getJSONObject(i);
                             id=jsonObject.getInt("id");
@@ -184,6 +186,7 @@ public class HomeFragment extends Fragment {
                         }
 
                     }
+                    Toast.makeText(getContext(),i.toString(),Toast.LENGTH_SHORT).show();
 
                 }
             }

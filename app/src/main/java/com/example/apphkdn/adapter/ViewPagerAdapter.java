@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.example.apphkdn.fragment.CategoryFragment;
+import com.example.apphkdn.fragment.ErrorSellerFragment;
 import com.example.apphkdn.fragment.HomeFragment;
 import com.example.apphkdn.fragment.NewsFragment;
 import com.example.apphkdn.fragment.UserFragment;

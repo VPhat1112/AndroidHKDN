@@ -18,6 +18,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activity.ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.CartActivity"
             android:exported="false" />
         <activity
@@ -36,16 +39,16 @@
             android:name=".activity.Detail_product"
             android:exported="false" />
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.SearchActivity"
+            android:name=".HomeActivity"
             android:exported="false" />
         <activity
             android:name=".activity.ShowProductSearchActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
