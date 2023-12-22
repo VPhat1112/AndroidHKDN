@@ -148,7 +148,10 @@ public class InputOTP extends AppCompatActivity {
                     String Name = jsonObject.getString("Name");
                     String email = jsonObject.getString("email");
                     String Address = jsonObject.getString("Address");
-                    int role_seller=jsonObject.getInt("role_seller");
+                    int role=jsonObject.getInt("role");
+                    String phone = jsonObject.getString("phone");
+                    String Info_pay = jsonObject.getString("Info_pay");
+                    String imgUS = jsonObject.getString("imgUS");
                     // You can save the user details in SharedPreferences or other storage
                     // and navigate to the next activity
 
@@ -159,7 +162,10 @@ public class InputOTP extends AppCompatActivity {
                     editor.putString("email", email);
                     editor.putString("Name", Name);
                     editor.putString("Address", Address);
-                    editor.putInt("role_seller", role_seller);
+                    editor.putInt("role", role);
+                    editor.putString("phone", phone);
+                    editor.putString("Info_pay", Info_pay);
+                    editor.putString("imgUS", imgUS);
                     editor.apply();
                     Intent intent = new Intent(InputOTP.this, MainActivity.class);
                     startActivity(intent);

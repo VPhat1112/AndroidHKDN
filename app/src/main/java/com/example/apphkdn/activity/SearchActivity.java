@@ -36,6 +36,7 @@ public class SearchActivity extends AppCompatActivity {
         openSearchBox();
         Back();
         setAutoFillSearch();
+        Search();
     }
 
     // Focus on search box when start activity
@@ -69,6 +70,19 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+    }
+
+    private void Search(){
+        atvSearchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE){
+                    Toast.makeText(getApplicationContext(),"hello",Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
             }
         });
     }

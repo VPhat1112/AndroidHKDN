@@ -186,14 +186,14 @@ public class HomeFragment extends Fragment {
                         }
 
                     }
-                    Toast.makeText(getContext(),i.toString(),Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(),i.toString(),Toast.LENGTH_SHORT).show();
 
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+//                Toast.makeText(getContext(),"Có lỗi đã xảy ra".toString(),Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonArrayRequest);

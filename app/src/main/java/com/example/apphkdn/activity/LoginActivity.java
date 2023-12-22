@@ -1,10 +1,14 @@
 package com.example.apphkdn.activity;
 
+import static java.security.AccessController.getContext;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.format.Formatter;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -93,13 +97,14 @@ public class LoginActivity extends AppCompatActivity {
             titleView.setGravity(Gravity.CENTER);
         }
     }
+
+
     private class LoginTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
             String email = params[0];
             String Passwords = params[1];
-
             try {
                 URL url = new URL(Server.linkLog);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -143,7 +148,11 @@ public class LoginActivity extends AppCompatActivity {
                     String email = jsonObject.getString("email");
                     String Address = jsonObject.getString("Address");
                     int is_verified=jsonObject.getInt("is_verified");
-                    int role_seller=jsonObject.getInt("role_seller");
+                    int role=jsonObject.getInt("role");
+                    String phone = jsonObject.getString("phone");
+                    String Info_pay = jsonObject.getString("Info_pay");
+                    String imgUS = jsonObject.getString("imgUS");
+
                     // You can save the user details in SharedPreferences or other storage
                     // and navigate to the next activity
                     if (is_verified==0){
@@ -156,7 +165,10 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("email", email);
                         editor.putString("Name", Name);
                         editor.putString("Address", Address);
-                        editor.putInt("role_seller", role_seller);
+                        editor.putInt("role", role);
+                        editor.putString("phone", phone);
+                        editor.putString("Info_pay", Info_pay);
+                        editor.putString("imgUS", imgUS);
                         editor.apply();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);

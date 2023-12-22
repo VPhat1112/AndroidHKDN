@@ -109,11 +109,7 @@ public class UserFragment extends Fragment {
         txtStoreInfor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences preferences = getActivity().getSharedPreferences("MyProfile", MODE_PRIVATE);
-                int role_seller = preferences.getInt("role_seller",0);
-                if (role_seller == 0){
-
-                }
+                //Intent intent = new Intent(getContext(), )
             }
         });
     }
