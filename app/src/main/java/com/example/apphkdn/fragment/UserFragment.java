@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +20,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.apphkdn.R;
 import com.example.apphkdn.activity.ProfileActivity;
+import com.example.apphkdn.activity.ShopActivity;
 import com.example.apphkdn.ultil.Checkconnection;
 
 /**
@@ -90,7 +90,7 @@ public class UserFragment extends Fragment {
         viewPager=view.findViewById(R.id.view_page);
         if (Checkconnection.haveNetworkConnection(getContext())){
             goToProfileActivity();
-            GotoErrorSellerFraggment();
+            goToStoreInfor();
         }else {
             Toast.makeText(getContext(),"Vui lòng kiểm tra lại kết nối",Toast.LENGTH_SHORT).show();
         }
@@ -109,7 +109,14 @@ public class UserFragment extends Fragment {
         txtStoreInfor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(getContext(), )
+                SharedPreferences preferences = getActivity().getSharedPreferences("MyProfile", MODE_PRIVATE);
+                int role_seller = preferences.getInt("role",0);
+                if (role_seller == 3){
+                    GotoErrorSellerFraggment();
+                }else{
+                    Intent intent = new Intent(getContext(), ShopActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }

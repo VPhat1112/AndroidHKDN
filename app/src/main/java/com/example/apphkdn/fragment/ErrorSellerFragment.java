@@ -1,24 +1,18 @@
 package com.example.apphkdn.fragment;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
 import com.example.apphkdn.R;
-import com.example.apphkdn.activity.ProfileActivity;
-import com.example.apphkdn.ultil.Checkconnection;
+import com.example.apphkdn.activity.RegistorSellerActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +29,8 @@ public class ErrorSellerFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    TextView txtreg;
 
     public ErrorSellerFragment() {
         // Required empty public constructor
@@ -79,8 +75,16 @@ public class ErrorSellerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         initUI(view);
+        txtreg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(getContext(), RegistorSellerActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void initUI(View view){
+        txtreg=view.findViewById(R.id.txt_seller);
     }
 }

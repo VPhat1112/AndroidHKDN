@@ -2,24 +2,18 @@ package com.example.apphkdn.activity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.apphkdn.R;
-
-import java.lang.reflect.Array;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -75,10 +69,10 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void Search(){
-        atvSearchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        atvSearchBox.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE){
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_M){
                     Toast.makeText(getApplicationContext(),"hello",Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -88,7 +82,6 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initUI(){
-        atvSearchBox=findViewById(R.id.edt_search);
         btnBack=findViewById(R.id.btn_search_back);
     }
 }

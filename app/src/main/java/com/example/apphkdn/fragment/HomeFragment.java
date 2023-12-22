@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.fragment.app.Fragment;
@@ -147,7 +146,6 @@ public class HomeFragment extends Fragment {
         });
 
     }
-
     private void GetnewProduct() {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(Server.linkNewProduct, new Response.Listener<JSONArray>() {
@@ -193,7 +191,7 @@ public class HomeFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(getContext(),"Có lỗi đã xảy ra".toString(),Toast.LENGTH_SHORT).show();
+
             }
         });
         requestQueue.add(jsonArrayRequest);
