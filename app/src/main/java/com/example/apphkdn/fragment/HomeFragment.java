@@ -1,11 +1,14 @@
 package com.example.apphkdn.fragment;
 
+import static com.example.apphkdn.ultil.Server.linkNewProduct;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.apphkdn.R;
+import com.example.apphkdn.RequestDB.RequestDB;
 import com.example.apphkdn.activity.CartActivity;
 import com.example.apphkdn.activity.SearchActivity;
 import com.example.apphkdn.adapter.ProductAdapter;
@@ -55,12 +59,10 @@ public class HomeFragment extends Fragment {
     ImageButton CartBtn;
     ArrayList<Product> productArrayList;
     ProductAdapter productAdapter;
-
+    RequestDB requestDB = new RequestDB();
     ViewFlipper viewFlipper;
-    public RelativeLayout layoutproduct;
     RecyclerView recyclerView;
     private float initialX;
-    public static ArrayList<Cart> cartArrayList;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -147,54 +149,7 @@ public class HomeFragment extends Fragment {
 
     }
     private void GetnewProduct() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(Server.linkNewProduct, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                if (response!=null){
-                    Integer id = 0;
-                    String product_name="";
-                    Integer product_price=0;
-                    String product_image="";
-                    String product_decs="";
-                    Integer product_view=0;
-                    Integer IDCategory=0;
-                    int IDShop=0;
-                    int product_review=0;
-                    Integer product_numbersell=0;
-                    Integer product_selled=0;
-                    Integer i=0;
-                    for (i =0; i<response.length();i++){
-                        try {
-                            JSONObject jsonObject= response.getJSONObject(i);
-                            id=jsonObject.getInt("id");
-                            product_name=jsonObject.getString("product_name");
-                            product_price=jsonObject.getInt("product_price");
-                            product_image=jsonObject.getString("product_image");
-                            product_decs=jsonObject.getString("product_decs");
-                            IDCategory=jsonObject.getInt("IDcategory");
-                            IDShop=jsonObject.getInt("id_shop");
-                            product_review=jsonObject.getInt("product_review");
-                            product_numbersell=jsonObject.getInt("product_numbersell");
-                            product_selled=jsonObject.getInt("product_selled");
-                            productArrayList.add(new Product(id,product_name,product_image,product_decs,product_price,IDCategory,IDShop,product_review,product_numbersell,product_selled));
-                            productAdapter.notifyDataSetChanged();
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
-                        }
-
-                    }
-//                    Toast.makeText(getContext(),i.toString(),Toast.LENGTH_SHORT).show();
-
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        requestQueue.add(jsonArrayRequest);
+        requestDB.GetProduct(getContext(),productArrayList,productAdapter,linkNewProduct);
     }
 
     private void ActionViewFiller() {

@@ -1,5 +1,7 @@
 package com.example.apphkdn.fragment;
 
+import static com.example.apphkdn.ultil.Server.linkCategory;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.apphkdn.R;
+import com.example.apphkdn.RequestDB.RequestDB;
 import com.example.apphkdn.activity.ShowProductSearchActivity;
 import com.example.apphkdn.adapter.CategoryAdapter;
 import com.example.apphkdn.adapter.ProductAdapter;
@@ -54,6 +57,7 @@ public class CategoryFragment extends Fragment {
     ImageButton cartButton;
     ArrayList<Category> categoriesArrayList;
     CategoryAdapter categoryAdapter;
+    RequestDB requestDB = new RequestDB();
     int id =0;
     Integer idCategory = 0;
     String Category_name="";
@@ -103,7 +107,6 @@ public class CategoryFragment extends Fragment {
 
         initUI(view);
         SettingRecyleview();
-        GetDataCategory();
     }
 
     private void SettingRecyleview(){
@@ -120,37 +123,12 @@ public class CategoryFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
         mRecyclerView.setAdapter(categoryAdapter);
+        GetDataCategory();
     }
 
     // Get data from table category
     private void GetDataCategory() {
-        RequestQueue requestQueue= Volley.newRequestQueue(getContext());
-        JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Server.linkCategory, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                if (response !=null){
-                    for (int i =0;i<response.length();i++){
-                        try {
-                            JSONObject jsonObject= response.getJSONObject(i);
-                            id = jsonObject.getInt("id");
-                            Category_name =jsonObject.getString("category_name");
-                            Category_image=jsonObject.getString("category_image");
-                            categoriesArrayList.add(new Category(id,Category_name,Category_image));
-                            categoryAdapter.notifyDataSetChanged();
-
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
-                        }
-
-                    }                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Checkconnection.showToastShort(getContext(),error.toString());
-            }
-        });
-        requestQueue.add(jsonArrayRequest);
+        requestDB.GetCategory(getContext(),categoriesArrayList,categoryAdapter,linkCategory);
     }
 
     private void initUI(View view){

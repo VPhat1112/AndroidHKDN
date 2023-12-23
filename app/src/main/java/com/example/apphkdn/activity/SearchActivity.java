@@ -83,5 +83,6 @@ public class SearchActivity extends AppCompatActivity {
 
     private void initUI(){
         btnBack=findViewById(R.id.btn_search_back);
+        atvSearchBox=findViewById(R.id.edt_search);
     }
 }

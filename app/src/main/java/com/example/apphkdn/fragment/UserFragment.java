@@ -137,6 +137,6 @@ public class UserFragment extends Fragment {
         txtProfile=view.findViewById(R.id.frpr_Profile);
         txtStoreInfor=view.findViewById(R.id.frpr_storeinfor);
         txtGotoErrorSeller=view.findViewById(R.id.frpr_storeinfor);
-        scrollView=view.findViewById(R.id.scrollViewProfile);
+        scrollView=view.findViewById(R.id.scrollViewProfile_fm_user);
     }
 }

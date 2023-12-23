@@ -1,5 +1,8 @@
 package com.example.apphkdn.activity;
 
+import static com.example.apphkdn.ultil.Server.linkGetProductByCategory;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +22,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.apphkdn.R;
+import com.example.apphkdn.RequestDB.RequestDB;
 import com.example.apphkdn.adapter.ProductAdapter;
 import com.example.apphkdn.fragment.CategoryFragment;
 import com.example.apphkdn.model.Product;
@@ -35,6 +39,7 @@ import java.util.Map;
 public class ShowProductSearchActivity extends AppCompatActivity {
     String key_search;
     LinearLayout linearLayout;
+    RequestDB requestDB = new RequestDB();
     Button btnBack;
     RecyclerView recyclerView;
     ArrayList<Product> productArrayList;
@@ -70,10 +75,11 @@ public class ShowProductSearchActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                linearLayout.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.GONE);
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.show_product_search_layout, new CategoryFragment()).commit();
+                //linearLayout.setVisibility(View.GONE);
+                //recyclerView.setVisibility(View.GONE);
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                intent.putExtra("back_product_category",true);
+                startActivity(intent);
             }
         });
     }
@@ -87,52 +93,7 @@ public class ShowProductSearchActivity extends AppCompatActivity {
     }
 
     private void GetProductByCategory() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(Server.linkGetProductByCategory + getIdCategoryProduct(), new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                if (response!=null){
-                    Integer id = 0;
-                    String product_name="";
-                    Integer product_price=0;
-                    String product_image="";
-                    String product_decs="";
-                    Integer product_view=0;
-                    Integer IDCategory=0;
-                    Integer IDShop=0;
-                    int product_review=0;
-                    Integer product_numbersell=0;
-                    Integer product_selled=0;
-                    for (int i =0; i<response.length();i++){
-                        try {
-                            JSONObject jsonObject= response.getJSONObject(i);
-                            id=jsonObject.getInt("id");
-                            product_name=jsonObject.getString("product_name");
-                            product_price=jsonObject.getInt("product_price");
-                            product_image=jsonObject.getString("product_image");
-                            product_decs=jsonObject.getString("product_decs");
-                            IDCategory=jsonObject.getInt("IDcategory");
-                            IDShop=jsonObject.getInt("id_shop");
-                            product_review=jsonObject.getInt("product_review");
-                            product_numbersell=jsonObject.getInt("product_numbersell");
-                            product_selled=jsonObject.getInt("product_selled");
-                            productArrayList.add(new Product(id,product_name,product_image,product_decs,product_price,IDCategory,IDShop,product_review,product_numbersell,product_selled));
-                            productAdapter.notifyDataSetChanged();
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
-                        }
-
-                    }
-
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        requestQueue.add(jsonArrayRequest);
+        requestDB.GetProduct(getApplicationContext(),productArrayList,productAdapter,linkGetProductByCategory + getIdCategoryProduct());
     }
 
     private void initUI(){

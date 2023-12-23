@@ -1,7 +1,7 @@
 package com.example.apphkdn.ultil;
 
 public class Server {
-    public static String serverAddress = "http://192.168.31.183"; // Replace with your server address
+    public static String serverAddress = "http://192.168.2.12"; // Replace with your server address
 
     public static String linkCategory = serverAddress+"/server/getLsanpham.php";
     public static String linkNewProduct = serverAddress+"/server/getNewProduct.php";
