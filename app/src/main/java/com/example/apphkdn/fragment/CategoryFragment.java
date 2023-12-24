@@ -9,30 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
-import com.example.apphkdn.activity.ShowProductSearchActivity;
+import com.example.apphkdn.activity.SearchActivity;
+import com.example.apphkdn.activity.ShowProductByCategoryActivity;
 import com.example.apphkdn.adapter.CategoryAdapter;
-import com.example.apphkdn.adapter.ProductAdapter;
 import com.example.apphkdn.model.Category;
 import com.example.apphkdn.my_interface.RecycleViewItemClickListener;
-import com.example.apphkdn.ultil.Checkconnection;
-import com.example.apphkdn.ultil.Server;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -107,6 +95,7 @@ public class CategoryFragment extends Fragment {
 
         initUI(view);
         SettingRecyleview();
+        Search();
     }
 
     private void SettingRecyleview(){
@@ -115,8 +104,10 @@ public class CategoryFragment extends Fragment {
             @Override
             public void onClickItemCategory(Category category) {
                 Integer idCategory = category.getId();
-                Intent intent = new Intent(getContext(), ShowProductSearchActivity.class);
+                String nameCategory = category.category_name;
+                Intent intent = new Intent(getContext(), ShowProductByCategoryActivity.class);
                 intent.putExtra("id_category",idCategory);
+                intent.putExtra("name_category", nameCategory);
                 startActivity(intent);
             }
         });
@@ -126,9 +117,19 @@ public class CategoryFragment extends Fragment {
         GetDataCategory();
     }
 
-    // Get data from table category
+    // set data for recycleview
     private void GetDataCategory() {
         requestDB.GetCategory(getContext(),categoriesArrayList,categoryAdapter,linkCategory);
+    }
+
+    private void Search(){
+        searchBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), SearchActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initUI(View view){

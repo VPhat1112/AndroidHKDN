@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         initUI();
         if (Checkconnection.haveNetworkConnection(getApplicationContext())){
             DisplayFragment();
-            getResponseFromShowProductSearchActivity();
+            getResponseFromActivity();
         }else {
             Toast.makeText(MainActivity.this,"Vui lòng kiểm tra lại kết nối",Toast.LENGTH_SHORT).show();
             finish();
@@ -95,9 +95,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getResponseFromShowProductSearchActivity(){
+    private void getResponseFromActivity(){
         if (getIntent().getBooleanExtra("back_product_category",false)){
             viewPager.setCurrentItem(1);
+        } else if (getIntent().getBooleanExtra("back_product_search",false)) {
+            viewPager.setCurrentItem(0);
         }
     }
 

@@ -1,14 +1,16 @@
 package com.example.apphkdn.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -69,12 +71,13 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void Search(){
-        atvSearchBox.setOnKeyListener(new View.OnKeyListener() {
+        atvSearchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_M){
-                    Toast.makeText(getApplicationContext(),"hello",Toast.LENGTH_SHORT).show();
-                    return true;
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE){
+                    Intent intent = new Intent(SearchActivity.this, ShowProductBySearchActivity.class);
+                    intent.putExtra("keySearch",atvSearchBox.getText().toString().trim());
+                    startActivity(intent);
                 }
                 return false;
             }

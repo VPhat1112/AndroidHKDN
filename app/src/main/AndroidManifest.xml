@@ -29,8 +29,8 @@
             android:exported="false" />
         <activity
             android:name=".activity.MainActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".activity.InputOTP"
             android:exported="false" />
@@ -50,7 +50,10 @@
             android:name=".HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.ShowProductSearchActivity"
+            android:name=".activity.ShowProductByCategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ShowProductBySearchActivity"
             android:exported="false" />
         <activity
             android:name=".activity.RegistorSellerActivity"

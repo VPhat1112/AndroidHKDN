@@ -7,40 +7,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
 import com.example.apphkdn.adapter.ProductAdapter;
-import com.example.apphkdn.fragment.CategoryFragment;
 import com.example.apphkdn.model.Product;
-import com.example.apphkdn.ultil.Server;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-public class ShowProductSearchActivity extends AppCompatActivity {
-    String key_search;
+public class ShowProductByCategoryActivity extends AppCompatActivity {
     LinearLayout linearLayout;
     RequestDB requestDB = new RequestDB();
     Button btnBack;
+    TextView txtSearch;
     RecyclerView recyclerView;
     ArrayList<Product> productArrayList;
     ProductAdapter productAdapter;
@@ -50,24 +35,23 @@ public class ShowProductSearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.show_product_search);
+        setContentView(R.layout.activity_show_product_by_category);
 
-        getKeySearch();
         initUI();
         Back();
+        setText();
         RecyleviewSetting();
-        GetProductByCategory();
-    }
-
-    // Get search key from SearchActivity
-    private void getKeySearch(){
-        key_search = getIntent().getStringExtra("key_search");
     }
 
     // Get id Category product
-    private Integer getIdCategoryProduct(){
+    private Integer getIdCategory(){
         Integer idCategory = getIntent().getIntExtra("id_category",-1);
         return idCategory;
+    }
+
+    private String getNameCategory(){
+        String nameCategory = getIntent().getStringExtra("name_category");
+        return nameCategory;
     }
 
     // Return to Category Page
@@ -90,15 +74,21 @@ public class ShowProductSearchActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
         recyclerView.setAdapter(productAdapter);
+        getDataForRCV();
     }
 
-    private void GetProductByCategory() {
-        requestDB.GetProduct(getApplicationContext(),productArrayList,productAdapter,linkGetProductByCategory + getIdCategoryProduct());
+    private void getDataForRCV() {
+        requestDB.GetProduct(getApplicationContext(),productArrayList,productAdapter,linkGetProductByCategory + getIdCategory());
+    }
+
+    private void setText(){
+        txtSearch.setText(getNameCategory());
     }
 
     private void initUI(){
-        btnBack = findViewById(R.id.btn_search_product_back);
-        recyclerView = findViewById(R.id.rcv_show_prd);
-        linearLayout = findViewById(R.id.ln_delete);
+        txtSearch = findViewById(R.id.searchtxt_show_pdct_search);
+        btnBack = findViewById(R.id.btn_category_product_back);
+        recyclerView = findViewById(R.id.rcv_show_prd_category);
+        linearLayout = findViewById(R.id.ln_delete_category);
     }
 }

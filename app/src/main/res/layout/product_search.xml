@@ -18,16 +18,18 @@
             android:layout_height="30dp"
             android:background="@drawable/baseline_arrow_back_24"
             android:backgroundTint="@color/whitee"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center"/>
 
         <AutoCompleteTextView
             android:id="@+id/edt_search"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:maxLines="1"
+            android:inputType="text"
             android:background="@android:color/transparent"
+            android:imeOptions="actionDone"
             android:completionThreshold="1"
-            android:imeOptions="actionGo"
             android:hint="Nhập từ khóa" />
 
     </LinearLayout>
