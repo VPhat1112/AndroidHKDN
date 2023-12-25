@@ -72,20 +72,18 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/crv2"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_below="@+id/tv2"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             app:cardCornerRadius="10dp">
 
-            <EditText
-                android:id="@+id/edt_img_seller"
-                android:textSize="16sp"
-                android:textColor="@color/black"
+            <ImageView
+                android:id="@+id/imgv_img_seller"
+                android:src="@drawable/imf_seller"
+                android:scaleType="fitCenter"
                 android:layout_width="match_parent"
-                android:paddingRight="10dp"
-                android:paddingLeft="10dp"
                 android:drawableEnd="@drawable/icon"
                 android:layout_height="match_parent"
                 android:background="@drawable/corner_edt_seller"/>

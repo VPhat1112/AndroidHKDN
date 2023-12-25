@@ -106,6 +106,7 @@ public class RequestDB {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
+                //boolean success = jsonObject.getBoolean("success");
                 if (response != null){
                     for (int i = 0; i < response.length(); i++){
                         try {
@@ -116,7 +117,6 @@ public class RequestDB {
                                 Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show();
                                 SharedPreferences preferences = context.getSharedPreferences("MyProfile", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = preferences.edit();
-                                editor.putString("checkLogin", object.getString("checkLogin"));
                                 editor.putInt("id", object.getInt("id"));
                                 editor.putString("email", object.getString("email"));
                                 editor.putString("Name", object.getString("Name"));
@@ -143,7 +143,7 @@ public class RequestDB {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
             }
         }){
             @Nullable
@@ -158,6 +158,7 @@ public class RequestDB {
         requestQueue.add(jsonArrayRequest);
     }
     public void RegistorSeller(Context context, String url, String name, String img, String address, String kind, String id_User){
+
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -190,7 +191,7 @@ public class RequestDB {
         };
         requestQueue.add(stringRequest);
     }
-    private void showInvalidOtpDialog(Context context) {
+    public void showInvalidOtpDialog(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         TextView myMsg = new TextView(context);
         builder.setTitle("Login with Password");
@@ -217,7 +218,7 @@ public class RequestDB {
         }
     }
 
-    private void showInvalidOtpDialog(Context context, String mess) {
+    public void showInvalidOtpDialog(Context context, String mess) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 //            TextView myMsg = new TextView(getApplicationContext());
         builder.setTitle("Register Seller");
