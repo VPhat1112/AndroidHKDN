@@ -3,7 +3,7 @@ package com.example.apphkdn.model;
 public class Product {
     private int id;
     private String product_name, product_image, product_decs;
-    private double product_price;
+    private int product_price;
     private int category_id;
 
     private int id_shop;
@@ -11,7 +11,7 @@ public class Product {
     private Integer product_numbersell;
     private Integer product_selled;
 
-    public Product(int id, String product_name, String product_image, String product_decs, double product_price, int category_id, int id_shop, int product_review, Integer product_numbersell, Integer product_selled) {
+    public Product(int id, String product_name, String product_image, String product_decs, int product_price, int category_id, int id_shop, int product_review, Integer product_numbersell, Integer product_selled) {
         this.id = id;
         this.product_name = product_name;
         this.product_image = product_image;
@@ -56,11 +56,11 @@ public class Product {
         this.product_decs = product_decs;
     }
 
-    public double getProduct_price() {
+    public int getProduct_price() {
         return product_price;
     }
 
-    public void setProduct_price(double product_price) {
+    public void setProduct_price(int product_price) {
         this.product_price = product_price;
     }
 
