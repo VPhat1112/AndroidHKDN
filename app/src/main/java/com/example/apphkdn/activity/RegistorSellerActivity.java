@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -32,9 +33,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
+import com.example.apphkdn.adapter.CategoryAdapter;
+import com.example.apphkdn.model.Category;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,8 +48,11 @@ public class RegistorSellerActivity extends AppCompatActivity {
     Button btnSignUp;
     ImageButton BtnBack;
     ImageView ImgvShopImg;
+    Spinner categoryspiner;
     Bitmap bitmap;
     RequestDB requestDB = new RequestDB();
+    ArrayList<Category> categoriesArrayList;
+    CategoryAdapter categoryAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +67,8 @@ public class RegistorSellerActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     private void Register(){
         uploadImg();
@@ -166,5 +175,6 @@ public class RegistorSellerActivity extends AppCompatActivity {
         edtShopKind = findViewById(R.id.edt_shop_kind);
         edtReason = findViewById(R.id.edt_reason_seller);
         btnSignUp = findViewById(R.id.btn_signup_seller);
+
     }
 }
