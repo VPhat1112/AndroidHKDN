@@ -108,6 +108,9 @@ public class RegistorSellerActivity extends AppCompatActivity {
                                     }else if (response.equals("NO IMAGE FOUND")){
                                         String remess= "NO IMAGE FOUND!";
                                         RequestDB.showInvalidOtpDialogERROR(RegistorSellerActivity.this,remess);
+                                    }else if (response.equals("You already register seller! \n Please wait for admin accept")){
+                                        String remess= "You already register seller! \n Please wait for admin accept!";
+                                        RequestDB.showInvalidOtpDialogERROR(RegistorSellerActivity.this,remess);
                                     }
                                 }
                             }, new Response.ErrorListener() {
