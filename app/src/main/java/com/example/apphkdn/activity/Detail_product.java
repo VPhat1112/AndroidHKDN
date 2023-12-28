@@ -1,6 +1,9 @@
 package com.example.apphkdn.activity;
 
+import static com.example.apphkdn.ultil.Server.LinkGetShop;
+
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +22,15 @@ import com.example.apphkdn.R;
 import com.example.apphkdn.model.Cart;
 import com.example.apphkdn.ultil.DownloadImageTask;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -28,17 +40,19 @@ public class Detail_product extends AppCompatActivity {
     private float initialX;
     ImageView imageView;
     ImageButton backBtn;
-    TextView productName,ProductPrice,sells;
+    TextView productName,ProductPrice,sells,editText,Name_Shop;
     RatingBar ratingBar;
-    Integer id=0;
-    Integer id_category=0;
-    Integer id_shop=0;
-    TextView editText;
-    Integer Product_price=0;
+    Integer id=0,id_category=0,id_shop=0;
+    int Product_price,status;
      Integer product_review;
      Integer product_numbersell;
-     int product_selled;
+     int product_selled,shop_rate;
     CardView plus,remove;
+
+    String shop_name,kind_shop,Address,Image_shop;
+
+    RatingBar ratingshop;
+
 
     String product_name,Product_decs,Product_image;
     private List<String> imageUrls;
@@ -51,16 +65,7 @@ public class Detail_product extends AppCompatActivity {
         setContentView(R.layout.activity_detail_product);
         viewFlipper =findViewById(R.id.viewFlipperDT);
         ratingBar =findViewById(R.id.productRatingBar);
-        id=getIntent().getIntExtra("ID_Product",-1);
-        product_name=getIntent().getStringExtra("product_name");
-        Product_decs=getIntent().getStringExtra("Product_decs");
-        Product_image=getIntent().getStringExtra("product_image");
-        Product_price=getIntent().getIntExtra("product_price",-1);
-        id_shop=getIntent().getIntExtra("ID_Shop",-1);
-        id_category=getIntent().getIntExtra("ID_Category",-1);
-        product_review=getIntent().getIntExtra("product_review",-1);
-        product_numbersell=getIntent().getIntExtra("product_numbersell",-1);
-        product_selled=getIntent().getIntExtra("product_selled",-1);
+        GetDataExtraShare();
         UnitUI();
         slcSP=product_numbersell-product_selled;
         editText.setText("1/"+slcSP);
@@ -83,12 +88,14 @@ public class Detail_product extends AppCompatActivity {
             }
         });
 
+        new GetShop().execute(id_shop.toString());
+
         productName.setText(product_name);
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         ProductPrice.setText(decimalFormat.format(Product_price)+"đ");
-//        Toast.makeText(Detail_product.this,String.valueOf(product_selled),Toast.LENGTH_LONG).show();
         sells.setText("Đã Bán "+product_selled);
         new DownloadImageTask(imageView).execute(Product_image);
+
 
         ActionViewFiller();
 
@@ -162,8 +169,81 @@ public class Detail_product extends AppCompatActivity {
         });
     }
 
+    private void GetDataExtraShare(){
+        id=getIntent().getIntExtra("ID_Product",-1);
+        product_name=getIntent().getStringExtra("product_name");
+        Product_decs=getIntent().getStringExtra("Product_decs");
+        Product_image=getIntent().getStringExtra("product_image");
+        Product_price=getIntent().getIntExtra("product_price",-1);
+        id_shop=getIntent().getIntExtra("ID_Shop",-1);
+        id_category=getIntent().getIntExtra("ID_Category",-1);
+        product_review=getIntent().getIntExtra("product_review",-1);
+        product_numbersell=getIntent().getIntExtra("product_numbersell",-1);
+        product_selled=getIntent().getIntExtra("product_selled",-1);
+    }
 
-        private void UnitUI(){
+    private class GetShop extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String id_shop = params[0];
+            try {
+                URL url = new URL(LinkGetShop);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+
+                // Prepare the data to be sent to the server
+                String data = "id_shop=" + id_shop;
+                OutputStream os = httpURLConnection.getOutputStream();
+                os.write(data.getBytes());
+                os.flush();
+                os.close();
+
+                // Get the response from the server
+                BufferedReader br = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    response.append(line).append("\n");
+                }
+                br.close();
+
+                return response.toString().trim();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "Error: " + e.getMessage();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                boolean success = jsonObject.getBoolean("success");
+
+                if (success) {
+                    id_shop = jsonObject.getInt("id");
+                    shop_name = jsonObject.getString("shop_name");
+                    kind_shop = jsonObject.getString("kind_shop");
+                    shop_rate = jsonObject.getInt("shop_rate");
+                    status=jsonObject.getInt("status");
+                    Address = jsonObject.getString("Address");
+                    Image_shop = jsonObject.getString("Image_shop");
+                    Name_Shop.setText(shop_name);
+                    ratingshop.setRating(shop_rate);
+                } else {
+                    Toast.makeText(Detail_product.this, "Some thing ERROR", Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Toast.makeText(Detail_product.this, "Error parsing JSON", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    private void UnitUI(){
         viewFlipper=findViewById(R.id.viewFlipperDT);
         productName=findViewById(R.id.nameProduct);
         ProductPrice=findViewById(R.id.Product_priceDT);
@@ -174,5 +254,7 @@ public class Detail_product extends AppCompatActivity {
         editText= findViewById(R.id.edtSlgCart);
         plus=findViewById(R.id.btn_plusedtsl);
         remove=findViewById(R.id.btn_removeedtsl);
+        Name_Shop=findViewById(R.id.namePRShop);
+        ratingshop=findViewById(R.id.productRatingBar);
     }
 }

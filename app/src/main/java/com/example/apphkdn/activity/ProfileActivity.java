@@ -16,7 +16,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     Button btnBack;
     CardView SignOut;
-    TextView txtname,txtgmail,txtphonenumber,txtAddress;
+    TextView txtname,txtgmail,txtphonenumber,txtAddress,txtEmailAd;
 
 
 
@@ -36,6 +36,7 @@ public class ProfileActivity extends AppCompatActivity {
         txtgmail.setText(sharedPreferences.getString("email","not found"));
         txtAddress.setText("    "+sharedPreferences.getString("Address","not found"));
         txtphonenumber.setText("    "+sharedPreferences.getString("phone","not found"));
+        txtEmailAd.setText("    "+sharedPreferences.getString("email","not found"));
     }
 
     private void goBack(){
@@ -50,7 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
         SignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSharedPreferences("MyProfile", MODE_PRIVATE).edit().clear().apply();
+                getSharedPreferences("MyProfile", MODE_PRIVATE).edit().clear().commit();
                 Intent intent = new Intent(ProfileActivity.this,LoginActivity.class);
                 startActivity(intent);
             }
@@ -64,5 +65,6 @@ public class ProfileActivity extends AppCompatActivity {
         txtgmail= findViewById(R.id.id_user);
         txtphonenumber= findViewById(R.id.prPhoneNumber);
         txtAddress= findViewById(R.id.prResidentialAddress);
+        txtEmailAd=findViewById(R.id.prEmailAddress);
     }
 }

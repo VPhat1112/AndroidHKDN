@@ -1,23 +1,16 @@
 package com.example.apphkdn.activity;
 
 import static com.example.apphkdn.ultil.Server.linkLog;
-import static java.security.AccessController.getContext;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.format.Formatter;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.apphkdn.R;
@@ -135,23 +128,27 @@ public class LoginActivity extends AppCompatActivity {
 
                     // You can save the user details in SharedPreferences or other storage
                     // and navigate to the next activity
-                    if (is_verified==0){
-                        requestDB.showInvalidOtpDialog(LoginActivity.this);
+                    if (role==1) {
+                        requestDB.showInvalidOtpDialogERROR(LoginActivity.this,"Ứng dụng không có quyền đăng nhập admin!!!");
                     }else {
-                        Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                        SharedPreferences preferences = getSharedPreferences("MyProfile", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putInt("id", userId);
-                        editor.putString("email", email);
-                        editor.putString("Name", Name);
-                        editor.putString("Address", Address);
-                        editor.putInt("role", role);
-                        editor.putString("phone", phone);
-                        editor.putString("Info_pay", Info_pay);
-                        editor.putString("imgUS", imgUS);
-                        editor.apply();
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
+                        if (is_verified==0){
+                            requestDB.showInvalidOtpDialog(LoginActivity.this);
+                        }else {
+                            Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                            SharedPreferences preferences = getSharedPreferences("MyProfile", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putInt("id", userId);
+                            editor.putString("email", email);
+                            editor.putString("Name", Name);
+                            editor.putString("Address", Address);
+                            editor.putInt("role", role);
+                            editor.putString("phone", phone);
+                            editor.putString("Info_pay", Info_pay);
+                            editor.putString("imgUS", imgUS);
+                            editor.apply();
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        }
                     }
                 } else {
                     // Login failed

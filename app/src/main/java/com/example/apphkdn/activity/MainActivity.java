@@ -16,12 +16,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.apphkdn.R;
 import com.example.apphkdn.adapter.ViewPagerAdapter;
-import com.example.apphkdn.model.Category;
 import com.example.apphkdn.ultil.Checkconnection;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
@@ -100,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
             viewPager.setCurrentItem(1);
         } else if (getIntent().getBooleanExtra("back_product_search",false)) {
             viewPager.setCurrentItem(0);
+        }else if (getIntent().getBooleanExtra("back_error",false)) {
+            viewPager.setCurrentItem(3);
         }
     }
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.apphkdn.R;
+import com.example.apphkdn.activity.MainActivity;
 import com.example.apphkdn.activity.RegistorSellerActivity;
 
 /**
@@ -29,7 +31,7 @@ public class ErrorSellerFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    ImageButton BtnBack;
     TextView txtreg;
 
     public ErrorSellerFragment() {
@@ -75,6 +77,14 @@ public class ErrorSellerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         initUI(view);
+        BtnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                intent.putExtra("back_error",true);
+                startActivity(intent);
+            }
+        });
         txtreg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,6 +95,7 @@ public class ErrorSellerFragment extends Fragment {
     }
 
     public void initUI(View view){
+        BtnBack=view.findViewById(R.id.Btn_Back_Error);
         txtreg=view.findViewById(R.id.txt_seller);
     }
 }
