@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Gravity;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.apphkdn.activity.MainActivity;
 import com.example.apphkdn.activity.RegistorSellerActivity;
@@ -101,10 +104,64 @@ public class RequestDB {
         });
         requestQueue.add(jsonArrayRequest);
     }
-
-
-
-
+    public void GetCategorySpinner(Context context, ArrayList<String> arrSpinner,ArrayAdapter<String> adapter, Spinner categoryspiner, String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for (int i = 0; i < response.length(); i++){
+                    try {
+                        JSONObject object = response.getJSONObject(i);
+                        arrSpinner.add(object.getString("category_name"));
+                        adapter.setDropDownViewResource(android.R.layout.select_dialog_item);
+                        categoryspiner.setAdapter(adapter);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context,"Error!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(jsonArrayRequest);
+    }
+    public void GetIDCategorySpinner(Context context,String nameCategory, String url){
+        RequestQueue requestQueue1 = Volley.newRequestQueue(context);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+//                for (int i = 0; i < response.length(); i++){
+//                    try {
+//                        JSONObject object = response.getJSONObject(i);
+//                        SharedPreferences preferences = context.getSharedPreferences("MyProfile", MODE_PRIVATE);
+//                        SharedPreferences.Editor editor = preferences.edit();
+//                        editor.putInt("id_category_spinner", object.getInt("id"));
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                        Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context,"Error!", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("name_category",nameCategory);
+                return params;
+            }
+        };
+        requestQueue1.add(jsonArrayRequest);
+    }
     public void Login(Context context, String url, String email, String pass){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null, new Response.Listener<JSONArray>() {
@@ -136,7 +193,7 @@ public class RequestDB {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "chua xac thuc", Toast.LENGTH_SHORT).show();
                         }
                     }
                 } else{

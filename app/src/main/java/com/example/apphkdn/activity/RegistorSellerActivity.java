@@ -1,6 +1,8 @@
 package com.example.apphkdn.activity;
 
+import static com.example.apphkdn.ultil.Server.LinkGetIDCategoryByName;
 import static com.example.apphkdn.ultil.Server.LinkRegistorSeller;
+import static com.example.apphkdn.ultil.Server.linkCategory;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +13,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -49,6 +54,8 @@ public class RegistorSellerActivity extends AppCompatActivity {
     ImageButton BtnBack;
     ImageView ImgvShopImg;
     Spinner categoryspiner;
+    ArrayAdapter<String> adapterSpinner;
+    ArrayList<String> arrSpinner;
     Bitmap bitmap;
     RequestDB requestDB = new RequestDB();
     ArrayList<Category> categoriesArrayList;
@@ -60,6 +67,7 @@ public class RegistorSellerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registor_seller);
         initUI();
         Register();
+        settingSpinner();
         BtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +76,26 @@ public class RegistorSellerActivity extends AppCompatActivity {
         });
     }
 
+    private void settingSpinner(){
+        arrSpinner = new ArrayList<>();
+        adapterSpinner = new ArrayAdapter<>(RegistorSellerActivity.this, android.R.layout.simple_spinner_dropdown_item, arrSpinner);
+        requestDB.GetCategorySpinner(RegistorSellerActivity.this,arrSpinner, adapterSpinner, categoryspiner, linkCategory);
+        SharedPreferences sharedPreferences= getSharedPreferences("MyProfile", MODE_PRIVATE);
+        categoryspiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String name = parent.getItemAtPosition(position).toString().trim();
+                requestDB.GetIDCategorySpinner(RegistorSellerActivity.this, name, LinkGetIDCategoryByName);
+                Integer idCategory = sharedPreferences.getInt("id_category_spinner",-1);
+                Toast.makeText(RegistorSellerActivity.this, idCategory.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
 
 
     private void Register(){
@@ -164,15 +192,12 @@ public class RegistorSellerActivity extends AppCompatActivity {
         });
     }
 
-
-
-
     private void initUI(){
         BtnBack=findViewById(R.id.Btn_Back);
         edtShopName = findViewById(R.id.edt_shop_name);
         ImgvShopImg = findViewById(R.id.imgv_img_seller);
         edtShopAddress = findViewById(R.id.edt_address_seller);
-        edtShopKind = findViewById(R.id.edt_shop_kind);
+        categoryspiner = findViewById(R.id.spn_shop_kind);
         edtReason = findViewById(R.id.edt_reason_seller);
         btnSignUp = findViewById(R.id.btn_signup_seller);
 

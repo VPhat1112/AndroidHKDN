@@ -1,9 +1,10 @@
 package com.example.apphkdn.ultil;
 
 public class Server {
-    public static String serverAddress = "http://192.168.2.14"; // Replace with your server address
+    public static String serverAddress = "http://192.168.2.12"; // Replace with your server address
 
     public static String linkCategory = serverAddress+"/server/getLsanpham.php";
+
     public static String linkNewProduct = serverAddress+"/server/getNewProduct.php";
 
     public static String linkReg = serverAddress+"/server/signup.php";
@@ -21,7 +22,10 @@ public class Server {
     public static String DetailProduct=serverAddress+"/server/GetProductByID.php?product_id=";
 
     public static String LinkRegistorSeller = serverAddress+"/server/RegisterSeller.php";
+
     public static String LinkGetUser = serverAddress+"/server/GetUser.php";
 
     public static String LinkGetShop = serverAddress+"/server/GetShop.php";
+
+    public static String LinkGetIDCategoryByName = serverAddress+"/server/GetIDCategoryByName.php";
 }
