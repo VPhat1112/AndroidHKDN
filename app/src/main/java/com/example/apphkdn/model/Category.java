@@ -34,4 +34,13 @@ public class Category {
     public void setCategory_image(String category_image) {
         this.category_image = category_image;
     }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", category_name='" + category_name + '\'' +
+                ", category_image='" + category_image + '\'' +
+                '}';
+    }
 }

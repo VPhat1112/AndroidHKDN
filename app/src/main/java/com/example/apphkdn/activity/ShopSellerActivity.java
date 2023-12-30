@@ -48,7 +48,7 @@ public class ShopSellerActivity extends AppCompatActivity {
         Logoutseller.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSharedPreferences("MyProfile", MODE_PRIVATE).edit().clear().commit();
+                getSharedPreferences("MyProfile", MODE_PRIVATE).edit().clear().apply();
                 Intent intent = new Intent(ShopSellerActivity.this,LoginActivity.class);
                 startActivity(intent);
             }

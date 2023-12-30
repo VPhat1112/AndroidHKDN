@@ -2,10 +2,13 @@ package com.example.apphkdn.RequestDB;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import static com.example.apphkdn.ultil.Server.LinkGetIDCategoryByName;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -23,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.activity.MainActivity;
 import com.example.apphkdn.activity.RegistorSellerActivity;
 import com.example.apphkdn.activity.ShopActivity;
@@ -30,6 +34,8 @@ import com.example.apphkdn.adapter.CategoryAdapter;
 import com.example.apphkdn.adapter.ProductAdapter;
 import com.example.apphkdn.model.Category;
 import com.example.apphkdn.model.Product;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,9 +43,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RequestDB {
+    private static final String MY_SHARED_PREFERENCES = "MyProfile";
+    private static final String PREF_LIST_CATEGORY = "PREF_LIST_CATEGORY";
     public void GetProduct(Context context, ArrayList<Product> productArrayList, ProductAdapter productAdapter, String url){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -104,63 +113,32 @@ public class RequestDB {
         });
         requestQueue.add(jsonArrayRequest);
     }
-    public void GetCategorySpinner(Context context, ArrayList<String> arrSpinner,ArrayAdapter<String> adapter, Spinner categoryspiner, String url){
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                for (int i = 0; i < response.length(); i++){
+    public void GetCategorySpinner(Context context, List<Category> mList, String url){
+            RequestQueue requestQueue = Volley.newRequestQueue(context);
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
                     try {
-                        JSONObject object = response.getJSONObject(i);
-                        arrSpinner.add(object.getString("category_name"));
-                        adapter.setDropDownViewResource(android.R.layout.select_dialog_item);
-                        categoryspiner.setAdapter(adapter);
+                        JSONArray jsonArray = new JSONArray(response);
+                        for (int i = 0; i < jsonArray.length(); i++){
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            mList.add(new Category(jsonObject.getInt("id"),
+                                                    jsonObject.getString("category_name"),
+                                                    jsonObject.getString("category_image")));
+                        }
+                        //Toast.makeText(context, mList.get(0).toString(), Toast.LENGTH_SHORT).show();
+                        DataLocalManager.setListCategorySpinner(mList);
                     } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
+                        throw new RuntimeException(e);
                     }
                 }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context,"Error!", Toast.LENGTH_SHORT).show();
-            }
-        });
-        requestQueue.add(jsonArrayRequest);
-    }
-    public void GetIDCategorySpinner(Context context,String nameCategory, String url){
-        RequestQueue requestQueue1 = Volley.newRequestQueue(context);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-//                for (int i = 0; i < response.length(); i++){
-//                    try {
-//                        JSONObject object = response.getJSONObject(i);
-//                        SharedPreferences preferences = context.getSharedPreferences("MyProfile", MODE_PRIVATE);
-//                        SharedPreferences.Editor editor = preferences.edit();
-//                        editor.putInt("id_category_spinner", object.getInt("id"));
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                        Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context,"Error!", Toast.LENGTH_SHORT).show();
-            }
-        }){
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("name_category",nameCategory);
-                return params;
-            }
-        };
-        requestQueue1.add(jsonArrayRequest);
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, "Error" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            requestQueue.add(stringRequest);
     }
     public void Login(Context context, String url, String email, String pass){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
@@ -398,6 +376,4 @@ public class RequestDB {
             titleView.setGravity(Gravity.CENTER);
         }
     }
-
-
 }

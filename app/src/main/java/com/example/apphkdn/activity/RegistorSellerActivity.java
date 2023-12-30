@@ -5,6 +5,7 @@ import static com.example.apphkdn.ultil.Server.LinkRegistorSeller;
 import static com.example.apphkdn.ultil.Server.linkCategory;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -36,15 +37,23 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
 import com.example.apphkdn.adapter.CategoryAdapter;
+import com.example.apphkdn.adapter.CategoryAdapterSpiner;
 import com.example.apphkdn.model.Category;
+import com.example.apphkdn.ultil.Server;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RegistorSellerActivity extends AppCompatActivity {
@@ -54,20 +63,17 @@ public class RegistorSellerActivity extends AppCompatActivity {
     ImageButton BtnBack;
     ImageView ImgvShopImg;
     Spinner categoryspiner;
-    ArrayAdapter<String> adapterSpinner;
-    ArrayList<String> arrSpinner;
     Bitmap bitmap;
     RequestDB requestDB = new RequestDB();
-    ArrayList<Category> categoriesArrayList;
-    CategoryAdapter categoryAdapter;
+    CategoryAdapterSpiner categoryAdapterSpiner;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registor_seller);
         initUI();
-        Register();
         settingSpinner();
+        Register();
         BtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,16 +83,12 @@ public class RegistorSellerActivity extends AppCompatActivity {
     }
 
     private void settingSpinner(){
-        arrSpinner = new ArrayList<>();
-        adapterSpinner = new ArrayAdapter<>(RegistorSellerActivity.this, android.R.layout.simple_spinner_dropdown_item, arrSpinner);
-        requestDB.GetCategorySpinner(RegistorSellerActivity.this,arrSpinner, adapterSpinner, categoryspiner, linkCategory);
-        SharedPreferences sharedPreferences= getSharedPreferences("MyProfile", MODE_PRIVATE);
+        categoryAdapterSpiner = new CategoryAdapterSpiner(RegistorSellerActivity.this, R.layout.item_selected_spinner_category, getListCategory());
+        categoryspiner.setAdapter(categoryAdapterSpiner);
         categoryspiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String name = parent.getItemAtPosition(position).toString().trim();
-                requestDB.GetIDCategorySpinner(RegistorSellerActivity.this, name, LinkGetIDCategoryByName);
-                Integer idCategory = sharedPreferences.getInt("id_category_spinner",-1);
+                Integer idCategory = categoryAdapterSpiner.getItem(position).getId();
                 Toast.makeText(RegistorSellerActivity.this, idCategory.toString(), Toast.LENGTH_SHORT).show();
             }
 
@@ -97,6 +99,13 @@ public class RegistorSellerActivity extends AppCompatActivity {
         });
     }
 
+    public List<Category> getListCategory() {
+        List<Category> mList = new ArrayList<>();
+        requestDB.GetCategorySpinner(RegistorSellerActivity.this, mList, linkCategory);
+        mList = DataLocalManager.getListCategorySpinner();
+        //Toast.makeText(RegistorSellerActivity.this, mList.toString(), Toast.LENGTH_SHORT).show();
+        return mList;
+    }
 
     private void Register(){
         uploadImg();
@@ -205,4 +214,5 @@ public class RegistorSellerActivity extends AppCompatActivity {
         btnSignUp = findViewById(R.id.btn_signup_seller);
 
     }
+
 }

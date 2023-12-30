@@ -7,6 +7,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.activity.LoginActivity;
 
 public class HomeActivity extends AppCompatActivity {
@@ -17,6 +18,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        DataLocalManager.init(getApplicationContext());
         anhxa();
 
         Startbtn.setOnClickListener(new View.OnClickListener() {

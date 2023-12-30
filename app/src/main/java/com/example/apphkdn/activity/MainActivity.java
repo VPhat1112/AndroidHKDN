@@ -95,9 +95,7 @@ public class MainActivity extends AppCompatActivity {
     private void getResponseFromActivity(){
         if (getIntent().getBooleanExtra("back_product_category",false)){
             viewPager.setCurrentItem(1);
-        } else if (getIntent().getBooleanExtra("back_product_search",false)) {
-            viewPager.setCurrentItem(0);
-        }else if (getIntent().getBooleanExtra("back_error",false)) {
+        } else if (getIntent().getBooleanExtra("back_error",false)) {
             viewPager.setCurrentItem(3);
         }
     }

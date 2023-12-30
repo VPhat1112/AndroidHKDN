@@ -208,7 +208,8 @@ public class UserFragment extends Fragment {
                         editor.putString("Info_pay", Info_pay);
                         editor.putString("imgUS", imgUS);
                         editor.apply();
-                        startActivity(new Intent(getActivity(), ShopActivity.class));
+                        Intent intent = new Intent(getActivity(), ShopActivity.class);
+                        startActivity(intent);
                     }
                 } else {
                     // Login failed
