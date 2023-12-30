@@ -23,7 +23,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
 import com.example.apphkdn.activity.ProfileActivity;
-import com.example.apphkdn.activity.ShopActivity;
+import com.example.apphkdn.activity.ShopSellerActivity;
 import com.example.apphkdn.ultil.Checkconnection;
 
 import org.json.JSONException;
@@ -129,13 +129,6 @@ public class UserFragment extends Fragment {
                 new GetUSer().execute(email);
 
 
-//                int role_seller = preferences.getInt("role",0);
-//                if (role_seller == 3){
-//                    GotoErrorSellerFraggment();
-//                }else{
-//                    Intent intent = new Intent(getContext(), ShopActivity.class);
-//                    startActivity(intent);
-//                }
             }
         });
     }
@@ -208,11 +201,14 @@ public class UserFragment extends Fragment {
                         editor.putString("Info_pay", Info_pay);
                         editor.putString("imgUS", imgUS);
                         editor.apply();
+<<<<<<< HEAD
                         Intent intent = new Intent(getActivity(), ShopActivity.class);
                         startActivity(intent);
+=======
+                        startActivity(new Intent(getActivity(), ShopSellerActivity.class));
+>>>>>>> ea5e204054987ed761ba5c543a20d98b45e53826
                     }
                 } else {
-                    // Login failed
                     Toast.makeText(getContext(), "Some thing ERROR", Toast.LENGTH_SHORT).show();
                 }
 
