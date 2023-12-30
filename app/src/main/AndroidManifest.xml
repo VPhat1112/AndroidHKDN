@@ -20,6 +20,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activity.Activity_Seller_Update_Product"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ActivitySellerAddProduct"
+            android:exported="false" />
+        <activity
             android:name=".activity.ShopSellerProductActivity"
             android:exported="false" />
         <activity

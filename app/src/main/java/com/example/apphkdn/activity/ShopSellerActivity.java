@@ -16,6 +16,9 @@ public class ShopSellerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_seller);
         UnitUI();
+        EventAction();
+    }
+    private void EventAction(){
         Homeseller.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +57,6 @@ public class ShopSellerActivity extends AppCompatActivity {
             }
         });
     }
-
 
     public void UnitUI(){
         Homeseller= findViewById(R.id.homeseller);

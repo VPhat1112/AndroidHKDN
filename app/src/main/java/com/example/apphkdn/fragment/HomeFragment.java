@@ -8,9 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -18,23 +16,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
 import com.example.apphkdn.activity.CartActivity;
 import com.example.apphkdn.activity.SearchActivity;
 import com.example.apphkdn.adapter.ProductAdapter;
-import com.example.apphkdn.model.Cart;
 import com.example.apphkdn.model.Product;
-import com.example.apphkdn.ultil.Server;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -116,8 +103,6 @@ public class HomeFragment extends Fragment {
         ActionViewFiller();
 
         RecyleviewSetting();
-
-        GetnewProduct();
     }
 
     private void RecyleviewSetting(){
