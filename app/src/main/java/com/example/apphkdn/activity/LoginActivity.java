@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
 import com.example.apphkdn.ultil.Server;
@@ -138,13 +139,21 @@ public class LoginActivity extends AppCompatActivity {
                             SharedPreferences preferences = getSharedPreferences("MyProfile", MODE_PRIVATE);
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putInt("id", userId);
+                            DataLocalManager.setIdUser(userId);
                             editor.putString("email", email);
+                            DataLocalManager.setEmailUser(email);
                             editor.putString("Name", Name);
+                            DataLocalManager.setNameUser(Name);
                             editor.putString("Address", Address);
+                            DataLocalManager.setAddressUser(Address);
                             editor.putInt("role", role);
+                            DataLocalManager.setRoleUser(role);
                             editor.putString("phone", phone);
+                            DataLocalManager.setPhoneUser(phone);
                             editor.putString("Info_pay", Info_pay);
+                            DataLocalManager.setInfoPayUser(Info_pay);
                             editor.putString("imgUS", imgUS);
+                            DataLocalManager.setImageUser(imgUS);
                             editor.apply();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);

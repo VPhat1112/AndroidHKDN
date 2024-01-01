@@ -19,7 +19,15 @@ import java.util.List;
 
 public class DataLocalManager {
 
+    private static final String PREF_ID_USER_LOGIN = "PREF_ID_USER_LOGIN";
+    private static final String PREF_EMAIL_USER_LOGIN = "PREF_EMAIL_USER_LOGIN";
     private static final String PREF_LIST_CATEGORY_SPINNER = "PREF_LIST_CATEGORY_SPINNER";
+    private static final String PREF_NAME_USER_LOGIN = "PREF_NAME_USER_LOGIN";
+    private static final String PREF_ADDRESS_USER_LOGIN = "PREF_ADDRESS_USER_LOGIN";
+    private static final String PREF_ROLE_USER_LOGIN = "PREF_ROLE_USER_LOGIN";
+    private static final String PREF_PHONE_USER_LOGIN = "PREF_PHONE_USER_LOGIN";
+    private static final String PREF_INFOPAY_USER_LOGIN = "PREF_INFOPAY_USER_LOGIN";
+    private static final String PREF_IMAGE_USER_LOGIN = "PREF_IMAGE_USER_LOGIN";
     private static DataLocalManager instance;
     private MySharedPreferences mySharedPreferences;
 
@@ -33,6 +41,70 @@ public class DataLocalManager {
             instance = new DataLocalManager();
         }
         return instance;
+    }
+
+    public static void setIdUser(int value){
+        DataLocalManager.getInstance().mySharedPreferences.putIntValue(PREF_ID_USER_LOGIN ,value);
+    }
+
+    public static int getIdUser(){
+        return DataLocalManager.getInstance().mySharedPreferences.getIntValue(PREF_ID_USER_LOGIN);
+    }
+
+    public static void setEmailUser(String value){
+        DataLocalManager.getInstance().mySharedPreferences.putStringValue(PREF_EMAIL_USER_LOGIN ,value);
+    }
+
+    public static String getEmailUser(){
+        return DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_EMAIL_USER_LOGIN);
+    }
+
+    public static void setNameUser(String value){
+        DataLocalManager.getInstance().mySharedPreferences.putStringValue(PREF_NAME_USER_LOGIN ,value);
+    }
+
+    public static String getNameUser(){
+        return DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_NAME_USER_LOGIN);
+    }
+
+    public static void setAddressUser(String value){
+        DataLocalManager.getInstance().mySharedPreferences.putStringValue(PREF_ADDRESS_USER_LOGIN ,value);
+    }
+
+    public static String getAddressUser(){
+        return DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_ADDRESS_USER_LOGIN);
+    }
+
+    public static void setRoleUser(int value){
+        DataLocalManager.getInstance().mySharedPreferences.putIntValue(PREF_ROLE_USER_LOGIN ,value);
+    }
+
+    public static int getRoleUser(){
+        return DataLocalManager.getInstance().mySharedPreferences.getIntValue(PREF_ROLE_USER_LOGIN);
+    }
+
+    public static void setPhoneUser(String value){
+        DataLocalManager.getInstance().mySharedPreferences.putStringValue(PREF_PHONE_USER_LOGIN ,value);
+    }
+
+    public static String getPhoneUser(){
+        return DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_PHONE_USER_LOGIN);
+    }
+
+    public static void setInfoPayUser(String value){
+        DataLocalManager.getInstance().mySharedPreferences.putStringValue(PREF_INFOPAY_USER_LOGIN ,value);
+    }
+
+    public static String getInfoPayUser(){
+        return DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_INFOPAY_USER_LOGIN);
+    }
+
+    public static void setImageUser(String value){
+        DataLocalManager.getInstance().mySharedPreferences.putStringValue(PREF_IMAGE_USER_LOGIN ,value);
+    }
+
+    public static String getImageUser(){
+        return DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_IMAGE_USER_LOGIN);
     }
 
     public static void setListCategorySpinner(List<Category> list){
@@ -60,5 +132,9 @@ public class DataLocalManager {
         }
 
         return list;
+    }
+
+    public static void ClearMySharedPreferences(){
+        DataLocalManager.getInstance().mySharedPreferences.ClearMySharedPreferences();
     }
 }

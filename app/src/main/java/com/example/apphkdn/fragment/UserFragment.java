@@ -201,12 +201,7 @@ public class UserFragment extends Fragment {
                         editor.putString("Info_pay", Info_pay);
                         editor.putString("imgUS", imgUS);
                         editor.apply();
-<<<<<<< HEAD
-                        Intent intent = new Intent(getActivity(), ShopActivity.class);
-                        startActivity(intent);
-=======
                         startActivity(new Intent(getActivity(), ShopSellerActivity.class));
->>>>>>> ea5e204054987ed761ba5c543a20d98b45e53826
                     }
                 } else {
                     Toast.makeText(getContext(), "Some thing ERROR", Toast.LENGTH_SHORT).show();

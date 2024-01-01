@@ -1,11 +1,7 @@
 package com.example.apphkdn.ultil;
 
 public class Server {
-<<<<<<< HEAD
     public static String serverAddress = "http://192.168.2.12"; // Replace with your server address
-=======
-    public static String serverAddress = "http://192.168.1.25"; // Replace with your server address
->>>>>>> ea5e204054987ed761ba5c543a20d98b45e53826
 
     public static String linkCategory = serverAddress+"/server/getLsanpham.php";
 
@@ -33,11 +29,9 @@ public class Server {
 
     public static String LinkGetShop = serverAddress+"/server/GetShop.php";
 
-<<<<<<< HEAD
     public static String LinkGetIDCategoryByName = serverAddress+"/server/GetIDCategoryByName.php";
-=======
+
     public static String LinkGetShopByIdUser = serverAddress+"/server/GetShopByIdUser.php";
 
     public static String AddProduct = serverAddress+"/server/InsertProduct.php";
->>>>>>> ea5e204054987ed761ba5c543a20d98b45e53826
 }

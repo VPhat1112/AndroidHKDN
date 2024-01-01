@@ -58,7 +58,7 @@ import java.util.Map;
 
 public class RegistorSellerActivity extends AppCompatActivity {
 
-    EditText edtShopName, edtShopAddress, edtShopKind, edtReason;
+    EditText edtShopName, edtShopAddress, edtReason;
     Button btnSignUp;
     ImageButton BtnBack;
     ImageView ImgvShopImg;
@@ -66,6 +66,8 @@ public class RegistorSellerActivity extends AppCompatActivity {
     Bitmap bitmap;
     RequestDB requestDB = new RequestDB();
     CategoryAdapterSpiner categoryAdapterSpiner;
+
+    Integer idCategory;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,8 +90,8 @@ public class RegistorSellerActivity extends AppCompatActivity {
         categoryspiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Integer idCategory = categoryAdapterSpiner.getItem(position).getId();
-                Toast.makeText(RegistorSellerActivity.this, idCategory.toString(), Toast.LENGTH_SHORT).show();
+                idCategory = categoryAdapterSpiner.getItem(position).getId();
+                //Toast.makeText(RegistorSellerActivity.this, idCategory.toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -114,10 +116,9 @@ public class RegistorSellerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String name = edtShopName.getText().toString().trim();
                 String address = edtShopAddress.getText().toString().trim();
-                String kind = edtShopKind.getText().toString().trim();
+                Integer kind = idCategory;
                 String Reason= edtReason.getText().toString().toString().trim();
-                SharedPreferences preferences = getSharedPreferences("MyProfile", MODE_PRIVATE);
-                String id_user = String.valueOf(preferences.getInt("id",0));
+                String id_user = String.valueOf(DataLocalManager.getIdUser());
                 String base64Image;
 
                 ByteArrayOutputStream byteArrayOutputStream;
@@ -161,8 +162,9 @@ public class RegistorSellerActivity extends AppCompatActivity {
                             params.put("shop_name",name);
                             params.put("ImageShop",base64Image);
                             params.put("Address",address);
-                            params.put("shop_kind",kind);
+                            params.put("shop_kind",kind.toString());
                             params.put("idUser",id_user);
+                            params.put("reason",Reason);
                             return params;
                         }
                     };

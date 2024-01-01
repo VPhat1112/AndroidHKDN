@@ -3,6 +3,7 @@ package com.example.apphkdn.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -31,12 +33,12 @@ public class ProfileActivity extends AppCompatActivity {
         Signout();
     }
     private void getData(){
-        SharedPreferences sharedPreferences= getSharedPreferences("MyProfile", MODE_PRIVATE);
-        txtname.setText(sharedPreferences.getString("Name","not found"));
-        txtgmail.setText(sharedPreferences.getString("email","not found"));
-        txtAddress.setText("    "+sharedPreferences.getString("Address","not found"));
-        txtphonenumber.setText("    "+sharedPreferences.getString("phone","not found"));
-        txtEmailAd.setText("    "+sharedPreferences.getString("email","not found"));
+//        SharedPreferences sharedPreferences= getSharedPreferences("MyProfile", MODE_PRIVATE);
+        txtname.setText(DataLocalManager.getNameUser());
+        txtgmail.setText(DataLocalManager.getEmailUser());
+        txtAddress.setText("    "+DataLocalManager.getAddressUser());
+        txtphonenumber.setText("    "+DataLocalManager.getPhoneUser());
+        txtEmailAd.setText("    "+DataLocalManager.getEmailUser());
     }
 
     private void goBack(){
@@ -51,7 +53,8 @@ public class ProfileActivity extends AppCompatActivity {
         SignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSharedPreferences("MyProfile", MODE_PRIVATE).edit().clear().commit();
+                DataLocalManager.ClearMySharedPreferences();
+                Log.d("Debug", DataLocalManager.getEmailUser());
                 Intent intent = new Intent(ProfileActivity.this,LoginActivity.class);
                 startActivity(intent);
             }

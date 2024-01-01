@@ -47,8 +47,6 @@ import java.util.List;
 import java.util.Map;
 
 public class RequestDB {
-    private static final String MY_SHARED_PREFERENCES = "MyProfile";
-    private static final String PREF_LIST_CATEGORY = "PREF_LIST_CATEGORY";
     public void GetProduct(Context context, ArrayList<Product> productArrayList, ProductAdapter productAdapter, String url){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -232,41 +230,6 @@ public class RequestDB {
         };
         requestQueue.add(jsonArrayRequest);
     }
-
-//    public void RegistorSeller(Context context, String url, String name, String img, String address, String kind, String id_User){
-//
-//        RequestQueue requestQueue = Volley.newRequestQueue(context);
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                if (response.toString().equals("success")){
-//                    String remess= "Đăng ký thành công! Xin đợi phản hồi từ admin";
-//                    showInvalidOtpDialog(context,remess);
-//                } else{
-//                    String remess= "Đăng ký không thành công!";
-//                    showInvalidOtpDialog(context,remess);
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//
-//            }
-//        }){
-//            @Nullable
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String,String> params = new HashMap<>();
-//                params.put("shop_name",name);
-//                params.put("ImageShop",img);
-//                params.put("Address",address);
-//                params.put("shop_kind",kind);
-//                params.put("idUser",id_User);
-//                return params;
-//            }
-//        };
-//        requestQueue.add(stringRequest);
-//    }
     public void showInvalidOtpDialog(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         TextView myMsg = new TextView(context);
@@ -293,7 +256,6 @@ public class RequestDB {
             titleView.setGravity(Gravity.CENTER);
         }
     }
-
     public static void showInvalidOtpDialog(Context context, String mess) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 //            TextView myMsg = new TextView(getApplicationContext());
