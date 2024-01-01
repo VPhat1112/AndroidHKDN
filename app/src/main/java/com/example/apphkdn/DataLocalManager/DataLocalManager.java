@@ -28,6 +28,7 @@ public class DataLocalManager {
     private static final String PREF_PHONE_USER_LOGIN = "PREF_PHONE_USER_LOGIN";
     private static final String PREF_INFOPAY_USER_LOGIN = "PREF_INFOPAY_USER_LOGIN";
     private static final String PREF_IMAGE_USER_LOGIN = "PREF_IMAGE_USER_LOGIN";
+    private static final String PREF_IDSHOP_USER_LOGIN = "PREF_IDSHOP_USER_LOGIN";
     private static DataLocalManager instance;
     private MySharedPreferences mySharedPreferences;
 
@@ -107,16 +108,25 @@ public class DataLocalManager {
         return DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_IMAGE_USER_LOGIN);
     }
 
-    public static void setListCategorySpinner(List<Category> list){
+    public static void setIdShopUser(int value){
+        DataLocalManager.getInstance().mySharedPreferences.putIntValue(PREF_IDSHOP_USER_LOGIN ,value);
+    }
+
+    public static int getIdShopUser(){
+        return DataLocalManager.getInstance().mySharedPreferences.getIntValue(PREF_IDSHOP_USER_LOGIN);
+    }
+
+    public static void setListCategorySpinner(ArrayList<Category> list){
         Gson gson = new Gson();
         JsonArray jsonArray = gson.toJsonTree(list).getAsJsonArray();
         String strJsonArray = jsonArray.toString();
         DataLocalManager.getInstance().mySharedPreferences.putStringValue(PREF_LIST_CATEGORY_SPINNER ,strJsonArray);
     }
 
-    public static List<Category> getListCategorySpinner(){
+    public static ArrayList<Category> getListCategorySpinner(){
         String strJsonArray = DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_LIST_CATEGORY_SPINNER);
-        List<Category> list = new ArrayList<>();
+        Log.d("strJsonArray",strJsonArray);
+        ArrayList<Category> list = new ArrayList<>();
         try {
             JSONArray jsonArray = new JSONArray(strJsonArray);
             JSONObject jsonObject;

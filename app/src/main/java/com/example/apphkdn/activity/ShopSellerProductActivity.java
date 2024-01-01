@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
 import com.example.apphkdn.adapter.ProductShopAdapter;
@@ -72,8 +74,7 @@ public class ShopSellerProductActivity extends AppCompatActivity{
         GetMyProduct();
     }
     private void GetMyProduct(){
-        SharedPreferences preferences = getSharedPreferences("MyProfile", MODE_PRIVATE);
-        int id_user = preferences.getInt("id",-1);
+        int id_user = DataLocalManager.getIdUser();
         new GetShopSeller().execute(String.valueOf(id_user));
     }
 
@@ -120,10 +121,8 @@ public class ShopSellerProductActivity extends AppCompatActivity{
 
                 if (success) {
                     id_shop=jsonObject.getInt("id");
-                    SharedPreferences preferences = getSharedPreferences("MyProfile", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putInt("id_shop", id_shop);
-                    editor.apply();
+                    Log.d("id_shop", String.valueOf(id_shop));
+                    DataLocalManager.setIdShopUser(id_shop);
                     requestDB.GetProductShop(ShopSellerProductActivity.this,productArrayListSeller,productShopAdapter,GetProductByShop+id_shop);
                 } else {
                     Toast.makeText(ShopSellerProductActivity.this, "Some thing ERROR", Toast.LENGTH_SHORT).show();

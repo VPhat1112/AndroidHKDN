@@ -13,10 +13,11 @@ import androidx.annotation.Nullable;
 import com.example.apphkdn.R;
 import com.example.apphkdn.model.Category;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryAdapterSpiner  extends ArrayAdapter<Category> {
-    public CategoryAdapterSpiner(@NonNull Context context, int resource, @NonNull List<Category> objects) {
+    public CategoryAdapterSpiner(@NonNull Context context, int resource, @NonNull ArrayList<Category> objects) {
         super(context, resource, objects);
     }
 

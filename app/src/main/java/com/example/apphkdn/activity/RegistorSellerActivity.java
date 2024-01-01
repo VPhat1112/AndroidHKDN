@@ -101,8 +101,8 @@ public class RegistorSellerActivity extends AppCompatActivity {
         });
     }
 
-    public List<Category> getListCategory() {
-        List<Category> mList = new ArrayList<>();
+    public ArrayList<Category> getListCategory() {
+        ArrayList<Category> mList = new ArrayList<>();
         requestDB.GetCategorySpinner(RegistorSellerActivity.this, mList, linkCategory);
         mList = DataLocalManager.getListCategorySpinner();
         //Toast.makeText(RegistorSellerActivity.this, mList.toString(), Toast.LENGTH_SHORT).show();

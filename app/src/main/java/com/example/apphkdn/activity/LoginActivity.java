@@ -136,25 +136,14 @@ public class LoginActivity extends AppCompatActivity {
                             requestDB.showInvalidOtpDialog(LoginActivity.this);
                         }else {
                             Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                            SharedPreferences preferences = getSharedPreferences("MyProfile", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = preferences.edit();
-                            editor.putInt("id", userId);
                             DataLocalManager.setIdUser(userId);
-                            editor.putString("email", email);
                             DataLocalManager.setEmailUser(email);
-                            editor.putString("Name", Name);
                             DataLocalManager.setNameUser(Name);
-                            editor.putString("Address", Address);
                             DataLocalManager.setAddressUser(Address);
-                            editor.putInt("role", role);
                             DataLocalManager.setRoleUser(role);
-                            editor.putString("phone", phone);
                             DataLocalManager.setPhoneUser(phone);
-                            editor.putString("Info_pay", Info_pay);
                             DataLocalManager.setInfoPayUser(Info_pay);
-                            editor.putString("imgUS", imgUS);
                             DataLocalManager.setImageUser(imgUS);
-                            editor.apply();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                         }

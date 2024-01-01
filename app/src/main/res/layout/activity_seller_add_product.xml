@@ -75,7 +75,7 @@
             android:id="@+id/AddImageProduct_edt"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:src="@drawable/icon_add"/>
+            android:src="@drawable/icon_add" />
     </androidx.cardview.widget.CardView>
     <TextView
         android:paddingTop="10dp"
@@ -85,7 +85,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="50dp">
-        <EditText
+        <Spinner
             android:layout_margin="1dp"
             android:background="@drawable/corner_edt_seller"
             android:id="@+id/spCategory"

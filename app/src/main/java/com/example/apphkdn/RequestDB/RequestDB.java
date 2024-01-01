@@ -3,6 +3,7 @@ package com.example.apphkdn.RequestDB;
 import static android.content.Context.MODE_PRIVATE;
 
 import static com.example.apphkdn.ultil.Server.LinkGetIDCategoryByName;
+import static com.example.apphkdn.ultil.Server.serverAddress;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -58,7 +59,7 @@ public class RequestDB {
                         productArrayList.add(new Product(
                                 object.getInt("id"),
                                 object.getString("product_name"),
-                                object.getString("product_image"),
+                                serverAddress + object.getString("product_image"),
                                 object.getString("product_decs"),
                                 object.getInt("product_price"),
                                 object.getInt("IDcategory"),
@@ -67,6 +68,7 @@ public class RequestDB {
                                 object.getInt("product_numbersell"),
                                 object.getInt("product_selled")
                         ));
+                        Log.d("imageaaa", object.getString("product_image"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                         Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
@@ -94,7 +96,7 @@ public class RequestDB {
                         productArrayListSeller.add(new Product(
                                 object.getInt("id"),
                                 object.getString("product_name"),
-                                object.getString("product_image"),
+                                serverAddress + object.getString("product_image"),
                                 object.getString("product_decs"),
                                 object.getInt("product_price"),
                                 object.getInt("IDcategory"),
@@ -147,32 +149,33 @@ public class RequestDB {
         });
         requestQueue.add(jsonArrayRequest);
     }
-    public void GetCategorySpinner(Context context, List<Category> mList, String url){
-            RequestQueue requestQueue = Volley.newRequestQueue(context);
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
+    public void GetCategorySpinner(Context context, ArrayList<Category> mList, String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for (int i = 0; i < response.length(); i++){
                     try {
-                        JSONArray jsonArray = new JSONArray(response);
-                        for (int i = 0; i < jsonArray.length(); i++){
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            mList.add(new Category(jsonObject.getInt("id"),
-                                                    jsonObject.getString("category_name"),
-                                                    jsonObject.getString("category_image")));
-                        }
-                        //Toast.makeText(context, mList.get(0).toString(), Toast.LENGTH_SHORT).show();
+                        JSONObject object = response.getJSONObject(i);
+                        mList.add(new Category(
+                                object.getInt("id"),
+                                object.getString("category_name"),
+                                object.getString("category_image")
+                        ));
                         DataLocalManager.setListCategorySpinner(mList);
                     } catch (JSONException e) {
-                        throw new RuntimeException(e);
+                        e.printStackTrace();
+                        Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, "Error" + error.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-            requestQueue.add(stringRequest);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context,"Error!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(jsonArrayRequest);
     }
     public void Login(Context context, String url, String email, String pass){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
