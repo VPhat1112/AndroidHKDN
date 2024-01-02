@@ -10,8 +10,9 @@ public class Product {
     private int product_review;
     private Integer product_numbersell;
     private Integer product_selled;
+    private int status;
 
-    public Product(int id, String product_name, String product_image, String product_decs, int product_price, int category_id, int id_shop, int product_review, Integer product_numbersell, Integer product_selled) {
+    public Product(int id, String product_name, String product_image, String product_decs, int product_price, int category_id, int id_shop, int product_review, Integer product_numbersell, Integer product_selled,int status) {
         this.id = id;
         this.product_name = product_name;
         this.product_image = product_image;
@@ -22,6 +23,15 @@ public class Product {
         this.product_review = product_review;
         this.product_numbersell = product_numbersell;
         this.product_selled = product_selled;
+        this.status=status;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public int getId() {

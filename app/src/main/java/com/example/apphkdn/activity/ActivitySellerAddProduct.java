@@ -5,12 +5,12 @@ import static com.example.apphkdn.ultil.Server.linkCategory;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -42,7 +42,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ActivitySellerAddProduct extends AppCompatActivity {
@@ -93,10 +92,9 @@ public class ActivitySellerAddProduct extends AppCompatActivity {
     }
 
     public ArrayList<Category> getListCategory() {
-        ArrayList<Category> mList = new ArrayList<>();
+        ArrayList<Category> mList = new ArrayList<Category>();
         requestDB.GetCategorySpinner(ActivitySellerAddProduct.this, mList, linkCategory);
         mList = DataLocalManager.getListCategorySpinner();
-        //Toast.makeText(RegistorSellerActivity.this, mList.toString(), Toast.LENGTH_SHORT).show();
         return mList;
     }
 
@@ -126,11 +124,12 @@ public class ActivitySellerAddProduct extends AppCompatActivity {
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
+                                    Log.d("ADd product",response);
                                     if (response.equals("success")){
                                         String remess= "Đã thêm sản phẩm thành công!";
-                                        RequestDB.showInvalidOtpDialog(ActivitySellerAddProduct.this,remess);
+                                        RequestDB.showInvalidOtpDialogAddProduct(ActivitySellerAddProduct.this,remess);
                                     }else if (response.equals("failed")){
-                                        String remess= "Thêm sản phẩm thành công thất bại!";
+                                        String remess= "Thêm sản phẩm thất bại!";
                                         RequestDB.showInvalidOtpDialogERROR(ActivitySellerAddProduct.this,remess);
                                     }
                                 }
@@ -168,24 +167,27 @@ public class ActivitySellerAddProduct extends AppCompatActivity {
                 registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode()== Activity.RESULT_OK){
-                            Intent data= result.getData();
-                            Uri uri= data.getData();
-                            try {
-                                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                                _AddImageProduct.setImageBitmap(bitmap);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
+                        Log.d("YourTag", "onActivityResult: ResultCode - " + result.getResultCode());
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            if (data != null) {
+                                Uri uri = data.getData();
+                                Log.d("YourTag", "onActivityResult: Image URI - " + uri);
+                                try {
+                                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                                    _AddImageProduct.setImageBitmap(bitmap);
+                                } catch (IOException e) {
+                                    Log.e("YourTag", "onActivityResult: Error loading image", e);
+                                }
                             }
-
                         }
                     }
                 });
         _AddImageProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
                 activityResultLauncher.launch(intent);
             }
         });

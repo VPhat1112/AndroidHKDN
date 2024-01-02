@@ -1,18 +1,13 @@
 package com.example.apphkdn.RequestDB;
 
 import static android.content.Context.MODE_PRIVATE;
-
-import static com.example.apphkdn.ultil.Server.LinkGetIDCategoryByName;
 import static com.example.apphkdn.ultil.Server.serverAddress;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.Gravity;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,18 +20,15 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.activity.MainActivity;
-import com.example.apphkdn.activity.ShopSellerActivity;
+import com.example.apphkdn.activity.ShopSellerProductActivity;
 import com.example.apphkdn.adapter.CategoryAdapter;
 import com.example.apphkdn.adapter.ProductAdapter;
 import com.example.apphkdn.adapter.ProductShopAdapter;
 import com.example.apphkdn.model.Category;
 import com.example.apphkdn.model.Product;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,7 +36,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class RequestDB {
@@ -66,9 +57,9 @@ public class RequestDB {
                                 object.getInt("id_shop"),
                                 object.getInt("product_review"),
                                 object.getInt("product_numbersell"),
-                                object.getInt("product_selled")
+                                object.getInt("product_selled"),
+                                object.getInt("status")
                         ));
-                        Log.d("imageaaa", object.getString("product_image"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                         Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
@@ -103,7 +94,8 @@ public class RequestDB {
                                 object.getInt("id_shop"),
                                 object.getInt("product_review"),
                                 object.getInt("product_numbersell"),
-                                object.getInt("product_selled")
+                                object.getInt("product_selled"),
+                                object.getInt("status")
                         ));
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -149,7 +141,7 @@ public class RequestDB {
         });
         requestQueue.add(jsonArrayRequest);
     }
-    public void GetCategorySpinner(Context context, ArrayList<Category> mList, String url){
+    public static void GetCategorySpinner(Context context, ArrayList<Category> categoriesArrayList, String url){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -157,12 +149,12 @@ public class RequestDB {
                 for (int i = 0; i < response.length(); i++){
                     try {
                         JSONObject object = response.getJSONObject(i);
-                        mList.add(new Category(
+                        categoriesArrayList.add(new Category(
                                 object.getInt("id"),
                                 object.getString("category_name"),
                                 object.getString("category_image")
                         ));
-                        DataLocalManager.setListCategorySpinner(mList);
+                        DataLocalManager.setListCategorySpinner(categoriesArrayList);
                     } catch (JSONException e) {
                         e.printStackTrace();
                         Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
@@ -298,9 +290,43 @@ public class RequestDB {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Handle the "OK" button click if needed
-                Intent intent = new Intent(context, ShopSellerActivity.class);
+                Intent intent = new Intent(context, ShopSellerProductActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        // Must call show() prior to fetching text view
+        TextView messageView = (TextView)alertDialog.findViewById(android.R.id.message);
+        messageView.setGravity(Gravity.CENTER);
+
+        TextView titleView = (TextView)alertDialog.findViewById(context.getResources().getIdentifier("alertTitle", "id", "android"));
+        if (titleView != null) {
+            titleView.setGravity(Gravity.CENTER);
+        }
+    }
+    public static void showInvalidOtpDialogLockProduct(Context context, String mess) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//            TextView myMsg = new TextView(getApplicationContext());
+        builder.setTitle("Lock Product");
+        builder.setMessage(mess);
+
+        // Adding a positive button click listener
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Handle the "OK" button click if needed
+                Intent intent = new Intent(context, ShopSellerProductActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
+        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
             }
         });
 

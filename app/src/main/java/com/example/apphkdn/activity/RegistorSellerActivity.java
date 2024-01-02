@@ -1,22 +1,17 @@
 package com.example.apphkdn.activity;
 
-import static com.example.apphkdn.ultil.Server.LinkGetIDCategoryByName;
 import static com.example.apphkdn.ultil.Server.LinkRegistorSeller;
 import static com.example.apphkdn.ultil.Server.linkCategory;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -40,20 +35,13 @@ import com.android.volley.toolbox.Volley;
 import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
-import com.example.apphkdn.adapter.CategoryAdapter;
 import com.example.apphkdn.adapter.CategoryAdapterSpiner;
 import com.example.apphkdn.model.Category;
-import com.example.apphkdn.ultil.Server;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class RegistorSellerActivity extends AppCompatActivity {
@@ -100,12 +88,10 @@ public class RegistorSellerActivity extends AppCompatActivity {
             }
         });
     }
-
     public ArrayList<Category> getListCategory() {
-        ArrayList<Category> mList = new ArrayList<>();
+        ArrayList<Category> mList = new ArrayList<Category>();
         requestDB.GetCategorySpinner(RegistorSellerActivity.this, mList, linkCategory);
         mList = DataLocalManager.getListCategorySpinner();
-        //Toast.makeText(RegistorSellerActivity.this, mList.toString(), Toast.LENGTH_SHORT).show();
         return mList;
     }
 

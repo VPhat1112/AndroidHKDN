@@ -1,9 +1,6 @@
 package com.example.apphkdn.DataLocalManager;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.example.apphkdn.MySharedPreferences.MySharedPreferences;
 import com.example.apphkdn.model.Category;
@@ -15,7 +12,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DataLocalManager {
 
@@ -29,6 +25,7 @@ public class DataLocalManager {
     private static final String PREF_INFOPAY_USER_LOGIN = "PREF_INFOPAY_USER_LOGIN";
     private static final String PREF_IMAGE_USER_LOGIN = "PREF_IMAGE_USER_LOGIN";
     private static final String PREF_IDSHOP_USER_LOGIN = "PREF_IDSHOP_USER_LOGIN";
+    private static final String PREF_IDCATEGORY_USER_UPDATE = "PREF_IDCATEGORY_USER_UPDATE";
     private static DataLocalManager instance;
     private MySharedPreferences mySharedPreferences;
 
@@ -115,6 +112,13 @@ public class DataLocalManager {
     public static int getIdShopUser(){
         return DataLocalManager.getInstance().mySharedPreferences.getIntValue(PREF_IDSHOP_USER_LOGIN);
     }
+    public static void setIdCategoryUser(int value){
+        DataLocalManager.getInstance().mySharedPreferences.putIntValue(PREF_IDCATEGORY_USER_UPDATE,value);
+    }
+
+    public static int getIdCategoryUser(){
+        return DataLocalManager.getInstance().mySharedPreferences.getIntValue(PREF_IDCATEGORY_USER_UPDATE);
+    }
 
     public static void setListCategorySpinner(ArrayList<Category> list){
         Gson gson = new Gson();
@@ -125,7 +129,6 @@ public class DataLocalManager {
 
     public static ArrayList<Category> getListCategorySpinner(){
         String strJsonArray = DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_LIST_CATEGORY_SPINNER);
-        Log.d("strJsonArray",strJsonArray);
         ArrayList<Category> list = new ArrayList<>();
         try {
             JSONArray jsonArray = new JSONArray(strJsonArray);
