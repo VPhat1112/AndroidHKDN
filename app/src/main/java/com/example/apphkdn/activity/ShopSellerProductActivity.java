@@ -4,11 +4,11 @@ import static com.example.apphkdn.ultil.Server.GetProductByShop;
 import static com.example.apphkdn.ultil.Server.LinkGetShopByIdUser;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +36,7 @@ import java.util.ArrayList;
 public class ShopSellerProductActivity extends AppCompatActivity{
     TextView Btn_Back_Product,Addproduct;
     RecyclerView product_shop_rcv;
+    ImageButton Btn_Home_seller;
     RequestDB requestDB = new RequestDB();
 
     ArrayList<Product> productArrayListSeller;
@@ -62,6 +63,12 @@ public class ShopSellerProductActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ShopSellerProductActivity.this, ActivitySellerAddProduct.class));
+            }
+        });
+        Btn_Home_seller.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ShopSellerProductActivity.this,MainActivity.class));
             }
         });
     }
@@ -139,7 +146,7 @@ public class ShopSellerProductActivity extends AppCompatActivity{
         Btn_Back_Product=findViewById(R.id.Btn_Back_Product);
         Addproduct=findViewById(R.id.Addproduct);
         product_shop_rcv=findViewById(R.id.product_shop_rcv);
-
+        Btn_Home_seller=findViewById(R.id.Btn_Home_seller);
     }
 
 

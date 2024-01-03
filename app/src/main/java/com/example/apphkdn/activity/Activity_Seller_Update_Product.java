@@ -77,15 +77,15 @@ public class Activity_Seller_Update_Product extends AppCompatActivity {
         Btn_Update=findViewById(R.id.Btn_Update);
         Btn_Back_Update=findViewById(R.id.Btn_Back_Update);
     }
-    public ArrayList<Category> getListCategory() {
-        ArrayList<Category> mList = new ArrayList<Category>();
-        mList = DataLocalManager.getListCategorySpinner();
-        return mList;
+    public ArrayList<Category> getListCategoryUpdate() {
+        ArrayList<Category> ProductCategory = new ArrayList<Category>();
+        ProductCategory = DataLocalManager.getListCategorySpinner();
+        return ProductCategory;
     }
     private void settingSpinner(){
-        categoryAdapterSpiner = new CategoryAdapterSpiner(Activity_Seller_Update_Product.this, R.layout.item_selected_spinner_category, getListCategory());
+        categoryAdapterSpiner = new CategoryAdapterSpiner(Activity_Seller_Update_Product.this, R.layout.item_selected_spinner_category, getListCategoryUpdate());
         updateCategory.setAdapter(categoryAdapterSpiner);
-        updateCategory.setSelection(id_category);
+        updateCategory.setSelection(index(getListCategoryUpdate(),id_category));
         updateCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -100,6 +100,15 @@ public class Activity_Seller_Update_Product extends AppCompatActivity {
 
             }
         });
+
+    }
+    private int index(ArrayList<Category> inArray,int categorychoose){
+        for (int i=0;i<=inArray.size();i++){
+            if (inArray.get(i).getId()==categorychoose){
+                return i;
+            }
+        }
+        return 0;
     }
     private void EventAction(){
         settingSpinner();

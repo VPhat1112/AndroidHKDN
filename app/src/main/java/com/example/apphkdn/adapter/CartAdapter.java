@@ -82,6 +82,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 CartActivity.dachon.setText("Đã chọn: "+totalSP);
             }
         });
+        holder.btn_remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
     @Override
     public int getItemCount() {

@@ -69,6 +69,10 @@ public class CartActivity extends AppCompatActivity {
                 cartAdapter.updateCart(cartLists);
             }
         });
+
+    }
+    private void CheckkOut(){
+
     }
     public void back(){
         btn_back.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +96,7 @@ public class CartActivity extends AppCompatActivity {
             cartLists= new ArrayList<>();
         }
     }
+
     private void CheckData(){
         if (cartLists.size()<=0){
             cartAdapter.notifyDataSetChanged();
