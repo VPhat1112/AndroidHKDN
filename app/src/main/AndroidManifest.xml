@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -21,6 +20,9 @@
         android:theme="@style/Theme.AppHKDN"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".activity.CheckOutActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.Activity_Seller_Update_Product"
             android:exported="false" />
