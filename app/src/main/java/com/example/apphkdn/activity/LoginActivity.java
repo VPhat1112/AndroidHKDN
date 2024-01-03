@@ -1,9 +1,6 @@
 package com.example.apphkdn.activity;
 
-import static com.example.apphkdn.ultil.Server.linkLog;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -68,9 +65,6 @@ public class LoginActivity extends AppCompatActivity {
         emailEdt=findViewById(R.id.EmailEdtLog);
         PassEdt=findViewById(R.id.passwordLoginET);
         _BtnLogOTP=findViewById(R.id.LoginWithOTP);
-    }
-    private void login(String email, String pass){
-        requestDB.Login(LoginActivity.this,linkLog,email,pass);
     }
 
     private class LoginTask extends AsyncTask<String, Void, String> {

@@ -1,20 +1,16 @@
 package com.example.apphkdn.RequestDB;
 
-import static android.content.Context.MODE_PRIVATE;
 import static com.example.apphkdn.ultil.Server.serverAddress;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.view.Gravity;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -35,8 +31,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class RequestDB {
     public void GetProduct(Context context, ArrayList<Product> productArrayList, ProductAdapter productAdapter, String url){
@@ -124,8 +118,9 @@ public class RequestDB {
                         categoriesArrayList.add(new Category(
                                 object.getInt("id"),
                                 object.getString("category_name"),
-                                object.getString("category_image")
+                                serverAddress + object.getString("category_image")
                         ));
+                        DataLocalManager.setListCategorySpinner(categoriesArrayList);
                     } catch (JSONException e) {
                         e.printStackTrace();
                         Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
@@ -139,90 +134,6 @@ public class RequestDB {
                 Toast.makeText(context,"Error!", Toast.LENGTH_SHORT).show();
             }
         });
-        requestQueue.add(jsonArrayRequest);
-    }
-    public static void GetCategorySpinner(Context context, ArrayList<Category> categoriesArrayList, String url){
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                for (int i = 0; i < response.length(); i++){
-                    try {
-                        JSONObject object = response.getJSONObject(i);
-                        categoriesArrayList.add(new Category(
-                                object.getInt("id"),
-                                object.getString("category_name"),
-                                object.getString("category_image")
-                        ));
-                        DataLocalManager.setListCategorySpinner(categoriesArrayList);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context,"Error!", Toast.LENGTH_SHORT).show();
-            }
-        });
-        requestQueue.add(jsonArrayRequest);
-    }
-    public void Login(Context context, String url, String email, String pass){
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                //boolean success = jsonObject.getBoolean("success");
-                if (response != null){
-                    for (int i = 0; i < response.length(); i++){
-                        try {
-                            JSONObject object = response.getJSONObject(i);
-                            if (object.getInt("is_verified") == 0){
-                                showInvalidOtpDialog(context);
-                            } else{
-                                Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show();
-                                SharedPreferences preferences = context.getSharedPreferences("MyProfile", MODE_PRIVATE);
-                                SharedPreferences.Editor editor = preferences.edit();
-                                editor.putInt("id", object.getInt("id"));
-                                editor.putString("email", object.getString("email"));
-                                editor.putString("Name", object.getString("Name"));
-                                editor.putString("Address", object.getString("Address"));
-                                editor.putInt("role", object.getInt("role"));
-                                editor.putString("phone", object.getString("Phone"));
-                                editor.putString("Info_pay", object.getString("Info_Pay"));
-                                editor.putString("imgUS", object.getString("imgUS"));
-                                editor.apply();
-                                Intent intent = new Intent(context, MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                context.startActivity(intent);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(context, "chua xac thuc", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                } else{
-                    // Login failed
-                    Toast.makeText(context, "Login failed", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
-            }
-        }){
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("email", email);
-                params.put("Passwords", pass);
-                return params;
-            }
-        };
         requestQueue.add(jsonArrayRequest);
     }
     public void showInvalidOtpDialog(Context context) {

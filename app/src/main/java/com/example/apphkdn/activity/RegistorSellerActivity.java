@@ -1,7 +1,6 @@
 package com.example.apphkdn.activity;
 
 import static com.example.apphkdn.ultil.Server.LinkRegistorSeller;
-import static com.example.apphkdn.ultil.Server.linkCategory;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -55,6 +54,7 @@ public class RegistorSellerActivity extends AppCompatActivity {
     RequestDB requestDB = new RequestDB();
     CategoryAdapterSpiner categoryAdapterSpiner;
 
+
     Integer idCategory;
 
     @Override
@@ -89,12 +89,10 @@ public class RegistorSellerActivity extends AppCompatActivity {
         });
     }
     public ArrayList<Category> getListCategory() {
-        ArrayList<Category> mList = new ArrayList<Category>();
-        requestDB.GetCategorySpinner(RegistorSellerActivity.this, mList, linkCategory);
+        ArrayList<Category> mList = new ArrayList<>();
         mList = DataLocalManager.getListCategorySpinner();
         return mList;
     }
-
     private void Register(){
         uploadImg();
         btnSignUp.setOnClickListener(new View.OnClickListener() {

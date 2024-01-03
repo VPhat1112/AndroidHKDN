@@ -5,6 +5,8 @@ public class Server {
 
     public static String linkCategory = serverAddress+"getLsanpham.php";
 
+    public static String linkCategorySpinner=serverAddress+"GetCategory.php";
+
     public static String linkNewProduct = serverAddress+"getNewProduct.php";
 
     public static String linkReg = serverAddress+"signup.php";

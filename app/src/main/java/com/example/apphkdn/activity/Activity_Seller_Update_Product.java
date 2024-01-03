@@ -1,7 +1,5 @@
 package com.example.apphkdn.activity;
 
-import static com.example.apphkdn.ultil.Server.linkCategory;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -81,7 +79,6 @@ public class Activity_Seller_Update_Product extends AppCompatActivity {
     }
     public ArrayList<Category> getListCategory() {
         ArrayList<Category> mList = new ArrayList<Category>();
-        requestDB.GetCategorySpinner(Activity_Seller_Update_Product.this, mList, linkCategory);
         mList = DataLocalManager.getListCategorySpinner();
         return mList;
     }

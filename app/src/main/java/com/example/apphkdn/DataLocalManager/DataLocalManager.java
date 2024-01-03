@@ -18,6 +18,7 @@ public class DataLocalManager {
     private static final String PREF_ID_USER_LOGIN = "PREF_ID_USER_LOGIN";
     private static final String PREF_EMAIL_USER_LOGIN = "PREF_EMAIL_USER_LOGIN";
     private static final String PREF_LIST_CATEGORY_SPINNER = "PREF_LIST_CATEGORY_SPINNER";
+    private static final String PREF_LIST_CATEGORY_SPINNER_ADD = "PREF_LIST_CATEGORY_SPINNER_ADD";
     private static final String PREF_NAME_USER_LOGIN = "PREF_NAME_USER_LOGIN";
     private static final String PREF_ADDRESS_USER_LOGIN = "PREF_ADDRESS_USER_LOGIN";
     private static final String PREF_ROLE_USER_LOGIN = "PREF_ROLE_USER_LOGIN";
@@ -146,7 +147,6 @@ public class DataLocalManager {
 
         return list;
     }
-
     public static void ClearMySharedPreferences(){
         DataLocalManager.getInstance().mySharedPreferences.ClearMySharedPreferences();
     }
