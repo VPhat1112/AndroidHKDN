@@ -72,7 +72,12 @@ public class CartActivity extends AppCompatActivity {
 
     }
     private void CheckkOut(){
+        btn_DatHang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
     }
     public void back(){
         btn_back.setOnClickListener(new View.OnClickListener() {

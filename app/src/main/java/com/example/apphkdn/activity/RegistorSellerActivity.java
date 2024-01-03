@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -94,7 +95,7 @@ public class RegistorSellerActivity extends AppCompatActivity {
         return mList;
     }
     private void Register(){
-        uploadImg();
+        ChooseImage();
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,6 +104,7 @@ public class RegistorSellerActivity extends AppCompatActivity {
                 Integer kind = idCategory;
                 String Reason= edtReason.getText().toString().toString().trim();
                 String id_user = String.valueOf(DataLocalManager.getIdUser());
+                String email=DataLocalManager.getEmailUser();
                 String base64Image;
 
                 ByteArrayOutputStream byteArrayOutputStream;
@@ -118,6 +120,7 @@ public class RegistorSellerActivity extends AppCompatActivity {
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
+                                    Log.d("resonpeseda",response);
                                     if (response.equals("success")){
                                         String remess= "Đăng ký thành công! Xin đợi phản hồi từ admin";
                                         RequestDB.showInvalidOtpDialog(RegistorSellerActivity.this,remess);
@@ -149,6 +152,7 @@ public class RegistorSellerActivity extends AppCompatActivity {
                             params.put("shop_kind",kind.toString());
                             params.put("idUser",id_user);
                             params.put("reason",Reason);
+                            params.put("email",email);
                             return params;
                         }
                     };
@@ -162,29 +166,32 @@ public class RegistorSellerActivity extends AppCompatActivity {
         });
     }
 
-    private void uploadImg(){
+    private void ChooseImage() {
         ActivityResultLauncher<Intent> activityResultLauncher =
                 registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode()== Activity.RESULT_OK){
-                            Intent data= result.getData();
-                            Uri uri= data.getData();
-                            try {
-                                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                                ImgvShopImg.setImageBitmap(bitmap);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
+                        Log.d("YourTag", "onActivityResult: ResultCode - " + result.getResultCode());
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            if (data != null) {
+                                Uri uri = data.getData();
+                                Log.d("YourTag", "onActivityResult: Image URI - " + uri);
+                                try {
+                                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                                    ImgvShopImg.setImageBitmap(bitmap);
+                                } catch (IOException e) {
+                                    Log.e("YourTag", "onActivityResult: Error loading image", e);
+                                }
                             }
-
                         }
                     }
                 });
         ImgvShopImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
                 activityResultLauncher.launch(intent);
             }
         });
