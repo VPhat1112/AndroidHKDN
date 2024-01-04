@@ -1,6 +1,8 @@
 package com.example.apphkdn.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.apphkdn.R;
 import com.example.apphkdn.activity.CartActivity;
 import com.example.apphkdn.model.Cart;
-import com.squareup.picasso.Picasso;
+import com.example.apphkdn.ultil.DownloadImageTask;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -24,6 +26,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     List<Cart> cartLists;
     CartAdapter cartAdapter;
     public static TextView dachon,totalMoney;
+
     Context context;
     DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
     public CartAdapter(List<Cart> cartLists, Context context) {
@@ -41,7 +44,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull CartAdapter.ViewHolder holder, int position) {
         Cart cartList = cartLists.get(position);
         int i=position;
-        Picasso.get().load(cartList.getProduct_image()).into(holder.imgCart);
+        new DownloadImageTask(holder.imgCart).execute(cartList.getProduct_image());
+//        Picasso.get().load(cartList.getProduct_image()).into(holder.imgCart);
         holder.tvGia.setText(String.valueOf(decimalFormat.format(cartList.getProduct_price()))+"đ");
         holder.tvName.setText(cartList.getProduct_name());
         holder.solg.setText(String.valueOf(cartList.getProduct_pay()));
@@ -82,10 +86,60 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 CartActivity.dachon.setText("Đã chọn: "+totalSP);
             }
         });
-        holder.btn_remove.setOnClickListener(new View.OnClickListener() {
+        holder.btnDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Bạn có muốn xóa sản phẩm này khỏi giỏ hàng ?")
+                        .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                cartLists.remove(i);
+                                updateCart(cartLists);
+                            }
+                        })
+                        .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                            }
+                        });
+                builder.show();
+            }
+        });
+        holder.btn_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cartLists.get(i).setProduct_pay(cartLists.get(i).getProduct_pay()+1);
+                holder.solg.setText(String.valueOf(cartList.getProduct_pay()));
+                long totalBill = 0,totalSP=0;
+                for (int j=0;j<cartLists.size();j++){
+                    if (cartLists.get(j).getCheck().equals("1")){
+                        totalBill= totalBill+cartLists.get(j).getProduct_price()*cartLists.get(j).getProduct_pay();
+                        totalSP++;
+                    }
+                }
+                CartActivity.totalMoney.setText("Tổng tiền: "+decimalFormat.format(totalBill)+"đ");
+                CartActivity.dachon.setText("Đã chọn: "+totalSP);
+            }
+        });
+        holder.btn_remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (cartLists.get(i).getProduct_pay()>0){
+                    cartLists.get(i).setProduct_pay(cartLists.get(i).getProduct_pay()-1);
+                    holder.solg.setText(String.valueOf(cartList.getProduct_pay()));
+                    int totalBill = 0,totalSP=0;
+                    for (int j=0;j<cartLists.size();j++){
+                        if (cartLists.get(j).getCheck().equals("1")){
+                            totalBill= totalBill+cartLists.get(j).getProduct_price()*cartLists.get(j).getProduct_pay();
+                            totalSP++;
+                        }
+                    }
+                    if (cartLists.get(i).getProduct_pay()==0){
+                        cartLists.remove(i);
+                    }
+                    CartActivity.totalMoney.setText("Tổng tiền: "+decimalFormat.format(totalBill)+"đ");
+                    CartActivity.dachon.setText("Đã chọn: "+totalSP);
+                }
             }
         });
     }

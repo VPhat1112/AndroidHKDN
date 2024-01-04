@@ -107,6 +107,43 @@ public class RequestDB {
                 });
         requestQueue.add(jsonArrayRequest);
     }
+    public void GetProductShopDetail(Context context, ArrayList<Product> productArrayListSeller, ProductAdapter productAdapter, String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for (int i = 0; i < response.length(); i++){
+                    try {
+                        JSONObject object = response.getJSONObject(i);
+                        productArrayListSeller.add(new Product(
+                                object.getInt("id"),
+                                object.getString("product_name"),
+                                serverAddress + object.getString("product_image"),
+                                object.getString("product_decs"),
+                                object.getInt("product_price"),
+                                object.getInt("IDcategory"),
+                                object.getInt("id_shop"),
+                                object.getInt("product_review"),
+                                object.getInt("product_numbersell"),
+                                object.getInt("product_selled"),
+                                object.getInt("status")
+                        ));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                productAdapter.notifyDataSetChanged();
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context,"Error!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        requestQueue.add(jsonArrayRequest);
+    }
     public void GetCategory(Context context, ArrayList<Category> categoriesArrayList, CategoryAdapter categoryAdapter, String url){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -194,6 +231,34 @@ public class RequestDB {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 //            TextView myMsg = new TextView(getApplicationContext());
         builder.setTitle("Add Product");
+        builder.setMessage(mess);
+
+        // Adding a positive button click listener
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Handle the "OK" button click if needed
+                Intent intent = new Intent(context, ShopSellerProductActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        // Must call show() prior to fetching text view
+        TextView messageView = (TextView)alertDialog.findViewById(android.R.id.message);
+        messageView.setGravity(Gravity.CENTER);
+
+        TextView titleView = (TextView)alertDialog.findViewById(context.getResources().getIdentifier("alertTitle", "id", "android"));
+        if (titleView != null) {
+            titleView.setGravity(Gravity.CENTER);
+        }
+    }
+    public static void showInvalidOtpDialogUpdateProduct(Context context, String mess) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//            TextView myMsg = new TextView(getApplicationContext());
+        builder.setTitle("Update Product");
         builder.setMessage(mess);
 
         // Adding a positive button click listener

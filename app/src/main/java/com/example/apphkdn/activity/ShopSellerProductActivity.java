@@ -36,7 +36,7 @@ import java.util.ArrayList;
 public class ShopSellerProductActivity extends AppCompatActivity{
     TextView Btn_Back_Product,Addproduct;
     RecyclerView product_shop_rcv;
-    ImageButton Btn_Home_seller;
+    ImageButton Btn_Home_seller,Btn_refresh_seller;
     RequestDB requestDB = new RequestDB();
 
     ArrayList<Product> productArrayListSeller;
@@ -69,6 +69,12 @@ public class ShopSellerProductActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ShopSellerProductActivity.this,MainActivity.class));
+            }
+        });
+        Btn_refresh_seller.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ShopSellerProductActivity.this,ShopSellerProductActivity.class));
             }
         });
     }
@@ -147,6 +153,7 @@ public class ShopSellerProductActivity extends AppCompatActivity{
         Addproduct=findViewById(R.id.Addproduct);
         product_shop_rcv=findViewById(R.id.product_shop_rcv);
         Btn_Home_seller=findViewById(R.id.Btn_Home_seller);
+        Btn_refresh_seller=findViewById(R.id.Btn_refresh_seller);
     }
 
 

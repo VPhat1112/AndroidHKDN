@@ -122,7 +122,6 @@ public class ActivitySellerAddProduct extends AppCompatActivity {
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
-                                    Log.d("ADd product",response);
                                     if (response.equals("success")){
                                         String remess= "Đã thêm sản phẩm thành công!";
                                         RequestDB.showInvalidOtpDialogAddProduct(ActivitySellerAddProduct.this,remess);

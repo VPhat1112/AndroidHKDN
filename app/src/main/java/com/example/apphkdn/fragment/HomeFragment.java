@@ -14,6 +14,7 @@ import android.widget.ViewFlipper;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apphkdn.R;
@@ -108,6 +109,7 @@ public class HomeFragment extends Fragment {
     private void RecyleviewSetting(){
         productArrayList = new ArrayList<>();
         productAdapter = new ProductAdapter(getContext(),productArrayList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
         recyclerView.setAdapter(productAdapter);
