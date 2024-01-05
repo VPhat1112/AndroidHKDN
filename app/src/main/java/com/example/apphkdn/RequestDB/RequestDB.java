@@ -16,8 +16,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.apphkdn.DataLocalManager.DataLocalManager;
+import com.example.apphkdn.activity.MyOrderActivity;
 import com.example.apphkdn.activity.MainActivity;
 import com.example.apphkdn.activity.ShopSellerProductActivity;
 import com.example.apphkdn.adapter.CategoryAdapter;
@@ -31,6 +33,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RequestDB {
     public void GetProduct(Context context, ArrayList<Product> productArrayList, ProductAdapter productAdapter, String url){
@@ -173,6 +177,57 @@ public class RequestDB {
         });
         requestQueue.add(jsonArrayRequest);
     }
+
+    public void InsertOrder(Context context,Integer BillTotal, Integer shopId, Integer buyerId, Integer productId, Integer numberOfProduct, Integer productPrice, Integer totalsOfOneProduct, String url){
+        RequestQueue queue =Volley.newRequestQueue(context);
+
+        StringRequest stringRequest= new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (!jsonObject.getBoolean("successOrder")){
+                        String remess= "Error insert order!";
+                        RequestDB.showInvalidOtpDialogERRORSaveOrder(context,remess);
+                    } else if (!jsonObject.getBoolean("successContact")){
+                        String remess= "Error insert order_contact!";
+                        RequestDB.showInvalidOtpDialogERRORSaveOrder(context,remess);
+                    } else if (!jsonObject.getBoolean("successOrderDetail")){
+                        String remess= "Error insert order_detail!";
+                        RequestDB.showInvalidOtpDialogERRORSaveOrder(context,remess);
+                    } else {
+                        String remess= "Bạn đã đặt hàng thành công \n Xin Chân thành cảm ơn!";
+                        RequestDB.showInvalidOtpDialogSaveOrder(context,remess);
+                    }
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("BillTotal", String.valueOf(BillTotal));
+                params.put("Shop_id", String.valueOf(shopId));
+                params.put("buyer_id", String.valueOf(buyerId));
+                params.put("Product_id", String.valueOf(productId));
+                params.put("Number_pay", String.valueOf(numberOfProduct));
+                params.put("product_price", String.valueOf(productPrice));
+                params.put("Product_TotalPay", String.valueOf(totalsOfOneProduct));
+                return params;
+            }
+        };
+        queue.add(stringRequest);
+    }
+
+
+
+
+    //DiaLog success and failed
     public void showInvalidOtpDialog(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         TextView myMsg = new TextView(context);
@@ -321,6 +376,60 @@ public class RequestDB {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 //            TextView myMsg = new TextView(getApplicationContext());
         builder.setTitle("Register Seller");
+        builder.setMessage(mess);
+
+        // Adding a positive button click listener
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Handle the "OK" button click if needed
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        // Must call show() prior to fetching text view
+        TextView messageView = (TextView)alertDialog.findViewById(android.R.id.message);
+        messageView.setGravity(Gravity.CENTER);
+
+        TextView titleView = (TextView)alertDialog.findViewById(context.getResources().getIdentifier("alertTitle", "id", "android"));
+        if (titleView != null) {
+            titleView.setGravity(Gravity.CENTER);
+        }
+    }
+
+    public static void showInvalidOtpDialogSaveOrder(Context context, String mess) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//            TextView myMsg = new TextView(getApplicationContext());
+        builder.setTitle("Đặt hàng");
+        builder.setMessage(mess);
+
+        // Adding a positive button click listener
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Handle the "OK" button click if needed
+                Intent intent = new Intent(context, MyOrderActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        // Must call show() prior to fetching text view
+        TextView messageView = (TextView)alertDialog.findViewById(android.R.id.message);
+        messageView.setGravity(Gravity.CENTER);
+
+        TextView titleView = (TextView)alertDialog.findViewById(context.getResources().getIdentifier("alertTitle", "id", "android"));
+        if (titleView != null) {
+            titleView.setGravity(Gravity.CENTER);
+        }
+    }
+    public static void showInvalidOtpDialogERRORSaveOrder(Context context, String mess) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//            TextView myMsg = new TextView(getApplicationContext());
+        builder.setTitle("Đặt hàng");
         builder.setMessage(mess);
 
         // Adding a positive button click listener

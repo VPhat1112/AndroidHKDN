@@ -128,13 +128,13 @@ public class Detail_product extends AppCompatActivity {
                     if (count==0){
                         int slg = Integer.parseInt(editText.getText().toString().split("/")[0]);
                         int new_price=slg*Product_price;
-                        CartActivity.cartLists.add(new Cart(id,product_name,new_price,Product_image,"0",slg,product_numbersell));
+                        CartActivity.cartLists.add(new Cart(id,product_name,new_price,Product_image,"0",slg,product_numbersell,id_shop));
                         Toast.makeText(Detail_product.this, "Đã thêm", Toast.LENGTH_SHORT).show();
                     }
                 }else {
                     int slg = Integer.parseInt(editText.getText().toString().split("/")[0]);
                     int new_price=slg*Product_price;
-                    CartActivity.cartLists.add(new Cart(id,product_name,new_price,Product_image,"0",slg,product_numbersell));
+                    CartActivity.cartLists.add(new Cart(id,product_name,new_price,Product_image,"0",slg,product_numbersell,id_shop));
                     Toast.makeText(Detail_product.this, "Đã thêm", Toast.LENGTH_SHORT).show();
                 }
                 Intent intent = new Intent(getApplicationContext(),CartActivity.class);

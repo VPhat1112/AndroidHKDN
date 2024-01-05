@@ -68,11 +68,11 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:id="@+id/frpr_analytics"
-                        android:drawableStart="@drawable/icon_phone"
+                        android:id="@+id/frpr_myOrder"
+                        android:drawableStart="@drawable/cart"
                         android:drawableEnd="@drawable/icon_next"
                         android:gravity="center_vertical"
-                        android:text="    Analytics"
+                        android:text="    My Order"
                         android:textSize="15dp"
                         android:textStyle="bold"/>
 

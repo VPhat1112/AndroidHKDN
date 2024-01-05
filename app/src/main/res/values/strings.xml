@@ -11,4 +11,17 @@
         <item>Trả tiền khi nhận được hàng</item>
         <item>Trả thông qua ví điện tử</item>
     </string-array>
+    <string-array name="ChooseSeller">
+        <item>Tắt cả đơn</item>
+        <item>Chờ xử lý</item>
+        <item>Đã giao</item>
+        <item>Đã Hủy</item>
+    </string-array>
+    <string-array name="ChooseBuyer">
+        <item>Đơn hàng tới</item>
+        <item>Đã duyệt</item>
+        <item>Đã Hủy</item>
+        <item>Đã Hoàn thành</item>
+    </string-array>
+
 </resources>

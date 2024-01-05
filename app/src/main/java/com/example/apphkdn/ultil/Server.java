@@ -38,4 +38,7 @@ public class Server {
     public static String UpdateProduct=serverAddress+"UpdateProduct.php";
 
     public static String LockProduct=serverAddress+"LockProduct.php";
+
+    public static String SaveOrder=serverAddress+"InserOrder.php";
+    public static String LinkWaitOrder=serverAddress+"GetOrderWait.php";
 }

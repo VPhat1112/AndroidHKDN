@@ -1,8 +1,10 @@
 package com.example.apphkdn.activity;
 
 import static com.example.apphkdn.activity.CartActivity.cartLists;
+import static com.example.apphkdn.ultil.Server.SaveOrder;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
+import com.example.apphkdn.RequestDB.RequestDB;
 import com.example.apphkdn.adapter.ProductOrderAdapter;
 import com.example.apphkdn.model.Cart;
 import com.example.apphkdn.ultil.ChoiceWayPayDialog;
@@ -27,10 +30,9 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
     TextView txtTenandSDT,txtMoneyFast,txtMoneyShip,txtMoneyTotal,CheckMoneyTotal,Update_Address_order,Comfirm_order,txtSeall,txtWayPay;
     Button btn_Order_complete;
     ProductOrderAdapter productOrderAdapter;
-    String[] listItems;
-
-    ArrayList<Integer> WayPayItems=new ArrayList<>();
+    List<Cart> filteredCartList = new ArrayList<>();
     int totalBill = 0,totalSP=0;
+    RequestDB requestDB= new RequestDB();
     DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,19 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
         btn_Order_complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                Integer id_shop=0,id_User=0,product_id=0,numberProduct=0,prot_price=0,totalofPrice=0;
+                for (int i=0;i<filteredCartList.size();i++){
+                     id_shop=filteredCartList.get(i).getShop_id();
+                     id_User=DataLocalManager.getIdUser();
+                     product_id=filteredCartList.get(i).getProduct_id();
+                     numberProduct=filteredCartList.get(i).getProduct_pay();
+                     prot_price=filteredCartList.get(i).getProduct_price();
+                     totalofPrice=prot_price*numberProduct;
+
+                    Log.d("Result aaa", id_shop + " " + id_User + " " + product_id + " " + numberProduct + " " + prot_price + " " + totalofPrice);
+                    requestDB.InsertOrder(CheckOutActivity.this,totalofPrice,id_shop,id_User,product_id,numberProduct,prot_price,totalofPrice,SaveOrder);
+                }
+
             }
         });
         setData();
@@ -66,7 +80,6 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
         });
     }
     private void setData(){
-        List<Cart> filteredCartList = new ArrayList<>();
         for (int j=0;j<cartLists.size();j++){
             if (cartLists.get(j).getCheck().equals("1")){
                 filteredCartList.add(cartLists.get(j));

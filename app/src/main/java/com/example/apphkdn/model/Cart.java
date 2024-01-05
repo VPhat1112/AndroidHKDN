@@ -8,16 +8,25 @@ public class Cart {
     String check;
     int product_pay;
     int product_numbersell;
+    int shop_id;
 
-    public Cart(int product_id, String product_name, int product_price, String product_image,String check, int product_pay, int product_numbersell) {
+    public Cart(int product_id, String product_name, int product_price, String product_image, String check, int product_pay, int product_numbersell, int shop_id) {
         this.product_id = product_id;
         this.product_name = product_name;
         this.product_price = product_price;
         this.product_image = product_image;
-        this.check=check;
+        this.check = check;
         this.product_pay = product_pay;
         this.product_numbersell = product_numbersell;
+        this.shop_id = shop_id;
+    }
 
+    public int getShop_id() {
+        return shop_id;
+    }
+
+    public void setShop_id(int shop_id) {
+        this.shop_id = shop_id;
     }
 
     public String getCheck() {
