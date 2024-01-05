@@ -1,22 +1,17 @@
 package com.example.apphkdn.activity;
 
-import static com.example.apphkdn.ultil.Server.LinkGetIDCategoryByName;
 import static com.example.apphkdn.ultil.Server.LinkRegistorSeller;
-import static com.example.apphkdn.ultil.Server.linkCategory;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -40,20 +35,13 @@ import com.android.volley.toolbox.Volley;
 import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
-import com.example.apphkdn.adapter.CategoryAdapter;
 import com.example.apphkdn.adapter.CategoryAdapterSpiner;
 import com.example.apphkdn.model.Category;
-import com.example.apphkdn.ultil.Server;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class RegistorSellerActivity extends AppCompatActivity {
@@ -66,6 +54,7 @@ public class RegistorSellerActivity extends AppCompatActivity {
     Bitmap bitmap;
     RequestDB requestDB = new RequestDB();
     CategoryAdapterSpiner categoryAdapterSpiner;
+
 
     Integer idCategory;
 
@@ -100,18 +89,13 @@ public class RegistorSellerActivity extends AppCompatActivity {
             }
         });
     }
-
-
     public ArrayList<Category> getListCategory() {
         ArrayList<Category> mList = new ArrayList<>();
-        requestDB.GetCategorySpinner(RegistorSellerActivity.this, mList, linkCategory);
         mList = DataLocalManager.getListCategorySpinner();
-        //Toast.makeText(RegistorSellerActivity.this, mList.toString(), Toast.LENGTH_SHORT).show();
         return mList;
     }
-
     private void Register(){
-        uploadImg();
+        ChooseImage();
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,6 +104,7 @@ public class RegistorSellerActivity extends AppCompatActivity {
                 Integer kind = idCategory;
                 String Reason= edtReason.getText().toString().toString().trim();
                 String id_user = String.valueOf(DataLocalManager.getIdUser());
+                String email=DataLocalManager.getEmailUser();
                 String base64Image;
 
                 ByteArrayOutputStream byteArrayOutputStream;
@@ -135,6 +120,7 @@ public class RegistorSellerActivity extends AppCompatActivity {
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
+                                    Log.d("resonpeseda",response);
                                     if (response.equals("success")){
                                         String remess= "Đăng ký thành công! Xin đợi phản hồi từ admin";
                                         RequestDB.showInvalidOtpDialog(RegistorSellerActivity.this,remess);
@@ -166,6 +152,7 @@ public class RegistorSellerActivity extends AppCompatActivity {
                             params.put("shop_kind",kind.toString());
                             params.put("idUser",id_user);
                             params.put("reason",Reason);
+                            params.put("email",email);
                             return params;
                         }
                     };
@@ -179,29 +166,32 @@ public class RegistorSellerActivity extends AppCompatActivity {
         });
     }
 
-    private void uploadImg(){
+    private void ChooseImage() {
         ActivityResultLauncher<Intent> activityResultLauncher =
                 registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode()== Activity.RESULT_OK){
-                            Intent data= result.getData();
-                            Uri uri= data.getData();
-                            try {
-                                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                                ImgvShopImg.setImageBitmap(bitmap);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
+                        Log.d("YourTag", "onActivityResult: ResultCode - " + result.getResultCode());
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            if (data != null) {
+                                Uri uri = data.getData();
+                                Log.d("YourTag", "onActivityResult: Image URI - " + uri);
+                                try {
+                                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                                    ImgvShopImg.setImageBitmap(bitmap);
+                                } catch (IOException e) {
+                                    Log.e("YourTag", "onActivityResult: Error loading image", e);
+                                }
                             }
-
                         }
                     }
                 });
         ImgvShopImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
                 activityResultLauncher.launch(intent);
             }
         });

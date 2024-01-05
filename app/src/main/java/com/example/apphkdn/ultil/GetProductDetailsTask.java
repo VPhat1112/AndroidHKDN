@@ -75,8 +75,9 @@ public class GetProductDetailsTask extends AsyncTask<String, Void, Product> {
         Integer product_review=jsonObject.getInt("product_review");
         Integer product_numbersell=jsonObject.getInt("product_numbersell");
         Integer product_selled=jsonObject.getInt("product_selled");
+        Integer status=jsonObject.getInt("status");
 
-        return new Product(id, productName, productImage,productDesc, productPrice, categoryId, shopId,product_review,product_numbersell,product_selled);
+        return new Product(id, productName, productImage,productDesc, productPrice, categoryId, shopId,product_review,product_numbersell,product_selled,status);
     }
 
     public interface ProductDetailListener {

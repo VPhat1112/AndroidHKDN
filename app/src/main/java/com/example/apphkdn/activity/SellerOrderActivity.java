@@ -2,14 +2,12 @@ package com.example.apphkdn.activity;
 
 import static com.example.apphkdn.ultil.Server.GetProductByShop;
 import static com.example.apphkdn.ultil.Server.LinkGetShopByIdUser;
+import static com.example.apphkdn.ultil.Server.LinkWaitOrder;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
-import com.example.apphkdn.adapter.ProductShopAdapter;
-import com.example.apphkdn.model.Product;
+import com.example.apphkdn.adapter.OrderAdapter;
+import com.example.apphkdn.model.Order;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,64 +31,30 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class ShopSellerProductActivity extends AppCompatActivity{
-    TextView Btn_Back_Product,Addproduct;
-    RecyclerView product_shop_rcv;
-    ImageButton Btn_Home_seller,Btn_refresh_seller;
+public class SellerOrderActivity extends AppCompatActivity {
+    Button WaitOrder,ApproveOrder,CancelOrder,CompleteOrder;
+    RecyclerView rcv_ShopOrder;
+    ArrayList<Order> orderArrayList;
+    OrderAdapter orderAdapter;
+    int id_shop;
     RequestDB requestDB = new RequestDB();
-
-    ArrayList<Product> productArrayListSeller;
-    ProductShopAdapter productShopAdapter;
-    int id_shop,shop_rate,status;
-    int id_user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shop_seller_product);
+        setContentView(R.layout.activity_seller_order);
         UnitUI();
-        EventAction();
-        SetMyProduct();
-
+        setDataWaitOrder();
     }
     private void EventAction(){
-        Btn_Back_Product.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        Addproduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ShopSellerProductActivity.this, ActivitySellerAddProduct.class));
-            }
-        });
-        Btn_Home_seller.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ShopSellerProductActivity.this,MainActivity.class));
-            }
-        });
-        Btn_refresh_seller.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ShopSellerProductActivity.this,ShopSellerProductActivity.class));
-            }
-        });
-    }
-    private void SetMyProduct(){
-        productArrayListSeller = new ArrayList<>();
-        productShopAdapter = new ProductShopAdapter(ShopSellerProductActivity.this,productArrayListSeller);
-        product_shop_rcv.setHasFixedSize(true);
-        product_shop_rcv.setLayoutManager(new GridLayoutManager(ShopSellerProductActivity.this,1));
-        product_shop_rcv.setAdapter(productShopAdapter);
-        GetMyProduct();
-    }
-    private void GetMyProduct(){
-        int id_user = DataLocalManager.getIdUser();
-        new GetShopSeller().execute(String.valueOf(id_user));
-    }
 
+    }
+    private void setDataWaitOrder(){
+        orderArrayList = new ArrayList<>();
+        orderAdapter = new OrderAdapter(SellerOrderActivity.this,orderArrayList);
+        rcv_ShopOrder.setHasFixedSize(true);
+        rcv_ShopOrder.setLayoutManager(new GridLayoutManager(SellerOrderActivity.this,1));
+        rcv_ShopOrder.setAdapter(orderAdapter);
+    }
     private class GetShopSeller extends AsyncTask<String, Void, String> {
 
         @Override
@@ -136,6 +100,61 @@ public class ShopSellerProductActivity extends AppCompatActivity{
                     id_shop=jsonObject.getInt("id");
                     Log.d("id_shop", String.valueOf(id_shop));
                     DataLocalManager.setIdShopUser(id_shop);
+                } else {
+                    Toast.makeText(SellerOrderActivity.this, "Some thing ERROR", Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Toast.makeText(SellerOrderActivity.this, "Error parsing JSON", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    private class GetOrderShopSeller extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String id_shop = params[0];
+            try {
+                URL url = new URL(LinkWaitOrder);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+
+                // Prepare the data to be sent to the server
+                String data = "id_shop=" + id_shop;
+                OutputStream os = httpURLConnection.getOutputStream();
+                os.write(data.getBytes());
+                os.flush();
+                os.close();
+
+                // Get the response from the server
+                BufferedReader br = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    response.append(line).append("\n");
+                }
+                br.close();
+
+                return response.toString().trim();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "Error: " + e.getMessage();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                boolean success = jsonObject.getBoolean("success");
+
+                if (success) {
+                    id_shop=jsonObject.getInt("id");
+                    Log.d("id_shop", String.valueOf(id_shop));
+                    DataLocalManager.setIdShopUser(id_shop);
                     requestDB.GetProductShop(ShopSellerProductActivity.this,productArrayListSeller,productShopAdapter,GetProductByShop+id_shop);
                 } else {
                     Toast.makeText(ShopSellerProductActivity.this, "Some thing ERROR", Toast.LENGTH_SHORT).show();
@@ -148,13 +167,11 @@ public class ShopSellerProductActivity extends AppCompatActivity{
         }
     }
 
-    public void UnitUI(){
-        Btn_Back_Product=findViewById(R.id.Btn_Back_Product);
-        Addproduct=findViewById(R.id.Addproduct);
-        product_shop_rcv=findViewById(R.id.product_shop_rcv);
-        Btn_Home_seller=findViewById(R.id.Btn_Home_seller);
-        Btn_refresh_seller=findViewById(R.id.Btn_refresh_seller);
+    private void UnitUI(){
+        WaitOrder=findViewById(R.id.WaitOrder);
+        ApproveOrder=findViewById(R.id.ApproveOrder);
+        CancelOrder=findViewById(R.id.CancelOrder);
+        CompleteOrder=findViewById(R.id.CompleteOrder);
+        rcv_ShopOrder=findViewById(R.id.rcv_ShopOrder);
     }
-
-
 }

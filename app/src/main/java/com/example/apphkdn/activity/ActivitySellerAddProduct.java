@@ -1,16 +1,15 @@
 package com.example.apphkdn.activity;
 
 import static com.example.apphkdn.ultil.Server.AddProduct;
-import static com.example.apphkdn.ultil.Server.linkCategory;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -35,14 +34,13 @@ import com.android.volley.toolbox.Volley;
 import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
-import com.example.apphkdn.adapter.CategoryAdapterSpiner;
+import com.example.apphkdn.adapter.CategoryAdapterSpAdd;
 import com.example.apphkdn.model.Category;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ActivitySellerAddProduct extends AppCompatActivity {
@@ -51,7 +49,7 @@ public class ActivitySellerAddProduct extends AppCompatActivity {
     ImageView _AddImageProduct;
     Button _SubmitAdd;
     Spinner spCategory;
-    CategoryAdapterSpiner categoryAdapterSpiner;
+    CategoryAdapterSpAdd categoryAdapterSpAdd;
     Integer idCategory;
     Bitmap bitmap;
     RequestDB requestDB = new RequestDB();
@@ -76,12 +74,12 @@ public class ActivitySellerAddProduct extends AppCompatActivity {
     }
 
     private void settingSpinner(){
-        categoryAdapterSpiner = new CategoryAdapterSpiner(ActivitySellerAddProduct.this, R.layout.item_selected_spinner_category, getListCategory());
-        spCategory.setAdapter(categoryAdapterSpiner);
+        categoryAdapterSpAdd = new CategoryAdapterSpAdd(ActivitySellerAddProduct.this, R.layout.item_selected_spinner_category, getListCategoryAdd());
+        spCategory.setAdapter(categoryAdapterSpAdd);
         spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                idCategory = categoryAdapterSpiner.getItem(position).getId();
+                idCategory = categoryAdapterSpAdd.getItem(position).getId();
                 //Toast.makeText(RegistorSellerActivity.this, idCategory.toString(), Toast.LENGTH_SHORT).show();
             }
 
@@ -92,12 +90,10 @@ public class ActivitySellerAddProduct extends AppCompatActivity {
         });
     }
 
-    public ArrayList<Category> getListCategory() {
-        ArrayList<Category> mList = new ArrayList<>();
-        requestDB.GetCategorySpinner(ActivitySellerAddProduct.this, mList, linkCategory);
-        mList = DataLocalManager.getListCategorySpinner();
-        //Toast.makeText(RegistorSellerActivity.this, mList.toString(), Toast.LENGTH_SHORT).show();
-        return mList;
+    public ArrayList<Category> getListCategoryAdd() {
+        ArrayList<Category> ProductCategory = new ArrayList<Category>();
+        ProductCategory = DataLocalManager.getListCategorySpinner();
+        return ProductCategory;
     }
 
     private void Add_Product() {
@@ -128,9 +124,9 @@ public class ActivitySellerAddProduct extends AppCompatActivity {
                                 public void onResponse(String response) {
                                     if (response.equals("success")){
                                         String remess= "Đã thêm sản phẩm thành công!";
-                                        RequestDB.showInvalidOtpDialog(ActivitySellerAddProduct.this,remess);
+                                        RequestDB.showInvalidOtpDialogAddProduct(ActivitySellerAddProduct.this,remess);
                                     }else if (response.equals("failed")){
-                                        String remess= "Thêm sản phẩm thành công thất bại!";
+                                        String remess= "Thêm sản phẩm thất bại!";
                                         RequestDB.showInvalidOtpDialogERROR(ActivitySellerAddProduct.this,remess);
                                     }
                                 }
@@ -168,24 +164,27 @@ public class ActivitySellerAddProduct extends AppCompatActivity {
                 registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode()== Activity.RESULT_OK){
-                            Intent data= result.getData();
-                            Uri uri= data.getData();
-                            try {
-                                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                                _AddImageProduct.setImageBitmap(bitmap);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
+                        Log.d("YourTag", "onActivityResult: ResultCode - " + result.getResultCode());
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            if (data != null) {
+                                Uri uri = data.getData();
+                                Log.d("YourTag", "onActivityResult: Image URI - " + uri);
+                                try {
+                                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                                    _AddImageProduct.setImageBitmap(bitmap);
+                                } catch (IOException e) {
+                                    Log.e("YourTag", "onActivityResult: Error loading image", e);
+                                }
                             }
-
                         }
                     }
                 });
         _AddImageProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
                 activityResultLauncher.launch(intent);
             }
         });

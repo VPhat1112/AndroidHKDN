@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp">
         <TextView
+            android:id="@+id/Btn_Back_Update"
             android:paddingLeft="10dp"
             android:drawableStart="@drawable/icon_back"
             android:textSize="24sp"
@@ -31,6 +32,8 @@
         android:layout_width="match_parent"
         android:layout_height="50dp">
         <EditText
+            android:padding="5dp"
+            android:id="@+id/Edt_Update_name"
             android:layout_margin="1dp"
             android:background="@drawable/corner_edt_seller"
             android:maxLines="1"
@@ -70,6 +73,7 @@
         <!--                android:src="@drawable/img_3" />-->
         <!--        </ViewFlipper>-->
         <ImageView
+            android:id="@+id/Edt_Update_image"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:src="@drawable/icon_add"/>
@@ -83,12 +87,13 @@
         android:layout_width="match_parent"
         android:layout_height="50dp">
         <Spinner
+            android:id="@+id/Edt_Update_Category"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </androidx.cardview.widget.CardView>
     <TextView
         android:paddingTop="10dp"
-        android:text="Giá Sản Phẩm"
+        android:text="Giá Sản Phẩm và số lượng"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <androidx.cardview.widget.CardView
@@ -100,11 +105,19 @@
             android:layout_height="match_parent"
             android:weightSum="5">
             <EditText
+                android:id="@+id/Edt_Update_price"
+                android:padding="5dp"
                 android:background="@drawable/corner_edt_seller"
                 android:layout_weight="4"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"/>
-            <Spinner
+            <EditText
+                android:id="@+id/Edt_Update_Number"
+                android:padding="5dp"
+                android:background="@drawable/corner_edt_seller"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="16sp"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"/>
@@ -119,6 +132,8 @@
         android:layout_width="match_parent"
         android:layout_height="100dp">
         <EditText
+            android:id="@+id/Edt_Update_Decs"
+            android:padding="5dp"
             android:layout_margin="1dp"
             android:background="@drawable/corner_edt_seller"
             android:gravity="top"
@@ -127,10 +142,11 @@
             android:layout_height="match_parent"/>
     </androidx.cardview.widget.CardView>
     <Button
+        android:id="@+id/Btn_Update"
         android:layout_marginTop="10dp"
         android:background="@drawable/draw_button"
         android:backgroundTint="@color/red"
-        android:text="Thêm sản phẩm"
+        android:text="Cập nhật sản phẩm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </LinearLayout>

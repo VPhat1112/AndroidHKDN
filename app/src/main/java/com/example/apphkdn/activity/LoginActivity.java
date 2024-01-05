@@ -1,9 +1,6 @@
 package com.example.apphkdn.activity;
 
-import static com.example.apphkdn.ultil.Server.linkLog;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -39,7 +36,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initUI();
         onClick();
     }
-
     private void onClick(){
         _BtnLog.setOnClickListener(this);
         _BtnReg.setOnClickListener(this);

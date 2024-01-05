@@ -1,8 +1,11 @@
 package com.example.apphkdn.activity;
 
+import static com.example.apphkdn.ultil.Server.GetProductByShop;
 import static com.example.apphkdn.ultil.Server.LinkGetShop;
+import static com.example.apphkdn.ultil.Server.serverAddress;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -17,9 +20,14 @@ import android.widget.ViewFlipper;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apphkdn.R;
+import com.example.apphkdn.RequestDB.RequestDB;
+import com.example.apphkdn.adapter.ProductAdapter;
 import com.example.apphkdn.model.Cart;
+import com.example.apphkdn.model.Product;
 import com.example.apphkdn.ultil.DownloadImageTask;
 
 import org.json.JSONException;
@@ -32,32 +40,32 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Detail_product extends AppCompatActivity {
     ViewFlipper viewFlipper;
     int slcSP;
     private float initialX;
-    ImageView imageView;
-    ImageButton backBtn;
-    TextView productName,ProductPrice,sells,editText,Name_Shop;
+    ImageView imageView,ShopLogo;
+    ImageButton backBtn,CartBtndtail,HomeBtnDt;
+    TextView productName,ProductPrice,sells,editText,Name_Shop,TxtCheckkStatus;
     RatingBar ratingBar;
-    Integer id=0,id_category=0,id_shop=0;
-    int Product_price,status;
-     Integer product_review;
-     Integer product_numbersell;
-     int product_selled,shop_rate;
-    CardView plus,remove;
+    Integer id=0,id_category=0,id_shop=0,product_review,product_numbersell;
+    RecyclerView ShopProduct;
+    int Product_price,status,product_selled,shop_rate;
+    CardView plus,remove,colorStatus;
 
-    String shop_name,kind_shop,Address,Image_shop;
+    String shop_name,kind_shop,Address,Image_shop,product_name,Product_decs,Product_image;
 
     RatingBar ratingshop;
-
-
-    String product_name,Product_decs,Product_image;
     private List<String> imageUrls;
 
+    RequestDB requestDB= new RequestDB();
+
     Button BtnCard;
+    ArrayList<Product> productArrayListShop;
+    ProductAdapter productAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +75,7 @@ public class Detail_product extends AppCompatActivity {
         ratingBar =findViewById(R.id.productRatingBar);
         GetDataExtraShare();
         UnitUI();
+        SetShopProduct();
         slcSP=product_numbersell-product_selled;
         editText.setText("1/"+slcSP);
         plus.setOnClickListener(new View.OnClickListener() {
@@ -119,13 +128,13 @@ public class Detail_product extends AppCompatActivity {
                     if (count==0){
                         int slg = Integer.parseInt(editText.getText().toString().split("/")[0]);
                         int new_price=slg*Product_price;
-                        CartActivity.cartLists.add(new Cart(id,product_name,new_price,Product_image,"0",slg,product_numbersell));
+                        CartActivity.cartLists.add(new Cart(id,product_name,new_price,Product_image,"0",slg,product_numbersell,id_shop));
                         Toast.makeText(Detail_product.this, "Đã thêm", Toast.LENGTH_SHORT).show();
                     }
                 }else {
                     int slg = Integer.parseInt(editText.getText().toString().split("/")[0]);
                     int new_price=slg*Product_price;
-                    CartActivity.cartLists.add(new Cart(id,product_name,new_price,Product_image,"0",slg,product_numbersell));
+                    CartActivity.cartLists.add(new Cart(id,product_name,new_price,Product_image,"0",slg,product_numbersell,id_shop));
                     Toast.makeText(Detail_product.this, "Đã thêm", Toast.LENGTH_SHORT).show();
                 }
                 Intent intent = new Intent(getApplicationContext(),CartActivity.class);
@@ -136,6 +145,20 @@ public class Detail_product extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        CartBtndtail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),CartActivity.class);
+                startActivity(intent);
+            }
+        });
+        HomeBtnDt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -181,6 +204,19 @@ public class Detail_product extends AppCompatActivity {
         product_numbersell=getIntent().getIntExtra("product_numbersell",-1);
         product_selled=getIntent().getIntExtra("product_selled",-1);
     }
+
+    private void SetShopProduct(){
+
+        productArrayListShop = new ArrayList<>();
+        productAdapter = new ProductAdapter(Detail_product.this,productArrayListShop);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(Detail_product.this, LinearLayoutManager.HORIZONTAL, false);
+        ShopProduct.setHasFixedSize(true);
+        ShopProduct.setLayoutManager(layoutManager);
+        ShopProduct.setAdapter(productAdapter);
+        requestDB.GetProductShopDetail(Detail_product.this,productArrayListShop,productAdapter,GetProductByShop+id_shop);
+    }
+
+
 
     private class GetShop extends AsyncTask<String, Void, String> {
 
@@ -230,7 +266,9 @@ public class Detail_product extends AppCompatActivity {
                     shop_rate = jsonObject.getInt("shop_rate");
                     status=jsonObject.getInt("status");
                     Address = jsonObject.getString("Address");
-                    Image_shop = jsonObject.getString("Image_shop");
+                    setStatus(status);
+                    Image_shop = serverAddress+jsonObject.getString("Image_shop");
+                    new DownloadImageTask(ShopLogo).execute(Image_shop);
                     Name_Shop.setText(shop_name);
                     ratingshop.setRating(shop_rate);
                 } else {
@@ -241,6 +279,15 @@ public class Detail_product extends AppCompatActivity {
                 e.printStackTrace();
                 Toast.makeText(Detail_product.this, "Error parsing JSON", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+    private void setStatus(int checkStatus){
+        if (checkStatus==0){
+            TxtCheckkStatus.setText("Offline");
+            colorStatus.setCardBackgroundColor(Color.parseColor("#B50000"));
+        } else if (checkStatus==1) {
+            TxtCheckkStatus.setText("Online");
+            colorStatus.setCardBackgroundColor(Color.parseColor("#00B527"));
         }
     }
     private void UnitUI(){
@@ -256,5 +303,11 @@ public class Detail_product extends AppCompatActivity {
         remove=findViewById(R.id.btn_removeedtsl);
         Name_Shop=findViewById(R.id.namePRShop);
         ratingshop=findViewById(R.id.productRatingBar);
+        ShopProduct=findViewById(R.id.recyclerSPDetail);
+        ShopLogo=findViewById(R.id.imgShopDetai);
+        TxtCheckkStatus=findViewById(R.id.CheckStatus);
+        colorStatus=findViewById(R.id.colorStatus);
+        CartBtndtail=findViewById(R.id.CartBtndtail);
+        HomeBtnDt=findViewById(R.id.HomeBtnDt);
     }
 }

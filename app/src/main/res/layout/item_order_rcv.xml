@@ -8,7 +8,7 @@
     android:gravity="center"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardviewproduct"
+        android:id="@+id/cardviewproductOrder"
         app:cardCornerRadius="15dp"
         android:layout_margin="4dp"
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
                 android:layout_height="match_parent">
                 <ImageView
                     android:layout_weight="1"
-                    android:id="@+id/ImgVIewProductShop"
+                    android:id="@+id/ImgVIewProductShopOrder"
                     android:layout_width="0dp"
                     android:layout_height="70dp"/>
                 <LinearLayout
@@ -43,33 +43,53 @@
                         android:layout_height="0dp">
                         <TextView
                             android:padding="20dp"
-                            android:id="@+id/TxtProductNameShop"
+                            android:id="@+id/TxtProductNameShopOrder"
                             android:text="Tên Sản Phẩm"
                             android:textColor="#000000"
                             android:textSize="20sp"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"/>
-                        <ImageView
-                            android:id="@+id/lockview"
-                            android:src="@drawable/baseline_lock_24"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"/>
                     </LinearLayout>
 
-                    <TextView
+                    <LinearLayout
                         android:layout_weight="1"
                         android:padding="10dp"
-                        android:id="@+id/txtProductPriceShop"
+                        android:id="@+id/txtProductPriceShopOrder"
                         android:textColor="#f20"
                         android:textSize="17sp"
                         android:text="Product_price"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"/>
+                        android:layout_height="0dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+                        <TextView
+                            android:id="@+id/SL_order"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="SL"
+                            android:textSize="12dp" />
+                        <TextView
+                            android:id="@+id/Price_Order"
+                            android:layout_alignParentEnd="true"
+                            android:text="134.000 đ"
+                            android:gravity="center"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"/>
+                    </LinearLayout>
                 </LinearLayout>
                 <ImageButton
-                    android:id="@+id/edit_Btn_product"
+                    android:id="@+id/edit_accept_product"
                     android:background="#FFFF"
-                    android:src="@drawable/icon"
+                    android:src="@drawable/baseline_check_circle_24"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"/>
+                <ImageButton
+                    android:id="@+id/edit_deni_product"
+                    android:background="#FFFF"
+                    android:src="@drawable/baseline_restore_from_trash_24"
                     android:layout_width="40dp"
                     android:layout_height="40dp"/>
             </LinearLayout>

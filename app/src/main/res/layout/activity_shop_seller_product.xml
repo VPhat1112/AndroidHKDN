@@ -19,17 +19,36 @@
                 android:layout_height="50dp"
                 android:backgroundTint="#03A9F4"
                 >
-                <TextView
-                    android:paddingLeft="10dp"
-                    android:id="@+id/Btn_Back_Product"
-                    android:drawableStart="@drawable/icon_back"
-                    android:text="  MY PRODUCT"
-                    android:gravity="center_vertical"
-                    android:textSize="25sp"
-                    android:textColor="@color/red"
-                    android:textStyle="bold"
+                <LinearLayout
+                    android:weightSum="8"
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:paddingLeft="10dp"
+                        android:id="@+id/Btn_Back_Product"
+                        android:drawableStart="@drawable/icon_back"
+                        android:text="  MY PRODUCT"
+                        android:gravity="center_vertical"
+                        android:textSize="25sp"
+                        android:textColor="@color/red"
+                        android:textStyle="bold"
+                        android:layout_weight="6"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <ImageButton
+                        android:id="@+id/Btn_refresh_seller"
+                        android:background="@drawable/baseline_refresh_24"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <ImageButton
+                        android:id="@+id/Btn_Home_seller"
+                        android:background="@drawable/baseline_home_24"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
