@@ -23,11 +23,14 @@ import com.android.volley.toolbox.Volley;
 import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.activity.MyOrderActivity;
 import com.example.apphkdn.activity.MainActivity;
+import com.example.apphkdn.activity.SellerOrderActivity;
 import com.example.apphkdn.activity.ShopSellerProductActivity;
 import com.example.apphkdn.adapter.CategoryAdapter;
+import com.example.apphkdn.adapter.OrderAdapter;
 import com.example.apphkdn.adapter.ProductAdapter;
 import com.example.apphkdn.adapter.ProductShopAdapter;
 import com.example.apphkdn.model.Category;
+import com.example.apphkdn.model.Order;
 import com.example.apphkdn.model.Product;
 
 import org.json.JSONArray;
@@ -294,6 +297,43 @@ public class RequestDB {
         requestQueue.add(stringRequest);
     }
 
+    public void GetOrder(Context context, ArrayList<Order> orderArrayList, OrderAdapter orderAdapter, String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for (int i = 0; i < response.length(); i++){
+                    try {
+                        JSONObject object = response.getJSONObject(i);
+                        orderArrayList.add(new Order(
+                                object.getInt("user_id"),
+                                object.getInt("shop_id"),
+                                object.getInt("order_id"),
+                                object.getInt("contact_id"),
+                                object.getInt("product_id"),
+                                object.getInt("FinalTotal"),
+                                object.getInt("Order_status"),
+                                object.getInt("Number_pay"),
+                                object.getString("product_name"),
+                                serverAddress+object.getString("product_image")
+
+                        ));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                orderAdapter.notifyDataSetChanged();
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context,"Error!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        requestQueue.add(jsonArrayRequest);
+    }
 
 
 
@@ -425,6 +465,40 @@ public class RequestDB {
             }
         });
         builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        // Must call show() prior to fetching text view
+        TextView messageView = (TextView)alertDialog.findViewById(android.R.id.message);
+        messageView.setGravity(Gravity.CENTER);
+
+        TextView titleView = (TextView)alertDialog.findViewById(context.getResources().getIdentifier("alertTitle", "id", "android"));
+        if (titleView != null) {
+            titleView.setGravity(Gravity.CENTER);
+        }
+    }
+    public static void showInvalidOtpDialogAcceptOrder(Context context, String mess) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//            TextView myMsg = new TextView(getApplicationContext());
+        builder.setTitle("Nhận đơn");
+        builder.setMessage(mess);
+
+        // Adding a positive button click listener
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Handle the "OK" button click if needed
+                Intent intent = new Intent(context, SellerOrderActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
