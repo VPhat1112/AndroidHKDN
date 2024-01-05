@@ -6,4 +6,9 @@
     <string name="search">Search</string>
     <string name="open_nav">Open Navigation Drawer</string>
     <string name="close_nav">Close Navigation Drawer</string>
+
+    <string-array name="WayPay">
+        <item>Trả tiền khi nhận được hàng</item>
+        <item>Trả thông qua ví điện tử</item>
+    </string-array>
 </resources>
