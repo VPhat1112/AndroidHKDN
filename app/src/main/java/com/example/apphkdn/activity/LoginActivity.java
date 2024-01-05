@@ -28,7 +28,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     Button _BtnLog,_BtnReg,_BtnLogOTP;
     EditText emailEdt,PassEdt;
     RequestDB requestDB = new RequestDB();
@@ -37,40 +37,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initUI();
-        _BtnLog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email=emailEdt.getText().toString().trim();
-                String pass=PassEdt.getText().toString().trim();
-                //login(email,pass);
-                new LoginTask().execute(email, pass);
-            }
-        });
-        _BtnReg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        _BtnLogOTP.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, LoginOtp.class);
-                startActivity(intent);
-            }
-        });
+        onClick();
     }
-    public void initUI(){
-        _BtnLog=findViewById(R.id.loginButtonLog);
-        _BtnReg=findViewById(R.id.registerButtonLog);
-        emailEdt=findViewById(R.id.EmailEdtLog);
-        PassEdt=findViewById(R.id.passwordLoginET);
-        _BtnLogOTP=findViewById(R.id.LoginWithOTP);
-    }
-    private void login(String email, String pass){
-        requestDB.Login(LoginActivity.this,linkLog,email,pass);
+
+    private void onClick(){
+        _BtnLog.setOnClickListener(this);
+        _BtnReg.setOnClickListener(this);
+        _BtnLogOTP.setOnClickListener(this);
     }
 
     private class LoginTask extends AsyncTask<String, Void, String> {
@@ -157,6 +130,31 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
                 Toast.makeText(LoginActivity.this, "Error parsing JSON", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    public void initUI(){
+        _BtnLog=findViewById(R.id.loginButtonLog);
+        _BtnReg=findViewById(R.id.registerButtonLog);
+        emailEdt=findViewById(R.id.EmailEdtLog);
+        PassEdt=findViewById(R.id.passwordLoginET);
+        _BtnLogOTP=findViewById(R.id.LoginWithOTP);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.loginButtonLog){
+            String email=emailEdt.getText().toString().trim();
+            String pass=PassEdt.getText().toString().trim();
+            //login(email,pass);
+            new LoginTask().execute(email, pass);
+        } else if (v.getId() == R.id.registerButtonLog) {
+            Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (v.getId() == R.id.LoginWithOTP) {
+            Intent intent = new Intent(LoginActivity.this, LoginOtp.class);
+            startActivity(intent);
         }
     }
 }

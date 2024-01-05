@@ -101,6 +101,7 @@ public class RegistorSellerActivity extends AppCompatActivity {
         });
     }
 
+
     public ArrayList<Category> getListCategory() {
         ArrayList<Category> mList = new ArrayList<>();
         requestDB.GetCategorySpinner(RegistorSellerActivity.this, mList, linkCategory);

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_nav_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#0054FB"
+        android:gravity="center"
+        android:padding="13dp"
+        android:text="Lọc sản phẩm"
+        android:textColor="#FFFFFF"
+        android:textSize="18dp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_nav_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_nav_1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Giá"
+        android:textColor="#000000"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/ln_nav_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_nav_3"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/ckb_price_under_300k"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_button_nav_checked"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:text="dưới 300.000"
+            android:textColor="@color/whitee"
+            android:textSize="15dp" />
+
+        <CheckBox
+            android:id="@+id/ckb_price_1000k_to_300k"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/rounded_button_nav_checked"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:text="300.000 -> 1.000.000"
+            android:textColor="@color/whitee"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ln_nav_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ln_nav_1"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/ckb_price_1500k_to_1000k"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_button_nav_checked"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:text="1.000.000 -> 1.500.000"
+            android:textColor="@color/whitee"
+            android:textSize="15dp" />
+
+        <CheckBox
+            android:id="@+id/ckb_price_above_1500k"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/rounded_button_nav_checked"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:text="trên 1.500.000"
+            android:textColor="@color/whitee"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_nav_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ln_nav_2"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Hoặc nhập giá ở ô dưới đây:"
+        android:textColor="#000000"
+        android:textSize="18dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_nav_4"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edt_nav_price_from"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:background="@drawable/rounded_corner_edt_nav"
+            android:hint="Từ 0"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:text=" - "
+            android:textColor="@color/black"
+            android:textSize="15dp" />
+
+        <EditText
+            android:id="@+id/edt_nav_price_to"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:background="@drawable/rounded_corner_edt_nav"
+            android:hint="Đến 10.000.000.000"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_nav_reset"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:background="@drawable/rounded_corner_btn_nav"
+            android:gravity="center"
+            android:text="Thiết lập lại"
+            android:textColor="@color/bottomnav"
+            android:textSize="18dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_nav_apply"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/rounded_corner_btn_nav_2"
+            android:gravity="center"
+            android:text="Áp dụng"
+            android:textColor="@color/whitee"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -40,12 +40,24 @@ public class ShowProductBySearchActivity extends AppCompatActivity {
         RecyleviewSetting();
         Back();
         setText();
+        Search();
     }
 
     // Get search key from SearchActivity
     private String getKeySearch(){
         String key_search = getIntent().getStringExtra("keySearch");
         return key_search;
+    }
+
+    private void Search(){
+        txtSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ShowProductBySearchActivity.this, SearchActivity.class);
+                intent.putExtra("searchtxt", txtSearch.getText().toString().trim());
+                startActivity(intent);
+            }
+        });
     }
 
     // Return to Home page
@@ -73,7 +85,7 @@ public class ShowProductBySearchActivity extends AppCompatActivity {
 
     // set data for recycleview
     private void getDataForRCV() {
-        requestDB.GetProduct(getApplicationContext(),productArrayList,productAdapter,linkGetProductBySearch + getKeySearch());
+        requestDB.GetProductBySearch(ShowProductBySearchActivity.this, productArrayList, productAdapter,linkGetProductBySearch + getKeySearch());
     }
 
     // set text for edittext

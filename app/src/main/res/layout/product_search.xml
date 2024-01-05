@@ -1,37 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:padding="10dp">
 
-        <Button
-            android:id="@+id/btn_search_back"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/baseline_arrow_back_24"
-            android:backgroundTint="@color/whitee"
-            android:layout_marginRight="10dp"
-            android:layout_gravity="center"/>
-
-        <AutoCompleteTextView
-            android:id="@+id/edt_search"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:maxLines="1"
-            android:inputType="text"
-            android:background="@android:color/transparent"
-            android:imeOptions="actionDone"
-            android:completionThreshold="1"
-            android:hint="Nhập từ khóa" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10">
 
+            <Button
+                android:id="@+id/btn_search_back"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/baseline_arrow_back_24"
+                android:backgroundTint="@color/whitee" />
+
+            <AutoCompleteTextView
+                android:id="@+id/edt_search"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="8"
+                android:hint="Sản phẩm, thương hiệu"
+                android:inputType="text"
+                android:imeOptions="actionDone"
+                android:completionThreshold="1"
+                android:background="@android:color/transparent"/>
+
+
+            <Button
+                android:id="@+id/btn_search_filter"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/baseline_filter_alt_24"
+                android:backgroundTint="@color/whitee" />
+
+        </LinearLayout>
     </LinearLayout>
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end">
+
+    </com.google.android.material.navigation.NavigationView>
+
+</androidx.drawerlayout.widget.DrawerLayout>

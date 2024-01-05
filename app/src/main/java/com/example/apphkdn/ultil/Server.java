@@ -17,7 +17,7 @@ public class Server {
 
     public static String linkGetProductByCategory = serverAddress+"getProductByCategory.php?idcategory=";
 
-    public static String linkGetProductBySearch = serverAddress+"getProductBySearch.php?key=";
+    public static String linkGetProductBySearch = serverAddress+"getProductBySearch.php?search=";
 
     public static String DetailProduct=serverAddress+"GetProductByID.php?product_id=";
 
@@ -34,4 +34,6 @@ public class Server {
     public static String LinkGetShopByIdUser = serverAddress+"GetShopByIdUser.php";
 
     public static String AddProduct = serverAddress+"InsertProduct.php";
+
+    public static String LinkDataAutotextViewSearch = serverAddress+"getDataAutoTextView.php";
 }

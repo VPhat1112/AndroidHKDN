@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,7 +69,6 @@ public class RequestDB {
                                 object.getInt("product_numbersell"),
                                 object.getInt("product_selled")
                         ));
-                        Log.d("imageaaa", object.getString("product_image"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                         Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
@@ -84,6 +84,46 @@ public class RequestDB {
             }
         });
         requestQueue.add(jsonArrayRequest);
+    }
+
+    public void GetProductBySearch(Context context, ArrayList<Product> productArrayList, ProductAdapter productAdapter, String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response.equals("Error")){
+                    Toast.makeText(context, "Khong tim thay", Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        JSONArray jsonArray = new JSONArray(response);
+                        for (int i = 0; i < jsonArray.length(); i++){
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            productArrayList.add(new Product(
+                                    jsonObject.getInt("id"),
+                                    jsonObject.getString("product_name"),
+                                    serverAddress + jsonObject.getString("product_image"),
+                                    jsonObject.getString("product_decs"),
+                                    jsonObject.getInt("product_price"),
+                                    jsonObject.getInt("IDcategory"),
+                                    jsonObject.getInt("id_shop"),
+                                    jsonObject.getInt("product_review"),
+                                    jsonObject.getInt("product_numbersell"),
+                                    jsonObject.getInt("product_selled")
+                            ));
+                        }
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                productAdapter.notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Error Parsing Json", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(stringRequest);
     }
     public void GetProductShop(Context context, ArrayList<Product> productArrayListSeller, ProductShopAdapter productShopAdapter, String url){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
@@ -177,61 +217,31 @@ public class RequestDB {
         });
         requestQueue.add(jsonArrayRequest);
     }
-    public void Login(Context context, String url, String email, String pass){
+    public void setDataAutotextViewSearch(Context context, AutoCompleteTextView atvSearchBox, String url){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null, new Response.Listener<JSONArray>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
-            public void onResponse(JSONArray response) {
-                //boolean success = jsonObject.getBoolean("success");
-                if (response != null){
-                    for (int i = 0; i < response.length(); i++){
-                        try {
-                            JSONObject object = response.getJSONObject(i);
-                            if (object.getInt("is_verified") == 0){
-                                showInvalidOtpDialog(context);
-                            } else{
-                                Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show();
-                                SharedPreferences preferences = context.getSharedPreferences("MyProfile", MODE_PRIVATE);
-                                SharedPreferences.Editor editor = preferences.edit();
-                                editor.putInt("id", object.getInt("id"));
-                                editor.putString("email", object.getString("email"));
-                                editor.putString("Name", object.getString("Name"));
-                                editor.putString("Address", object.getString("Address"));
-                                editor.putInt("role", object.getInt("role"));
-                                editor.putString("phone", object.getString("Phone"));
-                                editor.putString("Info_pay", object.getString("Info_Pay"));
-                                editor.putString("imgUS", object.getString("imgUS"));
-                                editor.apply();
-                                Intent intent = new Intent(context, MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                context.startActivity(intent);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(context, "chua xac thuc", Toast.LENGTH_SHORT).show();
-                        }
+            public void onResponse(String response) {
+                try {
+                    ArrayList<String> items = new ArrayList<>();
+                    JSONArray jsonArray = new JSONArray(response);
+                    for (int i = 0; i < jsonArray.length(); i++){
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        items.add(jsonObject.getString("name"));
                     }
-                } else{
-                    // Login failed
-                    Toast.makeText(context, "Login failed", Toast.LENGTH_SHORT).show();
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_dropdown_item_1line,items);
+                    atvSearchBox.setAdapter(arrayAdapter);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Error Parsing Json", Toast.LENGTH_SHORT).show();
             }
-        }){
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("email", email);
-                params.put("Passwords", pass);
-                return params;
-            }
-        };
-        requestQueue.add(jsonArrayRequest);
+        });
+        requestQueue.add(stringRequest);
     }
     public void showInvalidOtpDialog(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

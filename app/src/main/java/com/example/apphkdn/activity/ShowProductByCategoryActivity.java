@@ -40,6 +40,7 @@ public class ShowProductByCategoryActivity extends AppCompatActivity {
         initUI();
         Back();
         setText();
+        Search();
         RecyleviewSetting();
     }
 
@@ -52,6 +53,16 @@ public class ShowProductByCategoryActivity extends AppCompatActivity {
     private String getNameCategory(){
         String nameCategory = getIntent().getStringExtra("name_category");
         return nameCategory;
+    }
+
+    private void Search(){
+        txtSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ShowProductByCategoryActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     // Return to Category Page
@@ -86,7 +97,7 @@ public class ShowProductByCategoryActivity extends AppCompatActivity {
     }
 
     private void initUI(){
-        txtSearch = findViewById(R.id.searchtxt_show_pdct_search);
+        txtSearch = findViewById(R.id.searchtxt_show_pdct_category);
         btnBack = findViewById(R.id.btn_category_product_back);
         recyclerView = findViewById(R.id.rcv_show_prd_category);
         linearLayout = findViewById(R.id.ln_delete_category);
