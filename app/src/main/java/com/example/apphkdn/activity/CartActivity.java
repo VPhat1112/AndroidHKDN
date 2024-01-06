@@ -30,11 +30,7 @@ public class CartActivity extends AppCompatActivity {
     public static CheckBox checkBoxTotal;
     public static String mobile;
     Button btn_DatHang;
-    String m_Text;
-    String diaChi;
-    Intent intentMain;
-    String daban,soluongban;
-    ImageView btn_back;
+    ImageView btn_back,btn_backHome;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -118,6 +114,12 @@ public class CartActivity extends AppCompatActivity {
                 finish();
             }
         });
+        btn_backHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CartActivity.this,MainActivity.class));
+            }
+        });
     }
 
     public void UnitUI(){
@@ -127,9 +129,8 @@ public class CartActivity extends AppCompatActivity {
         totalMoney=findViewById(R.id.totalMoney);
         checkBoxTotal=findViewById(R.id.checkboxTotal);
         btn_back=findViewById(R.id.btn_backMain);
-//        txtThongBao=findViewById(R.id.Thongbaos);
+        btn_backHome=findViewById(R.id.btn_backHome);
         if (cartLists!=null){
-
         }else {
             cartLists= new ArrayList<>();
         }

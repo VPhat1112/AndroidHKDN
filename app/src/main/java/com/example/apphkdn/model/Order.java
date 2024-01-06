@@ -10,9 +10,9 @@ public class Order {
         this.order_id = order_id;
         this.contact_id = contact_id;
         this.product_id = product_id;
-        FinalTotal = finalTotal;
-        Order_status = order_status;
-        Number_pay = number_pay;
+        this.FinalTotal = finalTotal;
+        this.Order_status = order_status;
+        this.Number_pay = number_pay;
         this.product_name = product_name;
         this.product_image = product_image;
     }

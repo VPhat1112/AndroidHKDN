@@ -23,8 +23,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
+import com.example.apphkdn.activity.MyOrderActivity;
 import com.example.apphkdn.activity.ProfileActivity;
-import com.example.apphkdn.activity.SellerOrderActivity;
 import com.example.apphkdn.activity.ShopSellerActivity;
 import com.example.apphkdn.ultil.Checkconnection;
 
@@ -137,93 +137,12 @@ public class UserFragment extends Fragment {
         frpr_myOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = DataLocalManager.getEmailUser();
-                new GetUSerOrder().execute(email);
+                startActivity(new Intent(getActivity(), MyOrderActivity.class));
 
             }
         });
     }
 
-    private class GetUSerOrder extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            String email = params[0];
-            try {
-                URL url = new URL(LinkGetUser);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoOutput(true);
-
-                // Prepare the data to be sent to the server
-                String data = "email=" + email;
-                OutputStream os = httpURLConnection.getOutputStream();
-                os.write(data.getBytes());
-                os.flush();
-                os.close();
-
-                // Get the response from the server
-                BufferedReader br = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-                StringBuilder response = new StringBuilder();
-                String line;
-                while ((line = br.readLine()) != null) {
-                    response.append(line).append("\n");
-                }
-                br.close();
-
-                return response.toString().trim();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "Error: " + e.getMessage();
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-                boolean success = jsonObject.getBoolean("success");
-
-                if (success) {
-                    // Login successful
-                    int userId = jsonObject.getInt("id");
-                    String Name = jsonObject.getString("Name");
-                    String email = jsonObject.getString("email");
-                    String Address = jsonObject.getString("Address");
-                    int role=jsonObject.getInt("role");
-                    String phone = jsonObject.getString("phone");
-                    String Info_pay = jsonObject.getString("Info_pay");
-                    String imgUS = jsonObject.getString("imgUS");
-
-                    // You can save the user details in SharedPreferences or other storage
-                    // and navigate to the next activity
-                    if (role==3) {
-                        GotoErrorSellerFraggment();
-                    }else {
-                        SharedPreferences preferences = getContext().getSharedPreferences("MyProfile", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putInt("id", userId);
-                        editor.putString("email", email);
-                        editor.putString("Name", Name);
-                        editor.putString("Address", Address);
-                        editor.putInt("role", role);
-                        editor.putString("phone", phone);
-                        editor.putString("Info_pay", Info_pay);
-                        editor.putString("imgUS", imgUS);
-                        editor.apply();
-                        startActivity(new Intent(getActivity(), SellerOrderActivity.class));
-                    }
-                } else {
-                    Toast.makeText(getContext(), "Some thing ERROR", Toast.LENGTH_SHORT).show();
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast.makeText(getContext(), "Error parsing JSON", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
     private class GetUSer extends AsyncTask<String, Void, String> {
 
         @Override

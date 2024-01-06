@@ -1,14 +1,14 @@
 package com.example.apphkdn.activity;
 
-import static com.example.apphkdn.ultil.Server.GetOrderApp;
+import static com.example.apphkdn.ultil.Server.GetShopOrder;
 import static com.example.apphkdn.ultil.Server.LinkGetShopByIdUser;
-import static com.example.apphkdn.ultil.Server.LinkWaitOrder;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +34,7 @@ import java.util.ArrayList;
 
 public class SellerOrderActivity extends AppCompatActivity {
     Button WaitOrder,ApproveOrder,CancelOrder,CompleteOrder;
+    TextView Comfirm_Sellerorder;
     RecyclerView rcv_ShopOrder;
     ArrayList<Order> orderArrayList;
     OrderAdapter orderAdapter;
@@ -52,25 +53,34 @@ public class SellerOrderActivity extends AppCompatActivity {
         ApproveOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                orderArrayList = new ArrayList<>();
-                orderAdapter = new OrderAdapter(SellerOrderActivity.this,orderArrayList);
-                rcv_ShopOrder.setHasFixedSize(true);
-                rcv_ShopOrder.setLayoutManager(new GridLayoutManager(SellerOrderActivity.this,1));
-                rcv_ShopOrder.setAdapter(orderAdapter);
-                new GetOrderAP().execute(String.valueOf(id_user));
+                setDataAppOrder();
             }
         });
         WaitOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                orderArrayList = new ArrayList<>();
-                orderAdapter = new OrderAdapter(SellerOrderActivity.this,orderArrayList);
-                rcv_ShopOrder.setHasFixedSize(true);
-                rcv_ShopOrder.setLayoutManager(new GridLayoutManager(SellerOrderActivity.this,1));
-                rcv_ShopOrder.setAdapter(orderAdapter);
-                new GetOrder().execute(String.valueOf(id_user));
+                setDataWaitOrder();
             }
         });
+        Comfirm_Sellerorder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        CancelOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDataCancelOrder();
+            }
+        });
+        CompleteOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDataCompleteOrder();
+            }
+        });
+
     }
     private void setDataWaitOrder(){
         orderArrayList = new ArrayList<>();
@@ -80,6 +90,32 @@ public class SellerOrderActivity extends AppCompatActivity {
         rcv_ShopOrder.setAdapter(orderAdapter);
         new GetOrder().execute(String.valueOf(id_user));
     }
+
+    private void setDataAppOrder(){
+        orderArrayList = new ArrayList<>();
+        orderAdapter = new OrderAdapter(SellerOrderActivity.this,orderArrayList);
+        rcv_ShopOrder.setHasFixedSize(true);
+        rcv_ShopOrder.setLayoutManager(new GridLayoutManager(SellerOrderActivity.this,1));
+        rcv_ShopOrder.setAdapter(orderAdapter);
+        new GetOrderAP().execute(String.valueOf(id_user));
+    }
+    private void setDataCancelOrder(){
+        orderArrayList = new ArrayList<>();
+        orderAdapter = new OrderAdapter(SellerOrderActivity.this,orderArrayList);
+        rcv_ShopOrder.setHasFixedSize(true);
+        rcv_ShopOrder.setLayoutManager(new GridLayoutManager(SellerOrderActivity.this,1));
+        rcv_ShopOrder.setAdapter(orderAdapter);
+        new GetOrderCancel().execute(String.valueOf(id_user));
+    }
+    private void setDataCompleteOrder(){
+        orderArrayList = new ArrayList<>();
+        orderAdapter = new OrderAdapter(SellerOrderActivity.this,orderArrayList);
+        rcv_ShopOrder.setHasFixedSize(true);
+        rcv_ShopOrder.setLayoutManager(new GridLayoutManager(SellerOrderActivity.this,1));
+        rcv_ShopOrder.setAdapter(orderAdapter);
+        new GetOrderComplete().execute(String.valueOf(id_user));
+    }
+
     private class GetOrderAP extends AsyncTask<String, Void, String> {
 
         @Override
@@ -125,7 +161,7 @@ public class SellerOrderActivity extends AppCompatActivity {
                     id_shop=jsonObject.getInt("id");
                     Log.d("id_shop", String.valueOf(id_shop));
                     DataLocalManager.setIdShopUser(id_shop);
-                    requestDB.GetOrder(SellerOrderActivity.this,orderArrayList,orderAdapter,GetOrderApp+id_shop);
+                    requestDB.GetOrder(SellerOrderActivity.this,orderArrayList,orderAdapter,GetShopOrder+id_shop+"&status=1");
                 } else {
                     Toast.makeText(SellerOrderActivity.this, "Some thing ERROR", Toast.LENGTH_SHORT).show();
                 }
@@ -182,7 +218,121 @@ public class SellerOrderActivity extends AppCompatActivity {
                     id_shop=jsonObject.getInt("id");
                     Log.d("id_shop", String.valueOf(id_shop));
                     DataLocalManager.setIdShopUser(id_shop);
-                    requestDB.GetOrder(SellerOrderActivity.this,orderArrayList,orderAdapter,LinkWaitOrder+id_shop);
+                    requestDB.GetOrder(SellerOrderActivity.this,orderArrayList,orderAdapter,GetShopOrder+id_shop+"&status=0");
+                } else {
+                    Toast.makeText(SellerOrderActivity.this, "Some thing ERROR", Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Toast.makeText(SellerOrderActivity.this, "Error parsing JSON", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private class GetOrderCancel extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String id_user = params[0];
+            try {
+                URL url = new URL(LinkGetShopByIdUser);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+
+                // Prepare the data to be sent to the server
+                String data = "id_user=" + id_user;
+                OutputStream os = httpURLConnection.getOutputStream();
+                os.write(data.getBytes());
+                os.flush();
+                os.close();
+
+                // Get the response from the server
+                BufferedReader br = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    response.append(line).append("\n");
+                }
+                br.close();
+
+                return response.toString().trim();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "Error: " + e.getMessage();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                boolean success = jsonObject.getBoolean("success");
+
+                if (success) {
+                    id_shop=jsonObject.getInt("id");
+                    Log.d("id_shop", String.valueOf(id_shop));
+                    DataLocalManager.setIdShopUser(id_shop);
+                    requestDB.GetOrder(SellerOrderActivity.this,orderArrayList,orderAdapter,GetShopOrder+id_shop+"&status=3");
+                } else {
+                    Toast.makeText(SellerOrderActivity.this, "Some thing ERROR", Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Toast.makeText(SellerOrderActivity.this, "Error parsing JSON", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private class GetOrderComplete extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String id_user = params[0];
+            try {
+                URL url = new URL(LinkGetShopByIdUser);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+
+                // Prepare the data to be sent to the server
+                String data = "id_user=" + id_user;
+                OutputStream os = httpURLConnection.getOutputStream();
+                os.write(data.getBytes());
+                os.flush();
+                os.close();
+
+                // Get the response from the server
+                BufferedReader br = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    response.append(line).append("\n");
+                }
+                br.close();
+
+                return response.toString().trim();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "Error: " + e.getMessage();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                boolean success = jsonObject.getBoolean("success");
+
+                if (success) {
+                    id_shop=jsonObject.getInt("id");
+                    Log.d("id_shop", String.valueOf(id_shop));
+                    DataLocalManager.setIdShopUser(id_shop);
+                    requestDB.GetOrder(SellerOrderActivity.this,orderArrayList,orderAdapter,GetShopOrder+id_shop+"&status=2");
                 } else {
                     Toast.makeText(SellerOrderActivity.this, "Some thing ERROR", Toast.LENGTH_SHORT).show();
                 }
@@ -202,5 +352,6 @@ public class SellerOrderActivity extends AppCompatActivity {
         CancelOrder=findViewById(R.id.CancelOrder);
         CompleteOrder=findViewById(R.id.CompleteOrder);
         rcv_ShopOrder=findViewById(R.id.rcv_ShopOrder);
+        Comfirm_Sellerorder=findViewById(R.id.Comfirm_Sellerorder);
     }
 }
