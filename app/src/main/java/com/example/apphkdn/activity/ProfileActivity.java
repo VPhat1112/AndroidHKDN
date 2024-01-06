@@ -1,7 +1,8 @@
 package com.example.apphkdn.activity;
 
+import static com.example.apphkdn.activity.CartActivity.cartLists;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -55,6 +56,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 DataLocalManager.ClearMySharedPreferences();
                 Log.d("Debug", DataLocalManager.getEmailUser());
+                cartLists.clear();
                 Intent intent = new Intent(ProfileActivity.this,LoginActivity.class);
                 startActivity(intent);
             }

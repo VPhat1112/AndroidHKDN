@@ -9,9 +9,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,17 +59,36 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ItemHolder> 
         holder.Price_Order.setText(decimalFormat.format(order.getFinalTotal())+"đ");
         new DownloadImageTask(holder.ImgVIewProductShopOrder).execute(order.getProduct_image());
         holder.SL_order.setText("SL: "+order.getNumber_pay());
+        int status=order.getOrder_status();
+        if (status==0){
+            holder.edit_accept_product.setText("Nhận đơn");
+        } else if (status==1) {
+            holder.edit_accept_product.setText("Hoàn thành đơn");
+        }else if (status==2||status==3){
+            holder.edit_accept_product.setVisibility(View.GONE);
+            holder.edit_deni_product.setVisibility(View.GONE);
+        }
 
         holder.edit_accept_product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String order_id = String.valueOf(order.getOrder_id());
                 String mess="";
-                mess = "Bạn có muốn nhận đơn hàng!!!";
-
+                int request=0;
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Lock Product");
-                builder.setMessage(mess);
+                if (status==0){
+                    mess = "Bạn có muốn nhận đơn hàng!!!";
+                    builder.setTitle("Accept Order");
+                    builder.setMessage(mess);
+                    request=1;
+                } else if (status==1) {
+                    mess = "Bạn có muốn xác nhận đơn hàng đã hoàn thành!!!";
+                    builder.setTitle("Complete Order");
+                    builder.setMessage(mess);
+                    request=2;
+                }
+                String CheckRQ=String.valueOf(request);
+
 
                 // Adding a positive button click listener
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -85,13 +103,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ItemHolder> 
                                     @Override
                                     public void onResponse(String response) {
                                         Log.d("Tasas",response);
-//                                        if (response.equals("success")){
+                                        if (response.equals("success")){
                                             String remess= "Đã nhận sản phẩm thành công!";
                                             RequestDB.showInvalidOtpDialogAcceptOrder(context,remess);
-//                                        }else if (response.equals("failed")){
-//                                            String remess= "Nhận sản phẩm thất bại!";
-//                                            RequestDB.showInvalidOtpDialogERROR(context,remess);
-//                                        }
+                                        }else if (response.equals("failed")){
+                                            String remess= "Nhận sản phẩm thất bại!";
+                                            RequestDB.showInvalidOtpDialogERROR(context,remess);
+                                        }
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
@@ -100,8 +118,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ItemHolder> 
                             }
                         }){
                             protected Map<String, String> getParams(){
-                                Map<String, String> params = new HashMap<>();
+                                Map<String,String> params = new HashMap<>();
                                 params.put("order_id",order_id);
+                                params.put("request",CheckRQ);
                                 return params;
                             }
                         };
@@ -135,7 +154,72 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ItemHolder> 
         holder.edit_deni_product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String order_id = String.valueOf(order.getOrder_id());
+                String mess="";
+                int request=3;
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
+                mess = "Bạn có chắc chắn muốn hủy đơn hàng!!!";
+                builder.setTitle("Deni Order");
+                builder.setMessage(mess);
+
+                String CheckRQ=String.valueOf(request);
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Handle the "OK" button click if needed
+                        RequestQueue queue = Volley.newRequestQueue(context);
+                        String url = AcceptOrder;
+
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Log.d("Tasas",response);
+                                        if (response.equals("success")){
+                                            String remess= "Đã nhận sản phẩm thành công!";
+                                            RequestDB.showInvalidOtpDialogAcceptOrder(context,remess);
+                                        }else if (response.equals("failed")){
+                                            String remess= "Nhận sản phẩm thất bại!";
+                                            RequestDB.showInvalidOtpDialogERROR(context,remess);
+                                        }
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(context,error.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
+                            }
+                        }){
+                            protected Map<String, String> getParams(){
+                                Map<String,String> params = new HashMap<>();
+                                params.put("order_id",order_id);
+                                params.put("request",CheckRQ);
+                                return params;
+                            }
+                        };
+                        queue.add(stringRequest);
+                    }
+                });
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // Do nothing
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                // Must call show() prior to fetching text view
+                TextView messageView = (TextView)alertDialog.findViewById(android.R.id.message);
+                messageView.setGravity(Gravity.CENTER);
+
+                TextView titleView = (TextView)alertDialog.findViewById(context.getResources().getIdentifier("alertTitle", "id", "android"));
+                if (titleView != null) {
+                    titleView.setGravity(Gravity.CENTER);
+                }
             }
         });
     }
@@ -146,13 +230,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ItemHolder> 
     }
     public class ItemHolder extends RecyclerView.ViewHolder {
         public ImageView ImgVIewProductShopOrder;
-        ImageButton edit_accept_product,edit_deni_product;
 
-        public LinearLayout layoutproductShop;
-        public TextView TxtProductNameShopOrder,Price_Order,SL_order;
+        public RelativeLayout layoutproductShop;
+        public TextView TxtProductNameShopOrder,Price_Order,SL_order,edit_accept_product,edit_deni_product;
         public ItemHolder(View itemView) {
             super(itemView);
-            layoutproductShop=itemView.findViewById(R.id.layoutProductShop);
+            layoutproductShop=itemView.findViewById(R.id.layoutOrderShop);
             ImgVIewProductShopOrder=itemView.findViewById(R.id.ImgVIewProductShopOrder);
             TxtProductNameShopOrder=itemView.findViewById(R.id.TxtProductNameShopOrder);
             Price_Order=itemView.findViewById(R.id.Price_Order);SL_order=itemView.findViewById(R.id.SL_order);

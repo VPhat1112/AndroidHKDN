@@ -39,8 +39,11 @@ public class Server {
     public static String LockProduct=serverAddress+"LockProduct.php";
 
     public static String SaveOrder=serverAddress+"InserOrder.php";
-    public static String LinkWaitOrder=serverAddress+"GetOrderWait.php?id_shop=";
 
     public static String AcceptOrder=serverAddress+"AcceptOrder.php?";
-    public static String GetOrderApp=serverAddress+"GetOrderAppove.php?id_shop=";
+    public static String GetShopOrder=serverAddress+"GetShopOrder.php?id_shop=";
+
+    public static String GetMyOrder=serverAddress+"GetMyOrder.php?id_user=";
+
+    public static String GetMyOrderApp=serverAddress+"GetMyOrderAppove.php?id_user=";
 }

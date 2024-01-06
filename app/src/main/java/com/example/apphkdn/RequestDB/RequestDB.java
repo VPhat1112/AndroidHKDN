@@ -29,6 +29,7 @@ import com.example.apphkdn.activity.SellerOrderActivity;
 import com.example.apphkdn.activity.ShopSellerProductActivity;
 import com.example.apphkdn.adapter.AutoTextViewAdapter;
 import com.example.apphkdn.adapter.CategoryAdapter;
+import com.example.apphkdn.adapter.MyOrderAdapter;
 import com.example.apphkdn.adapter.OrderAdapter;
 import com.example.apphkdn.adapter.ProductAdapter;
 import com.example.apphkdn.adapter.ProductShopAdapter;
@@ -365,6 +366,45 @@ public class RequestDB {
             }
         };
         requestQueue.add(stringRequest);
+    }
+
+    public void GetMyOrder(Context context, ArrayList<Order> orderArrayList, MyOrderAdapter myOrderAdapter, String url){
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for (int i = 0; i < response.length(); i++){
+                    try {
+                        JSONObject object = response.getJSONObject(i);
+                        orderArrayList.add(new Order(
+                                object.getInt("user_id"),
+                                object.getInt("shop_id"),
+                                object.getInt("order_id"),
+                                object.getInt("contact_id"),
+                                object.getInt("product_id"),
+                                object.getInt("FinalTotal"),
+                                object.getInt("Order_status"),
+                                object.getInt("Number_pay"),
+                                object.getString("product_name"),
+                                serverAddress+object.getString("product_image")
+
+                        ));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                myOrderAdapter.notifyDataSetChanged();
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context,"Error!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        requestQueue.add(jsonArrayRequest);
     }
 
 
