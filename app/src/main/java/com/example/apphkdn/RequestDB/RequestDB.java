@@ -5,6 +5,7 @@ import static com.example.apphkdn.ultil.Server.serverAddress;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -21,14 +22,17 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.apphkdn.DataLocalManager.DataLocalManager;
+import com.example.apphkdn.R;
 import com.example.apphkdn.activity.MyOrderActivity;
 import com.example.apphkdn.activity.MainActivity;
 import com.example.apphkdn.activity.SellerOrderActivity;
 import com.example.apphkdn.activity.ShopSellerProductActivity;
+import com.example.apphkdn.adapter.AutoTextViewAdapter;
 import com.example.apphkdn.adapter.CategoryAdapter;
 import com.example.apphkdn.adapter.OrderAdapter;
 import com.example.apphkdn.adapter.ProductAdapter;
 import com.example.apphkdn.adapter.ProductShopAdapter;
+import com.example.apphkdn.model.AutoTextViewItems;
 import com.example.apphkdn.model.Category;
 import com.example.apphkdn.model.Order;
 import com.example.apphkdn.model.Product;
@@ -79,7 +83,6 @@ public class RequestDB {
         });
         requestQueue.add(jsonArrayRequest);
     }
-
     public void GetProductBySearch(Context context, ArrayList<Product> productArrayList, ProductAdapter productAdapter, String url){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -107,7 +110,7 @@ public class RequestDB {
                             ));
                         }
                     } catch (JSONException e) {
-                        throw new RuntimeException(e);
+                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();;
                     }
                 }
                 productAdapter.notifyDataSetChanged();
@@ -223,7 +226,6 @@ public class RequestDB {
         });
         requestQueue.add(jsonArrayRequest);
     }
-
     public void InsertOrder(Context context,Integer BillTotal, Integer shopId, Integer buyerId, Integer productId, Integer numberOfProduct, Integer productPrice, Integer totalsOfOneProduct, String url){
         RequestQueue queue =Volley.newRequestQueue(context);
 
@@ -269,21 +271,23 @@ public class RequestDB {
         };
         queue.add(stringRequest);
     }
-
-    public void setDataAutotextViewSearch(Context context, AutoCompleteTextView atvSearchBox, String url){
+    public void getDataAutotextViewSearch(Context context, String url){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
-                    ArrayList<String> items = new ArrayList<>();
+                    ArrayList<AutoTextViewItems> items = new ArrayList<>();
                     JSONArray jsonArray = new JSONArray(response);
                     for (int i = 0; i < jsonArray.length(); i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        items.add(jsonObject.getString("name"));
+                        items.add(new AutoTextViewItems(
+                                jsonObject.getString("image"),
+                                jsonObject.getString("name"),
+                                jsonObject.getString("id")
+                        ));
                     }
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_dropdown_item_1line,items);
-                    atvSearchBox.setAdapter(arrayAdapter);
+                DataLocalManager.setListAutotextview(items);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -296,7 +300,6 @@ public class RequestDB {
         });
         requestQueue.add(stringRequest);
     }
-
     public void GetOrder(Context context, ArrayList<Order> orderArrayList, OrderAdapter orderAdapter, String url){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -333,6 +336,35 @@ public class RequestDB {
                     }
                 });
         requestQueue.add(jsonArrayRequest);
+    }
+    public void GetShop(Context context,String idShop, String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    jsonObject.getString("shop_name");
+                    jsonObject.getString("Image_shop");
+                    DataLocalManager.setNameShop(jsonObject.getString("shop_name"));
+                    DataLocalManager.setImageShop(jsonObject.getString("Image_shop"));
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "ERROR PARSING JSON", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("id_shop", idShop);
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 
 
@@ -541,7 +573,6 @@ public class RequestDB {
             titleView.setGravity(Gravity.CENTER);
         }
     }
-
     public static void showInvalidOtpDialogSaveOrder(Context context, String mess) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 //            TextView myMsg = new TextView(getApplicationContext());
