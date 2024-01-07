@@ -1,8 +1,10 @@
 package com.example.apphkdn.DataLocalManager;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.apphkdn.MySharedPreferences.MySharedPreferences;
+import com.example.apphkdn.model.AutoTextViewItems;
 import com.example.apphkdn.model.Category;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -27,6 +29,9 @@ public class DataLocalManager {
     private static final String PREF_IMAGE_USER_LOGIN = "PREF_IMAGE_USER_LOGIN";
     private static final String PREF_IDSHOP_USER_LOGIN = "PREF_IDSHOP_USER_LOGIN";
     private static final String PREF_IDCATEGORY_USER_UPDATE = "PREF_IDCATEGORY_USER_UPDATE";
+    private static final String PREF_LIST_AUTOTEXTVIEW = "PREF_LIST_AUTOTEXTVIEW";
+    private static final String PREF_NAME_SHOP = "PREF_NAME_SHOP";
+    private static final String PREF_IMAGE_SHOP = "PREF_IMAGE_SHOP";
     private static DataLocalManager instance;
     private MySharedPreferences mySharedPreferences;
 
@@ -121,6 +126,22 @@ public class DataLocalManager {
         return DataLocalManager.getInstance().mySharedPreferences.getIntValue(PREF_IDCATEGORY_USER_UPDATE);
     }
 
+    public static void setNameShop(String value){
+        DataLocalManager.getInstance().mySharedPreferences.putStringValue(PREF_NAME_SHOP, value);
+    }
+
+    public static String getNameShop(){
+        return DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_NAME_SHOP);
+    }
+
+    public static void setImageShop(String value){
+        DataLocalManager.getInstance().mySharedPreferences.putStringValue(PREF_IMAGE_SHOP, value);
+    }
+
+    public static String getImageShop(){
+        return DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_IMAGE_SHOP);
+    }
+
     public static void setListCategorySpinner(ArrayList<Category> list){
         Gson gson = new Gson();
         JsonArray jsonArray = gson.toJsonTree(list).getAsJsonArray();
@@ -147,6 +168,33 @@ public class DataLocalManager {
 
         return list;
     }
+
+    public static void setListAutotextview(ArrayList<AutoTextViewItems> list){
+        Gson gson = new Gson();
+        JsonArray jsonArray = gson.toJsonTree(list).getAsJsonArray();
+        String strJsonArray = jsonArray.toString();
+        DataLocalManager.getInstance().mySharedPreferences.putStringValue(PREF_LIST_AUTOTEXTVIEW ,strJsonArray);
+    }
+
+    public static ArrayList<AutoTextViewItems> getListAutotextview(){
+        String strJsonArray = DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_LIST_AUTOTEXTVIEW);
+        ArrayList<AutoTextViewItems> list = new ArrayList<>();
+        try {
+            JSONArray jsonArray = new JSONArray(strJsonArray);
+            JSONObject jsonObject;
+            AutoTextViewItems autoTextViewItems;
+            Gson gson = new Gson();
+            for (int i = 0; i<jsonArray.length(); i++){
+                jsonObject = jsonArray.getJSONObject(i);
+                autoTextViewItems = gson.fromJson(jsonObject.toString(), AutoTextViewItems.class);
+                list.add(autoTextViewItems);
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
     public static void ClearMySharedPreferences(){
         DataLocalManager.getInstance().mySharedPreferences.ClearMySharedPreferences();
     }

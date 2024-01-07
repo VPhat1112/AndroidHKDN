@@ -27,15 +27,18 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
+import com.example.apphkdn.adapter.AutoTextViewAdapter;
+import com.example.apphkdn.model.AutoTextViewItems;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
-    String name;
+    String nameShop, idShop;
     AutoCompleteTextView atvSearchBox;
     Button btnBack, btnFilter;
     AppCompatButton btnReset, btnApply;
@@ -43,6 +46,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     EditText edtPriceFrom, edtPriceTo;
     NavigationView nav;
     DrawerLayout drawerLayout;
+    AutoTextViewAdapter autoTextViewAdapter;
     RequestDB requestDB = new RequestDB();
 
     @Override
@@ -54,6 +58,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         openSearchBox();
         setAutoFillSearch();
         Search();
+        setTextviewSearch(getKeySarch());
         onClickitem();
         onClick();
         onCheckedChange();
@@ -65,6 +70,19 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void onCheckedChange(){
+    }
+
+    // Get key search from ShowProductBySearchActivity
+    private String getKeySarch(){
+        String key_search = getIntent().getStringExtra("searchtxt");
+        return key_search;
+    }
+
+    // Set Textview search
+    private void setTextviewSearch(String key){
+        if (key != null){
+            atvSearchBox.setText(key);
+        }
     }
 
     // Focus on search box when start activity
@@ -83,7 +101,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     // Set autotextview
     private void setAutoFillSearch(){
-        requestDB.setDataAutotextViewSearch(SearchActivity.this, atvSearchBox, LinkDataAutotextViewSearch);
+        requestDB.getDataAutotextViewSearch(SearchActivity.this, LinkDataAutotextViewSearch);
+        ArrayList<AutoTextViewItems> arrayList = DataLocalManager.getListAutotextview();
+        autoTextViewAdapter = new AutoTextViewAdapter(SearchActivity.this, R.layout.item_autotv_row, arrayList);
+        atvSearchBox.setAdapter(autoTextViewAdapter);
         atvSearchBox.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -96,12 +117,30 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         atvSearchBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                name = parent.getItemAtPosition(position).toString().trim();
-                Intent intent = new Intent(SearchActivity.this, ShowProductBySearchActivity.class);
-                intent.putExtra("keySearch",name);
-                startActivity(intent);
+                nameShop = autoTextViewAdapter.getItem(position).getName();
+                idShop = autoTextViewAdapter.getItem(position).getId();
+                atvSearchBox.setText("");
+
+                if (checkIdShop(idShop)){
+                    Intent intent = new Intent(SearchActivity.this, ShopActivity.class);
+                    intent.putExtra("keyidShopcc",idShop);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(SearchActivity.this, ShowProductBySearchActivity.class);
+                    intent.putExtra("keySearch",nameShop);
+                    startActivity(intent);
+                }
             }
         });
+    }
+
+    // Check if id shop is not ""
+    private Boolean checkIdShop(String idShop){
+        if (!idShop.equals("")){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void Search(){
