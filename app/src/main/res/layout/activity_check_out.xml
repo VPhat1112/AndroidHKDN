@@ -42,11 +42,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <TextView
-                            android:id="@+id/txtTenandSDT"
+                            android:id="@+id/txtTen"
                             android:drawableStart="@drawable/baseline_location_on_24"
-                            android:text="Tên User | SDT"
+                            android:text="Tên User | "
                             android:textStyle="bold"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:id="@+id/txtSDT"
+                            android:text="SDT"
+                            android:textStyle="bold"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
                     <LinearLayout

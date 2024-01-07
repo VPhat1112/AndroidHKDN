@@ -5,10 +5,7 @@ import static com.example.apphkdn.ultil.Server.serverAddress;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.view.Gravity;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,12 +19,10 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.apphkdn.DataLocalManager.DataLocalManager;
-import com.example.apphkdn.R;
-import com.example.apphkdn.activity.MyOrderActivity;
 import com.example.apphkdn.activity.MainActivity;
+import com.example.apphkdn.activity.MyOrderActivity;
 import com.example.apphkdn.activity.SellerOrderActivity;
 import com.example.apphkdn.activity.ShopSellerProductActivity;
-import com.example.apphkdn.adapter.AutoTextViewAdapter;
 import com.example.apphkdn.adapter.CategoryAdapter;
 import com.example.apphkdn.adapter.MyOrderAdapter;
 import com.example.apphkdn.adapter.OrderAdapter;
@@ -227,7 +222,7 @@ public class RequestDB {
         });
         requestQueue.add(jsonArrayRequest);
     }
-    public void InsertOrder(Context context,Integer BillTotal, Integer shopId, Integer buyerId, Integer productId, Integer numberOfProduct, Integer productPrice, Integer totalsOfOneProduct, String url){
+    public void InsertOrder(Context context,Integer BillTotal, Integer shopId, Integer buyerId, Integer productId, Integer numberOfProduct, Integer productPrice, Integer totalsOfOneProduct,String Address_ship,String Phone, String url){
         RequestQueue queue =Volley.newRequestQueue(context);
 
         StringRequest stringRequest= new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -267,6 +262,8 @@ public class RequestDB {
                 params.put("Number_pay", String.valueOf(numberOfProduct));
                 params.put("product_price", String.valueOf(productPrice));
                 params.put("Product_TotalPay", String.valueOf(totalsOfOneProduct));
+                params.put("Address_ship", Address_ship);
+                params.put("Phone", Phone);
                 return params;
             }
         };
