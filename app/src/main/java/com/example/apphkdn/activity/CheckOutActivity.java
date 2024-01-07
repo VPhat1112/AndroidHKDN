@@ -27,7 +27,7 @@ import java.util.List;
 
 public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayDialog.ChoiceWayPayDialogListener {
     RecyclerView rcv_Order;
-    TextView txtTenandSDT,txtMoneyFast,txtMoneyShip,txtMoneyTotal,CheckMoneyTotal,Update_Address_order,Comfirm_order,txtSeall,txtWayPay;
+    TextView txtTenandSDT,txtMoneyFast,txtMoneyShip,txtMoneyTotal,CheckMoneyTotal,Update_Address_order,Comfirm_order,txtSeall,txtWayPay,txtTen,txtSDT;
     Button btn_Order_complete;
     ProductOrderAdapter productOrderAdapter;
     List<Cart> filteredCartList = new ArrayList<>();
@@ -51,7 +51,11 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
         btn_Order_complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 Integer id_shop=0,id_User=0,product_id=0,numberProduct=0,prot_price=0,totalofPrice=0;
+                String Address_ship=Update_Address_order.getText().toString();
+                String Phone=txtSDT.getText().toString();
                 for (int i=0;i<filteredCartList.size();i++){
                      id_shop=filteredCartList.get(i).getShop_id();
                      id_User=DataLocalManager.getIdUser();
@@ -61,7 +65,7 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
                      totalofPrice=prot_price*numberProduct;
 
                     Log.d("Result aaa", id_shop + " " + id_User + " " + product_id + " " + numberProduct + " " + prot_price + " " + totalofPrice);
-                    requestDB.InsertOrder(CheckOutActivity.this,totalofPrice,id_shop,id_User,product_id,numberProduct,prot_price,totalofPrice,SaveOrder);
+                    requestDB.InsertOrder(CheckOutActivity.this,totalofPrice,id_shop,id_User,product_id,numberProduct,prot_price,totalofPrice,Address_ship,Phone,SaveOrder);
                 }
 
             }
@@ -119,6 +123,8 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
         btn_Order_complete=findViewById(R.id.btn_Order_complete);
         txtSeall=findViewById(R.id.txtSeall);
         txtWayPay=findViewById(R.id.txtWayPay);
+
+        txtSDT=findViewById(R.id.txtSDT);
     }
 
     @Override

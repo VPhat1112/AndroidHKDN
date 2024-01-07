@@ -56,7 +56,7 @@ public class Detail_product extends AppCompatActivity {
     int Product_price,status,product_selled,shop_rate;
     CardView plus,remove,colorStatus;
 
-    String shop_name,kind_shop,Address,Image_shop,product_name,Product_decs,Product_image;
+    String shop_name,shop_phone,Address,Image_shop,product_name,Product_decs,Product_image;
 
     RatingBar ratingshop;
     private List<String> imageUrls;
@@ -262,7 +262,7 @@ public class Detail_product extends AppCompatActivity {
                 if (success) {
                     id_shop = jsonObject.getInt("id");
                     shop_name = jsonObject.getString("shop_name");
-                    kind_shop = jsonObject.getString("kind_shop");
+                    shop_phone = jsonObject.getString("shop_phone");
                     shop_rate = jsonObject.getInt("shop_rate");
                     status=jsonObject.getInt("status");
                     Address = jsonObject.getString("Address");

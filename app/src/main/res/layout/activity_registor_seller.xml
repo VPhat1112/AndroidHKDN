@@ -88,6 +88,7 @@
             <ImageView
                 android:id="@+id/imgv_img_seller"
                 android:src="@drawable/imf_seller"
+                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:layout_width="match_parent"
                 android:drawableEnd="@drawable/icon"
@@ -138,7 +139,7 @@
             android:layout_marginTop="15dp"
             android:layout_width="wrap_content"
             android:layout_height="24.4dp"
-            android:text="Loại cửa hàng"
+            android:text="Số điện thoại"
             android:layout_below="@+id/crv3"/>
 
         <androidx.cardview.widget.CardView
@@ -149,13 +150,18 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             app:cardCornerRadius="10dp">
-
-            <Spinner
+            <EditText
                 android:id="@+id/spn_shop_kind"
+                android:inputType="phone"
+                android:maxLength="11"
+                android:textSize="16sp"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:paddingRight="10dp"
-                android:paddingLeft="10dp" />
+                android:paddingLeft="10dp"
+                android:drawableEnd="@drawable/icon"
+                android:layout_height="match_parent"
+                android:background="@drawable/corner_edt_seller"/>
 
         </androidx.cardview.widget.CardView>
 

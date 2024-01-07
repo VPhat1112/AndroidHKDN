@@ -19,7 +19,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     Button btnBack;
     CardView SignOut;
-    TextView txtname,txtgmail,txtphonenumber,txtAddress,txtEmailAd;
+    TextView txtname,txtgmail,txtphonenumber,txtAddress,txtEmailAd,profile_fullname;
 
 
 
@@ -40,6 +40,7 @@ public class ProfileActivity extends AppCompatActivity {
         txtAddress.setText("    "+DataLocalManager.getAddressUser());
         txtphonenumber.setText("    "+DataLocalManager.getPhoneUser());
         txtEmailAd.setText("    "+DataLocalManager.getEmailUser());
+        profile_fullname.setText(DataLocalManager.getNameUser());
     }
 
     private void goBack(){
@@ -71,5 +72,6 @@ public class ProfileActivity extends AppCompatActivity {
         txtphonenumber= findViewById(R.id.prPhoneNumber);
         txtAddress= findViewById(R.id.prResidentialAddress);
         txtEmailAd=findViewById(R.id.prEmailAddress);
+        profile_fullname=findViewById(R.id.profile_fullname);
     }
 }
