@@ -177,10 +177,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ItemHolder> 
                                     public void onResponse(String response) {
                                         Log.d("Tasas",response);
                                         if (response.equals("success")){
-                                            String remess= "Đã nhận sản phẩm thành công!";
+                                            String remess= "Đã hủy sản phẩm thành công!";
                                             RequestDB.showInvalidOtpDialogAcceptOrder(context,remess);
                                         }else if (response.equals("failed")){
-                                            String remess= "Nhận sản phẩm thất bại!";
+                                            String remess= "hủy sản phẩm thất bại!";
                                             RequestDB.showInvalidOtpDialogERROR(context,remess);
                                         }
                                     }

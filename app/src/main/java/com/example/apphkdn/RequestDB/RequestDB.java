@@ -415,9 +415,7 @@ public class RequestDB {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Handle the "OK" button click if needed
-                Intent intent = new Intent(context, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
+                context.startActivity(new Intent(context,MainActivity.class));
             }
         });
 
