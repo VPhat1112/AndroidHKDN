@@ -283,7 +283,7 @@ public class RequestDB {
                     for (int i = 0; i < jsonArray.length(); i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         items.add(new AutoTextViewItems(
-                                jsonObject.getString("image"),
+                                jsonObject.getString("Image_shop"),
                                 jsonObject.getString("name"),
                                 jsonObject.getString("id")
                         ));

@@ -39,7 +39,12 @@ public class AutoTextViewAdapter extends ArrayAdapter<AutoTextViewItems> {
 
         AutoTextViewItems autoTextViewItems = getItem(position);
 
-        new DownloadImageTask(imgShop).execute(autoTextViewItems.getImg());
+        if ((autoTextViewItems.getId().equals(""))){
+
+            imgShop.setImageResource(R.drawable.baseline_search_24);
+        } else {
+            new DownloadImageTask(imgShop).execute(autoTextViewItems.getImg());
+        }
         tvShopName.setText(autoTextViewItems.getName());
         tvIdName.setText(autoTextViewItems.getId());
 
