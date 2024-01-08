@@ -316,7 +316,12 @@ public class RequestDB {
                                 object.getInt("Order_status"),
                                 object.getInt("Number_pay"),
                                 object.getString("product_name"),
-                                serverAddress+object.getString("product_image")
+                                serverAddress+object.getString("product_image"),
+                                object.getString("CreatedAt"),
+                                object.getString("Name"),
+                                object.getString("Phone"),
+                                object.getString("Address_ship"),
+                                object.getString("Shop_name")
 
                         ));
                     } catch (JSONException e) {
@@ -384,7 +389,14 @@ public class RequestDB {
                                 object.getInt("Order_status"),
                                 object.getInt("Number_pay"),
                                 object.getString("product_name"),
-                                serverAddress+object.getString("product_image")
+                                serverAddress+object.getString("product_image"),
+                                object.getString("CreatedAt"),
+                                object.getString("Name"),
+                                object.getString("Phone"),
+                                object.getString("Address_ship"),
+                                object.getString("Shop_name")
+
+
 
                         ));
                     } catch (JSONException e) {

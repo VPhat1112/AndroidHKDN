@@ -14,6 +14,7 @@
         android:padding="10dp">
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/back_Btn_Detail"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/baseline_arrow_back_24" />
@@ -53,7 +54,7 @@
             android:textSize="20dp" />
 
         <TextView
-            android:id="@+id/tv3"
+            android:id="@+id/txtOrder_ID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/tv1"
@@ -74,15 +75,17 @@
             android:textSize="18dp" />
 
         <TextView
+            android:id="@+id/txtCreatedAt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv3"
+            android:layout_below="@+id/txtOrder_ID"
             android:layout_toEndOf="@+id/tv2"
             android:text="Ngày giờ"
             android:textColor="#3A3737"
             android:textSize="18dp" />
 
         <TextView
+            android:id="@+id/StatusDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv2"
@@ -130,7 +133,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_toEndOf="@+id/img2"
-            android:text="Mã đơn hàng: "
+            android:text="Theo dõi đơn hàng"
             android:textColor="@color/black"
             android:textSize="20dp" />
 
@@ -210,7 +213,7 @@
             android:textSize="18dp" />
 
         <TextView
-            android:id="@+id/tv7"
+            android:id="@+id/txtSDTDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_name_buyer_order"
@@ -221,9 +224,10 @@
             android:textSize="18dp" />
 
         <TextView
+            android:id="@+id/txtAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv7"
+            android:layout_below="@+id/txtSDTDetail"
             android:layout_toEndOf="@+id/img3"
             android:paddingStart="15dp"
             android:text="Địa chỉ"

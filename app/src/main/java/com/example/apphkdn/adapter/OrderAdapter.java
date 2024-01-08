@@ -103,13 +103,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ItemHolder> 
                                     @Override
                                     public void onResponse(String response) {
                                         Log.d("Tasas",response);
-                                        if (response.equals("success")){
-                                            String remess= "Đã nhận sản phẩm thành công!";
+//                                        if (response=="success"){
+                                            String remess= "thành công!";
                                             RequestDB.showInvalidOtpDialogAcceptOrder(context,remess);
-                                        }else if (response.equals("failed")){
-                                            String remess= "Nhận sản phẩm thất bại!";
-                                            RequestDB.showInvalidOtpDialogERROR(context,remess);
-                                        }
+//                                        }else if (response.equals("failed")){
+//                                            String remess= "thất bại!";
+//                                            RequestDB.showInvalidOtpDialogERROR(context,remess);
+//                                        }
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
@@ -176,13 +176,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ItemHolder> 
                                     @Override
                                     public void onResponse(String response) {
                                         Log.d("Tasas",response);
-                                        if (response.equals("success")){
+//                                        if (response.equals("success")){
                                             String remess= "Đã hủy sản phẩm thành công!";
                                             RequestDB.showInvalidOtpDialogAcceptOrder(context,remess);
-                                        }else if (response.equals("failed")){
-                                            String remess= "hủy sản phẩm thất bại!";
-                                            RequestDB.showInvalidOtpDialogERROR(context,remess);
-                                        }
+//                                        }else if (response.equals("failed")){
+//                                            String remess= "hủy sản phẩm thất bại!";
+//                                            RequestDB.showInvalidOtpDialogERROR(context,remess);
+//                                        }
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
