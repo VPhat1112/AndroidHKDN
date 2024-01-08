@@ -43,6 +43,8 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ItemHold
         holder.Price_MyOrder.setText(decimalFormat.format(order.getFinalTotal())+"đ");
         new DownloadImageTask(holder.ImgVIewProductMyOrder).execute(order.getProduct_image());
         holder.SL_MyOrder.setText("SL: "+order.getNumber_pay());
+
+        holder.txtStatus.setText("hello");
     }
 
     @Override
@@ -52,9 +54,8 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ItemHold
 
     public class ItemHolder extends RecyclerView.ViewHolder {
         public ImageView ImgVIewProductMyOrder;
-
         public RelativeLayout layoutproductMyOrder;
-        public TextView TxtProductNameMyOrder,Price_MyOrder,SL_MyOrder;
+        public TextView TxtProductNameMyOrder,Price_MyOrder,SL_MyOrder,txtStatus;
         public ItemHolder(View itemView) {
             super(itemView);
             layoutproductMyOrder=itemView.findViewById(R.id.layoutMyOrder);
@@ -62,6 +63,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ItemHold
             TxtProductNameMyOrder=itemView.findViewById(R.id.TxtProductNameMyOrder);
             Price_MyOrder=itemView.findViewById(R.id.Price_MyOrder);
             SL_MyOrder=itemView.findViewById(R.id.SL_MyOrder);
+            txtStatus=itemView.findViewById(R.id.tv_item_myorder_status);
         }
     }
 }

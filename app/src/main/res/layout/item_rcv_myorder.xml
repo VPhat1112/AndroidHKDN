@@ -1,43 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutMyOrder"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:gravity="center">
+
+    <LinearLayout
+        android:id="@+id/ln11111"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:weightSum="10">
+
+        <TextView
+            android:id="@+id/tv_item_myorder_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6.5"
+            android:textColor="#34000000"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="text" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3.5"
+            android:drawableStart="@drawable/outline_edit_24"
+            android:gravity="end"
+            android:textColor="@color/lavender"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Viết đánh giá" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/v1111"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/ln11111"
+        android:background="#34292727" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardviewproductMyOrder"
-        app:cardCornerRadius="15dp"
         android:layout_width="match_parent"
-        android:layout_height="150dp">
+        android:layout_height="150dp"
+        android:layout_below="@+id/v1111">
+
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:orientation="horizontal">
+
             <ImageView
-                android:layout_marginRight="5dp"
                 android:id="@+id/ImgVIewProductMyOrder"
                 android:layout_width="70dp"
-                android:layout_height="70dp"/>
+                android:layout_height="70dp"
+                android:layout_marginRight="5dp" />
+
             <LinearLayout
-                android:padding="10dp"
-                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
                 <TextView
-                    android:padding="10dp"
                     android:id="@+id/TxtProductNameMyOrder"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
                     android:text="Tên Sản Phẩm"
                     android:textColor="#000000"
-                    android:textSize="20sp"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"/>
+                    android:textSize="20sp" />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <TextView
                         android:id="@+id/SL_MyOrder"
                         android:layout_width="wrap_content"
@@ -46,16 +91,46 @@
                         android:gravity="center_vertical"
                         android:text="SL"
                         android:textSize="12dp" />
+
                     <TextView
                         android:id="@+id/Price_MyOrder"
-                        android:layout_alignParentEnd="true"
-                        android:text="134.000 đ"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="center"
+                        android:text="134.000 đ" />
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cardviewproductMyOrder"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_detail_item_myorder"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:background="@drawable/rounded_corner_btn_nav"
+            android:text="Xem Chi Tiết"
+            android:textColor="@color/bottomnav"
+            android:textSize="15dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_buy_back_item_myorder"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:background="@drawable/rounded_corner_btn_nav"
+            android:text="Mua lại"
+            android:textColor="@color/bottomnav"
+            android:layout_marginStart="5dp"
+            android:textSize="15dp" />
+
+    </LinearLayout>
 </RelativeLayout>
