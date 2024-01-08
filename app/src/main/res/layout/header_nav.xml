@@ -42,7 +42,7 @@
             android:id="@+id/ckb_price_under_300k"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_button_nav_checked"
+            android:background="@drawable/rounded_button_nav_unchecked"
             android:button="@android:color/transparent"
             android:gravity="center"
             android:text="dưới 300.000"
@@ -54,7 +54,7 @@
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:background="@drawable/rounded_button_nav_checked"
+            android:background="@drawable/rounded_button_nav_unchecked"
             android:button="@android:color/transparent"
             android:gravity="center"
             android:text="300.000 -> 1.000.000"
@@ -76,7 +76,7 @@
             android:id="@+id/ckb_price_1500k_to_1000k"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_button_nav_checked"
+            android:background="@drawable/rounded_button_nav_unchecked"
             android:button="@android:color/transparent"
             android:gravity="center"
             android:text="1.000.000 -> 1.500.000"
@@ -88,7 +88,7 @@
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:background="@drawable/rounded_button_nav_checked"
+            android:background="@drawable/rounded_button_nav_unchecked"
             android:button="@android:color/transparent"
             android:gravity="center"
             android:text="trên 1.500.000"
@@ -109,6 +109,7 @@
         android:textSize="18dp" />
 
     <LinearLayout
+        android:id="@+id/ln3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_nav_4"
@@ -148,8 +149,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/ln3"
+        android:layout_marginTop="40dp"
         android:gravity="center"
         android:orientation="horizontal">
 

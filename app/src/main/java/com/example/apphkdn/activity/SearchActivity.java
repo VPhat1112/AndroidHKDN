@@ -2,17 +2,17 @@ package com.example.apphkdn.activity;
 
 import static com.example.apphkdn.ultil.Server.LinkDataAutotextViewSearch;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -55,6 +55,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.product_search);
 
         initUI();
+        settingActivity();
+    }
+
+    private void settingActivity(){
         openSearchBox();
         setAutoFillSearch();
         Search();
@@ -62,14 +66,45 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         onClickitem();
         onClick();
         onCheckedChange();
+        CheckPriceTo();
     }
 
     private void onClick(){
         btnBack.setOnClickListener(this);
         btnFilter.setOnClickListener(this);
+        btnApply.setOnClickListener(this);
+        btnReset.setOnClickListener(this);
     }
 
     private void onCheckedChange(){
+        ckb_price_300.setOnCheckedChangeListener(this);
+        ckb_price_300_1tr.setOnCheckedChangeListener(this);
+        ckb_price_1tr_1tr5.setOnCheckedChangeListener(this);
+        ckb_price_1tr5.setOnCheckedChangeListener(this);
+    }
+
+    private void CheckPriceTo(){
+        TextWatcher tw = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s == null | s.length() == 0){
+                    edtPriceTo.setEnabled(false);
+                } else {
+                    edtPriceTo.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+        edtPriceFrom.addTextChangedListener(tw);
     }
 
     // Get key search from ShowProductBySearchActivity
@@ -183,12 +218,78 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         if (v.getId() == R.id.btn_search_filter){
             closeKeyBoard();
             drawerLayout.openDrawer(GravityCompat.END);
-        } else if (v.getId() == R.id.btn_search_back) {
+        }
+
+        if (v.getId() == R.id.btn_search_back) {
             finish();
         }
+
+        if (v.getId() == R.id.btn_nav_apply){
+
+        }
+
+        if (v.getId() == R.id.btn_nav_reset){
+
+        }
+
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (buttonView.getId() == R.id.ckb_price_under_300k){
+            if (ckb_price_300.isChecked()){
+                ckb_price_300.setBackground(getResources().getDrawable(R.drawable.rounded_button_nav_checked));
+
+                ckb_price_300_1tr.setChecked(false);
+
+                ckb_price_1tr_1tr5.setChecked(false);
+
+                ckb_price_1tr5.setChecked(false);
+            } else {
+                ckb_price_300.setBackground(getResources().getDrawable(R.drawable.rounded_button_nav_unchecked));
+            }
+        }
+
+        if (buttonView.getId() == R.id.ckb_price_1000k_to_300k) {
+            if (ckb_price_300_1tr.isChecked()){
+                ckb_price_300_1tr.setBackground(getResources().getDrawable(R.drawable.rounded_button_nav_checked));
+
+                ckb_price_300.setChecked(false);
+
+                ckb_price_1tr_1tr5.setChecked(false);
+
+                ckb_price_1tr5.setChecked(false);
+            } else {
+                ckb_price_300_1tr.setBackground(getResources().getDrawable(R.drawable.rounded_button_nav_unchecked));
+            }
+        }
+
+        if (buttonView.getId() == R.id.ckb_price_1500k_to_1000k) {
+            if (ckb_price_1tr_1tr5.isChecked()){
+                ckb_price_1tr_1tr5.setBackground(getResources().getDrawable(R.drawable.rounded_button_nav_checked));
+
+                ckb_price_300.setChecked(false);
+
+                ckb_price_300_1tr.setChecked(false);
+
+                ckb_price_1tr5.setChecked(false);
+            } else {
+                ckb_price_1tr_1tr5.setBackground(getResources().getDrawable(R.drawable.rounded_button_nav_unchecked));
+            }
+        }
+
+        if (buttonView.getId() == R.id.ckb_price_above_1500k) {
+            if (ckb_price_1tr5.isChecked()){
+                ckb_price_1tr5.setBackground(getResources().getDrawable(R.drawable.rounded_button_nav_checked));
+
+                ckb_price_300.setChecked(false);
+
+                ckb_price_300_1tr.setChecked(false);
+
+                ckb_price_1tr_1tr5.setChecked(false);
+            } else {
+                ckb_price_1tr5.setBackground(getResources().getDrawable(R.drawable.rounded_button_nav_unchecked));
+            }
+        }
     }
 }
