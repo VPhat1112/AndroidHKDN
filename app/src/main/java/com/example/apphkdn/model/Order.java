@@ -2,9 +2,10 @@ package com.example.apphkdn.model;
 
 public class Order {
     int user_id,shop_id,order_id,contact_id,product_id,FinalTotal,Order_status,Number_pay;
-    String product_name,product_image;
+    String product_name,product_image,CreateAt,Name,Phone,Address_ship,Shop_name;
 
-    public Order(int user_id, int shop_id, int order_id, int contact_id, int product_id, int finalTotal, int order_status, int number_pay, String product_name, String product_image) {
+
+    public Order(int user_id, int shop_id, int order_id, int contact_id, int product_id, int finalTotal, int order_status, int number_pay, String product_name, String product_image, String createAt, String name, String phone, String address_ship, String shop_name) {
         this.user_id = user_id;
         this.shop_id = shop_id;
         this.order_id = order_id;
@@ -15,6 +16,51 @@ public class Order {
         this.Number_pay = number_pay;
         this.product_name = product_name;
         this.product_image = product_image;
+        this.CreateAt = createAt;
+        this.Name = name;
+        this.Phone = phone;
+        this.Address_ship = address_ship;
+        this.Shop_name = shop_name;
+    }
+
+    public String getShop_name() {
+        return Shop_name;
+    }
+
+    public void setShop_name(String shop_name) {
+        Shop_name = shop_name;
+    }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String phone) {
+        Phone = phone;
+    }
+
+    public String getAddress_ship() {
+        return Address_ship;
+    }
+
+    public void setAddress_ship(String address_ship) {
+        Address_ship = address_ship;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public String getCreateAt() {
+        return CreateAt;
+    }
+
+    public void setCreateAt(String createAt) {
+        CreateAt = createAt;
     }
 
     public int getUser_id() {

@@ -27,7 +27,7 @@ import java.util.List;
 
 public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayDialog.ChoiceWayPayDialogListener {
     RecyclerView rcv_Order;
-    TextView txtTenandSDT,txtMoneyFast,txtMoneyShip,txtMoneyTotal,CheckMoneyTotal,Update_Address_order,Comfirm_order,txtSeall,txtWayPay,txtTen,txtSDT;
+    TextView txtTen,txtSDT,txtMoneyFast,txtMoneyShip,txtMoneyTotal,CheckMoneyTotal,Update_Address_order,Comfirm_order,txtSeall,txtWayPay;
     Button btn_Order_complete;
     ProductOrderAdapter productOrderAdapter;
     List<Cart> filteredCartList = new ArrayList<>();
@@ -64,6 +64,7 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
                      prot_price=filteredCartList.get(i).getProduct_price();
                      totalofPrice=prot_price*numberProduct;
 
+
                     Log.d("Result aaa", id_shop + " " + id_User + " " + product_id + " " + numberProduct + " " + prot_price + " " + totalofPrice);
                     requestDB.InsertOrder(CheckOutActivity.this,totalofPrice,id_shop,id_User,product_id,numberProduct,prot_price,totalofPrice,Address_ship,Phone,SaveOrder);
                 }
@@ -94,7 +95,8 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
         GridLayoutManager linearLayoutManager = new GridLayoutManager(CheckOutActivity.this, 1, RecyclerView.VERTICAL, false);
         rcv_Order.setAdapter(productOrderAdapter);
         rcv_Order.setLayoutManager(linearLayoutManager);
-        txtTenandSDT.setText(DataLocalManager.getNameUser()+" | "+DataLocalManager.getPhoneUser());
+        txtTen.setText(DataLocalManager.getNameUser()+" | ");
+        txtSDT.setText(DataLocalManager.getPhoneUser());
         totalMoney();
         txtMoneyFast.setText(decimalFormat.format(totalBill)+"đ");
         txtMoneyShip.setText("42,000 đ");
@@ -113,7 +115,7 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
     }
     private void UnitUI(){
         rcv_Order=findViewById(R.id.rcv_Order);
-        txtTenandSDT=findViewById(R.id.txtTenandSDT);
+        txtTen=findViewById(R.id.txtTen);
         txtMoneyFast=findViewById(R.id.txtMoneyFast);
         txtMoneyShip=findViewById(R.id.txtMoneyShip);
         txtMoneyTotal=findViewById(R.id.txtMoneyTotal);
