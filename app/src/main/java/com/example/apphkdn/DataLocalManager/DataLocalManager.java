@@ -1,11 +1,11 @@
 package com.example.apphkdn.DataLocalManager;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.apphkdn.MySharedPreferences.MySharedPreferences;
 import com.example.apphkdn.model.AutoTextViewItems;
 import com.example.apphkdn.model.Category;
+import com.example.apphkdn.model.Rating;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
@@ -32,6 +32,8 @@ public class DataLocalManager {
     private static final String PREF_LIST_AUTOTEXTVIEW = "PREF_LIST_AUTOTEXTVIEW";
     private static final String PREF_NAME_SHOP = "PREF_NAME_SHOP";
     private static final String PREF_IMAGE_SHOP = "PREF_IMAGE_SHOP";
+    private static final String PREF_LIST_RATING = "PREF_LIST_RATING";
+
     private static DataLocalManager instance;
     private MySharedPreferences mySharedPreferences;
 
@@ -161,6 +163,32 @@ public class DataLocalManager {
                 jsonObject = jsonArray.getJSONObject(i);
                 category = gson.fromJson(jsonObject.toString(), Category.class);
                 list.add(category);
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        return list;
+    }
+    public static void setListRating(ArrayList<Rating> list){
+        Gson gson = new Gson();
+        JsonArray jsonArray = gson.toJsonTree(list).getAsJsonArray();
+        String strJsonArray = jsonArray.toString();
+        DataLocalManager.getInstance().mySharedPreferences.putStringValue(PREF_LIST_RATING ,strJsonArray);
+    }
+
+    public static ArrayList<Rating> getListRating(){
+        String strJsonArray = DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_LIST_RATING);
+        ArrayList<Rating> list = new ArrayList<>();
+        try {
+            JSONArray jsonArray = new JSONArray(strJsonArray);
+            JSONObject jsonObject;
+            Rating rating;
+            Gson gson = new Gson();
+            for (int i = 0; i<jsonArray.length(); i++){
+                jsonObject = jsonArray.getJSONObject(i);
+                rating = gson.fromJson(jsonObject.toString(), Rating.class);
+                list.add(rating);
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);

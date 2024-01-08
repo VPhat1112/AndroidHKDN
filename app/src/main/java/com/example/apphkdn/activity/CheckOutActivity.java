@@ -3,12 +3,15 @@ package com.example.apphkdn.activity;
 import static com.example.apphkdn.activity.CartActivity.cartLists;
 import static com.example.apphkdn.ultil.Server.SaveOrder;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -46,6 +49,44 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        Update_Address_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder= new AlertDialog.Builder(CheckOutActivity.this,R.style.Theme_AppHKDN);
+
+                final  View customLayout= getLayoutInflater().inflate(R.layout.dialog_address_phone,null);
+                builder.setView(customLayout);
+                builder.setTitle("Thay đổi số điện thoại và địa chỉ");
+
+                builder.setPositiveButton("xác nhận", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        EditText phone = customLayout.findViewById(R.id.edt_SDT_checkout);
+                        EditText Address= customLayout.findViewById(R.id.edt_Address_checkout);
+                        EditText mess=customLayout.findViewById(R.id.txtdialog_thongbao);
+                        if (phone.getText().toString()==""&&Address.getText().toString()==""){
+                            String messs= "Không thể bỏ trống cả 2 thông tin" ;
+                            mess.setText(messs);
+                        }else if(phone.getText().toString()==""){
+                            Update_Address_order.setText(Address.getText().toString());
+                        }else if(Address.getText().toString()==""){
+                            txtSDT.setText(phone.getText().toString());
+                        }else{
+                            Update_Address_order.setText(Address.getText().toString());
+                            txtSDT.setText(phone.getText().toString());
+                        }
+                    }
+                });
+                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog dialog= builder.create();
+                dialog.show();
             }
         });
         btn_Order_complete.setOnClickListener(new View.OnClickListener() {

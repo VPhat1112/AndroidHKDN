@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:id="@+id/rating_image"
+                android:layout_width="70dp"
+                android:layout_height="70dp"/>
+            <TextView
+                android:id="@+id/rating_product_name"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:text="Product_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <RatingBar
+                android:id="@+id/productRatingBar"
+                style="@style/Widget.AppCompat.RatingBar.Indicator"
+                android:progressTint="@color/yellow_pri"
+                android:layout_below="@+id/rating_image"
+                android:backgroundTint="#AF1212"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:rating="5"
+                android:stepSize=".5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txt_Rating"
+                android:padding="10dp"
+                android:layout_below="@+id/productRatingBar"
+                android:text="Đánh giá: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/edt_rating_product"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@+id/txt_Rating"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/corner_edt_seller" />
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

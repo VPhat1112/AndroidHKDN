@@ -62,14 +62,6 @@ public class ShopSellerActivity extends AppCompatActivity {
                 startActivity(new Intent(ShopSellerActivity.this, SellerOrderActivity.class));
             }
         });
-        Logoutseller.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSharedPreferences("MyProfile", MODE_PRIVATE).edit().clear().apply();
-                Intent intent = new Intent(ShopSellerActivity.this,LoginActivity.class);
-                startActivity(intent);
-            }
-        });
     }
     private class GetUSerOrder extends AsyncTask<String, Void, String> {
 
@@ -153,7 +145,6 @@ public class ShopSellerActivity extends AppCompatActivity {
         MyProductseller=findViewById(R.id.Myproductseller);
         MyCategoryseller=findViewById(R.id.MyCategoryseller);
         Ordersseller=findViewById(R.id.Orderseller);
-        Logoutseller=findViewById(R.id.Logoutseller);
     }
 
 

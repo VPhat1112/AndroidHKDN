@@ -46,4 +46,8 @@ public class Server {
     public static String GetMyOrder=serverAddress+"GetMyOrder.php?id_user=";
 
     public static String GetAllMyOrderApp=serverAddress+"GetAllMyOrder.php?id_user=";
+
+    public static String WriteRating=serverAddress+"WriteRating.php";
+
+    public static String GetRatingPR=serverAddress+"GetRating.php?id_product=";
 }
