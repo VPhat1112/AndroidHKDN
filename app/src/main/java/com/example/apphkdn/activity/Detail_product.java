@@ -235,11 +235,11 @@ public class Detail_product extends AppCompatActivity {
         requestDB.GetRattingProduct(Detail_product.this,ratingArrayList,ratingAdapter,GetRatingPR+id);
 
         ratingArrayList= DataLocalManager.getListRating();
-        int ratingcount=0;
+        float ratingcount=0;
         for (int i =0;i<ratingArrayList.size();i++){
             ratingcount+=ratingArrayList.get(i).getRating();
         }
-        int ratingsum=ratingcount/ratingArrayList.size();
+        float ratingsum=ratingcount/ratingArrayList.size();
         Log.d("ratingsum", String.valueOf(ratingsum));
         ratingshop.setRating(ratingsum);
     }

@@ -5,7 +5,6 @@ import static com.example.apphkdn.ultil.Server.SaveOrder;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -103,10 +102,8 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
                      product_id=filteredCartList.get(i).getProduct_id();
                      numberProduct=filteredCartList.get(i).getProduct_pay();
                      prot_price=filteredCartList.get(i).getProduct_price();
-                     totalofPrice=prot_price*numberProduct;
+                     totalofPrice=prot_price*numberProduct*5/100;
 
-
-                    Log.d("Result aaa", id_shop + " " + id_User + " " + product_id + " " + numberProduct + " " + prot_price + " " + totalofPrice);
                     requestDB.InsertOrder(CheckOutActivity.this,totalofPrice,id_shop,id_User,product_id,numberProduct,prot_price,totalofPrice,Address_ship,Phone,SaveOrder);
                 }
 
@@ -141,9 +138,9 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
         totalMoney();
         txtMoneyFast.setText(decimalFormat.format(totalBill)+"đ");
         txtMoneyShip.setText("42,000 đ");
-        txtMoneyTotal.setText(decimalFormat.format(totalBill+42000)+"đ");
+        txtMoneyTotal.setText(decimalFormat.format(totalBill+(totalBill*5/100))+"đ");
 
-        CheckMoneyTotal.setText(decimalFormat.format(totalBill+42000)+"đ");
+        CheckMoneyTotal.setText(decimalFormat.format(totalBill+(totalBill*5/100))+"đ");
         Update_Address_order.setText(DataLocalManager.getAddressUser());
     }
     private void totalMoney(){

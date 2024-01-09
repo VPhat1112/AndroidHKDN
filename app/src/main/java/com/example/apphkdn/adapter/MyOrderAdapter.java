@@ -107,7 +107,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ItemHold
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         EditText comment= customRatingLayout.findViewById(R.id.edt_rating_product);
-                        RatingBar ratingBar=customRatingLayout.findViewById(R.id.productRatingBar);
+                        RatingBar ratingBar=customRatingLayout.findViewById(R.id.productRatingBars);
 
 
 
