@@ -29,10 +29,12 @@ import com.example.apphkdn.adapter.MyOrderAdapter;
 import com.example.apphkdn.adapter.OrderAdapter;
 import com.example.apphkdn.adapter.ProductAdapter;
 import com.example.apphkdn.adapter.ProductShopAdapter;
+import com.example.apphkdn.adapter.RatingAdapter;
 import com.example.apphkdn.model.AutoTextViewItems;
 import com.example.apphkdn.model.Category;
 import com.example.apphkdn.model.Order;
 import com.example.apphkdn.model.Product;
+import com.example.apphkdn.model.Rating;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,6 +81,37 @@ public class RequestDB {
             }
         });
         requestQueue.add(jsonArrayRequest);
+    }
+    public void GetRattingProduct(Context context, ArrayList<Rating> ratingArrayList, RatingAdapter ratingAdapter, String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        StringRequest stringRequest= new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray= new JSONArray(response);
+                    for (int i = 0; i < jsonArray.length(); i++){
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        ratingArrayList.add(new Rating(
+                                object.getInt("Rating"),
+                                object.getString("Comment"),
+                                object.getString("id_product"),
+                                object.getString("Name")
+                        ));
+                        DataLocalManager.setListRating(ratingArrayList);
+                    }
+                    ratingAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context,"Error!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(stringRequest);
     }
     public void GetProductBySearch(Context context, ArrayList<Product> productArrayList, ProductAdapter productAdapter, String url){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
@@ -231,18 +264,19 @@ public class RequestDB {
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
+                    String title="Đặt hàng";
                     if (!jsonObject.getBoolean("successOrder")){
                         String remess= "Error insert order!";
-                        RequestDB.showInvalidOtpDialogERRORSaveOrder(context,remess);
+                        RequestDB.showInvalidOtpDialogERRORSaveOrder(context,title,remess);
                     } else if (!jsonObject.getBoolean("successContact")){
                         String remess= "Error insert order_contact!";
-                        RequestDB.showInvalidOtpDialogERRORSaveOrder(context,remess);
+                        RequestDB.showInvalidOtpDialogERRORSaveOrder(context,title,remess);
                     } else if (!jsonObject.getBoolean("successOrderDetail")){
                         String remess= "Error insert order_detail!";
-                        RequestDB.showInvalidOtpDialogERRORSaveOrder(context,remess);
+                        RequestDB.showInvalidOtpDialogERRORSaveOrder(context,title,remess);
                     } else {
                         String remess= "Bạn đã đặt hàng thành công \n Xin Chân thành cảm ơn!";
-                        RequestDB.showInvalidOtpDialogSaveOrder(context,remess);
+                        RequestDB.showInvalidOtpDialogSaveOrder(context,title,remess);
                     }
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
@@ -458,7 +492,44 @@ public class RequestDB {
         };
         requestQueue.add(stringRequest);
     }
+    public void WriteRating(Context context,String product_id,String user_id , String comment, String rating,String url) {
+        RequestQueue queue = Volley.newRequestQueue(context);
 
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String title="Đánh giá";
+                    if (!jsonObject.getBoolean("success")) {
+                        String remess = "Đánh giá thất bại!";
+                        RequestDB.showInvalidOtpDialogERRORSaveOrder(context,title,remess);
+                    }else {
+                        String remess= "Đánh giá thành công \n Xin Chân thành cảm ơn!";
+                        RequestDB.showInvalidOtpDialogSaveOrder(context,title,remess);
+                    }
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context,"Error!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        ) {
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("product_id", String.valueOf(product_id));
+                params.put("user_id", String.valueOf(user_id));
+                params.put("comment", String.valueOf(comment));
+                params.put("rating_star", String.valueOf(rating));
+                return params;
+            }
+        };
+        queue.add(stringRequest);
+    }
 
 
     //DiaLog success and failed
@@ -663,10 +734,10 @@ public class RequestDB {
             titleView.setGravity(Gravity.CENTER);
         }
     }
-    public static void showInvalidOtpDialogSaveOrder(Context context, String mess) {
+    public static void showInvalidOtpDialogSaveOrder(Context context,String title, String mess) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 //            TextView myMsg = new TextView(getApplicationContext());
-        builder.setTitle("Đặt hàng");
+        builder.setTitle(title);
         builder.setMessage(mess);
 
         // Adding a positive button click listener
@@ -691,10 +762,10 @@ public class RequestDB {
             titleView.setGravity(Gravity.CENTER);
         }
     }
-    public static void showInvalidOtpDialogERRORSaveOrder(Context context, String mess) {
+    public static void showInvalidOtpDialogERRORSaveOrder(Context context,String title, String mess) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 //            TextView myMsg = new TextView(getApplicationContext());
-        builder.setTitle("Đặt hàng");
+        builder.setTitle(title);
         builder.setMessage(mess);
 
         // Adding a positive button click listener

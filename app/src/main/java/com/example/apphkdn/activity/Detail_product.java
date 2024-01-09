@@ -1,6 +1,7 @@
 package com.example.apphkdn.activity;
 
 import static com.example.apphkdn.ultil.Server.GetProductByShop;
+import static com.example.apphkdn.ultil.Server.GetRatingPR;
 import static com.example.apphkdn.ultil.Server.LinkGetShop;
 import static com.example.apphkdn.ultil.Server.serverAddress;
 
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -23,11 +25,14 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
 import com.example.apphkdn.adapter.ProductAdapter;
+import com.example.apphkdn.adapter.RatingAdapter;
 import com.example.apphkdn.model.Cart;
 import com.example.apphkdn.model.Product;
+import com.example.apphkdn.model.Rating;
 import com.example.apphkdn.ultil.DownloadImageTask;
 
 import org.json.JSONException;
@@ -53,6 +58,7 @@ public class Detail_product extends AppCompatActivity {
     RatingBar ratingBar;
     Integer id=0,id_category=0,id_shop=0,product_review,product_numbersell;
     RecyclerView ShopProduct;
+    RecyclerView Rating;
     int Product_price,status,product_selled,shop_rate;
     CardView plus,remove,colorStatus;
 
@@ -65,17 +71,21 @@ public class Detail_product extends AppCompatActivity {
 
     Button BtnCard;
     ArrayList<Product> productArrayListShop;
+
+
+    ArrayList<Rating> ratingArrayList;
+
+    RatingAdapter ratingAdapter;
     ProductAdapter productAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_product);
-        viewFlipper =findViewById(R.id.viewFlipperDT);
-        ratingBar =findViewById(R.id.productRatingBar);
         GetDataExtraShare();
         UnitUI();
         SetShopProduct();
+        SetRatingProduct();
         slcSP=product_numbersell-product_selled;
         editText.setText("1/"+slcSP);
         plus.setOnClickListener(new View.OnClickListener() {
@@ -215,7 +225,24 @@ public class Detail_product extends AppCompatActivity {
         ShopProduct.setAdapter(productAdapter);
         requestDB.GetProductShopDetail(Detail_product.this,productArrayListShop,productAdapter,GetProductByShop+id_shop);
     }
+    private void SetRatingProduct(){
+        ratingArrayList= new ArrayList<>();
+        ratingAdapter = new RatingAdapter(Detail_product.this,ratingArrayList);
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(Detail_product.this, LinearLayoutManager.VERTICAL, false);
+        Rating.setHasFixedSize(true);
+        Rating.setLayoutManager(layoutManager1);
+        Rating.setAdapter(ratingAdapter);
+        requestDB.GetRattingProduct(Detail_product.this,ratingArrayList,ratingAdapter,GetRatingPR+id);
 
+        ratingArrayList= DataLocalManager.getListRating();
+        int ratingcount=0;
+        for (int i =0;i<ratingArrayList.size();i++){
+            ratingcount+=ratingArrayList.get(i).getRating();
+        }
+        int ratingsum=ratingcount/ratingArrayList.size();
+        Log.d("ratingsum", String.valueOf(ratingsum));
+        ratingshop.setRating(ratingsum);
+    }
 
 
     private class GetShop extends AsyncTask<String, Void, String> {
@@ -309,5 +336,6 @@ public class Detail_product extends AppCompatActivity {
         colorStatus=findViewById(R.id.colorStatus);
         CartBtndtail=findViewById(R.id.CartBtndtail);
         HomeBtnDt=findViewById(R.id.HomeBtnDt);
+        Rating=findViewById(R.id.rcv_rating);
     }
 }
