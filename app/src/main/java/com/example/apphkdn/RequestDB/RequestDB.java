@@ -5,6 +5,7 @@ import static com.example.apphkdn.ultil.Server.serverAddress;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -369,7 +370,6 @@ public class RequestDB {
         };
         requestQueue.add(stringRequest);
     }
-
     public void GetMyOrder(Context context, ArrayList<Order> orderArrayList, MyOrderAdapter myOrderAdapter, String url){
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
@@ -414,6 +414,49 @@ public class RequestDB {
                     }
                 });
         requestQueue.add(jsonArrayRequest);
+    }
+    public void Filter(Context context, ArrayList<Product> productArrayList, ProductAdapter productAdapter, String price1, String price2, String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    for (int i = 0; i < jsonArray.length(); i++){
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        productArrayList.add(new Product(
+                                object.getInt("id"),
+                                object.getString("product_name"),
+                                serverAddress + object.getString("product_image"),
+                                object.getString("product_decs"),
+                                object.getInt("product_price"),
+                                object.getInt("IDcategory"),
+                                object.getInt("id_shop"),
+                                object.getInt("product_review"),
+                                object.getInt("product_numbersell"),
+                                object.getInt("product_selled"),
+                                object.getInt("status")
+                        ));
+                    }
+                    productAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "ERROR PARSING JSON: ", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("filterPriceLow",price1);
+                params.put("filterPriceHight",price2);
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 
 

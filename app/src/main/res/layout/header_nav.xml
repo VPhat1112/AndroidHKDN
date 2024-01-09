@@ -123,6 +123,7 @@
             android:layout_height="50dp"
             android:background="@drawable/rounded_corner_edt_nav"
             android:hint="Từ 0"
+            android:inputType="text|number"
             android:textColor="@color/black"
             android:textSize="15dp" />
 
@@ -141,6 +142,7 @@
             android:layout_height="50dp"
             android:background="@drawable/rounded_corner_edt_nav"
             android:hint="Đến 10.000.000.000"
+            android:inputType="text|number"
             android:textColor="@color/black"
             android:textSize="15dp" />
 

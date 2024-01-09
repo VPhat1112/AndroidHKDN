@@ -32,6 +32,8 @@ public class DataLocalManager {
     private static final String PREF_LIST_AUTOTEXTVIEW = "PREF_LIST_AUTOTEXTVIEW";
     private static final String PREF_NAME_SHOP = "PREF_NAME_SHOP";
     private static final String PREF_IMAGE_SHOP = "PREF_IMAGE_SHOP";
+    private static final String PREF_FILTER_PRICE_LOW = "PREF_FILTER_PRICE_LOW";
+    private static final String PREF_FILTER_PRICE_HIGH = "PREF_FILTER_PRICE_HIGH";
     private static DataLocalManager instance;
     private MySharedPreferences mySharedPreferences;
 

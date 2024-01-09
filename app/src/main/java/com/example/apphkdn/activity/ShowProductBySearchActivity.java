@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,12 +22,11 @@ import com.example.apphkdn.model.Product;
 
 import java.util.ArrayList;
 
-public class ShowProductBySearchActivity extends AppCompatActivity {
-
-    LinearLayout linearLayout;
+public class ShowProductBySearchActivity extends AppCompatActivity implements View.OnClickListener {
     RequestDB requestDB = new RequestDB();
     Button btnBack;
     TextView txtSearch;
+    ImageButton imgbtnCart;
     RecyclerView recyclerView;
     ArrayList<Product> productArrayList;
     ProductAdapter productAdapter;
@@ -36,11 +37,14 @@ public class ShowProductBySearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show_product_by_search);
 
         initUI();
+        settingActivity();
+    }
+
+    private void settingActivity(){
         getKeySearch();
         RecyleviewSetting();
-        Back();
         setText();
-        Search();
+        onClick();
     }
 
     // Get search key from SearchActivity
@@ -49,29 +53,10 @@ public class ShowProductBySearchActivity extends AppCompatActivity {
         return key_search;
     }
 
-    private void Search(){
-        txtSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ShowProductBySearchActivity.this, SearchActivity.class);
-                intent.putExtra("searchtxt", txtSearch.getText().toString().trim());
-                startActivity(intent);
-            }
-        });
-    }
-
-    // Return to Home page
-    private void Back(){
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //linearLayout.setVisibility(View.GONE);
-                //recyclerView.setVisibility(View.GONE);
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                intent.putExtra("back_product_search",true);
-                startActivity(intent);
-            }
-        });
+    private void onClick(){
+        txtSearch.setOnClickListener(this);
+        btnBack.setOnClickListener(this);
+        imgbtnCart.setOnClickListener(this);
     }
 
     private void RecyleviewSetting(){
@@ -97,6 +82,24 @@ public class ShowProductBySearchActivity extends AppCompatActivity {
         txtSearch = findViewById(R.id.searchtxt_show_pdct_search);
         btnBack = findViewById(R.id.btn_search_product_back);
         recyclerView = findViewById(R.id.rcv_show_prd_search);
-        linearLayout = findViewById(R.id.ln_delete_search);
+        imgbtnCart = findViewById(R.id.CartBtn_search);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.searchtxt_show_pdct_search){
+            Intent intent = new Intent(ShowProductBySearchActivity.this, SearchActivity.class);
+            intent.putExtra("searchtxt", txtSearch.getText().toString().trim());
+            startActivity(intent);
+        }
+        if (v.getId() == R.id.btn_search_product_back){
+            Intent intent = new Intent(ShowProductBySearchActivity.this,MainActivity.class);
+            intent.putExtra("back_product_search",true);
+            startActivity(intent);
+        }
+        if (v.getId() == R.id.CartBtn_search){
+            Intent intent = new Intent(ShowProductBySearchActivity.this, CartActivity.class);
+            startActivity(intent);
+        }
     }
 }

@@ -1,10 +1,12 @@
 package com.example.apphkdn.activity;
 
 import static com.example.apphkdn.ultil.Server.LinkDataAutotextViewSearch;
+import static com.example.apphkdn.ultil.Server.LinkFilter;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -18,6 +20,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Filter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,6 +77,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         btnFilter.setOnClickListener(this);
         btnApply.setOnClickListener(this);
         btnReset.setOnClickListener(this);
+        ckb_price_300.setOnClickListener(this);
+        ckb_price_300_1tr.setOnClickListener(this);
+        ckb_price_1tr_1tr5.setOnClickListener(this);
+        ckb_price_1tr5.setOnClickListener(this);
     }
 
     private void onCheckedChange(){
@@ -84,6 +91,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void CheckPriceTo(){
+        edtPriceTo.setEnabled(false);
+
         TextWatcher tw = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -96,6 +105,16 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     edtPriceTo.setEnabled(false);
                 } else {
                     edtPriceTo.setEnabled(true);
+                }
+
+                if (s != null | s.length() > 0){
+                    ckb_price_300.setChecked(false);
+
+                    ckb_price_300_1tr.setChecked(false);
+
+                    ckb_price_1tr_1tr5.setChecked(false);
+
+                    ckb_price_1tr5.setChecked(false);
                 }
             }
 
@@ -192,6 +211,13 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         });
     }
 
+    private void goToFilterActivity(String str1, String str2){
+        Intent intent = new Intent(SearchActivity.this, FilterActivity.class);
+        intent.putExtra("str1", str1);
+        intent.putExtra("str2", str2);
+        startActivity(intent);
+    }
+
     private void initUI(){
         btnBack=findViewById(R.id.btn_search_back);
         atvSearchBox=findViewById(R.id.edt_search);
@@ -225,19 +251,65 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         if (v.getId() == R.id.btn_nav_apply){
-
+            if (ckb_price_300.isChecked() || ckb_price_300_1tr.isChecked() || ckb_price_1tr_1tr5.isChecked() || ckb_price_1tr5.isChecked()){
+                if (ckb_price_300.isChecked()){
+                    goToFilterActivity("0", "300000");
+                    return;
+                }
+                if (ckb_price_300_1tr.isChecked()){
+                    goToFilterActivity("300000", "1000000");
+                    return;
+                }
+                if (ckb_price_1tr_1tr5.isChecked()){
+                    goToFilterActivity("1000000", "1500000");
+                    return;
+                }
+                if (ckb_price_1tr5.isChecked()){
+                    goToFilterActivity("1500000", "rong");
+                    return;
+                }
+            } else {
+                if(edtPriceFrom.getText().toString().trim().length() > 0 && edtPriceTo.getText().toString().trim().length() == 0){
+                    goToFilterActivity(edtPriceFrom.getText().toString().trim(), "rong");
+                    return;
+                }
+                if (edtPriceFrom.getText().toString().trim().length() > 0 && edtPriceTo.getText().toString().trim().length() > 0){
+                    goToFilterActivity(edtPriceFrom.getText().toString().trim(), edtPriceTo.getText().toString().trim());
+                    return;
+                }
+                goToFilterActivity("rong", "rong");
+                return;
+            }
         }
 
         if (v.getId() == R.id.btn_nav_reset){
+            ckb_price_300.setChecked(false);
 
+            ckb_price_300_1tr.setChecked(false);
+
+            ckb_price_1tr_1tr5.setChecked(false);
+
+            ckb_price_1tr5.setChecked(false);
+
+            edtPriceTo.getText().clear();
+
+            edtPriceFrom.getText().clear();
+
+            edtPriceTo.clearFocus();
+
+            edtPriceFrom.clearFocus();
+
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(edtPriceTo.getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(edtPriceFrom.getWindowToken(), 0);
         }
-
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (buttonView.getId() == R.id.ckb_price_under_300k){
             if (ckb_price_300.isChecked()){
+
                 ckb_price_300.setBackground(getResources().getDrawable(R.drawable.rounded_button_nav_checked));
 
                 ckb_price_300_1tr.setChecked(false);
@@ -252,6 +324,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         if (buttonView.getId() == R.id.ckb_price_1000k_to_300k) {
             if (ckb_price_300_1tr.isChecked()){
+
                 ckb_price_300_1tr.setBackground(getResources().getDrawable(R.drawable.rounded_button_nav_checked));
 
                 ckb_price_300.setChecked(false);
@@ -266,6 +339,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         if (buttonView.getId() == R.id.ckb_price_1500k_to_1000k) {
             if (ckb_price_1tr_1tr5.isChecked()){
+
                 ckb_price_1tr_1tr5.setBackground(getResources().getDrawable(R.drawable.rounded_button_nav_checked));
 
                 ckb_price_300.setChecked(false);
@@ -280,6 +354,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         if (buttonView.getId() == R.id.ckb_price_above_1500k) {
             if (ckb_price_1tr5.isChecked()){
+
                 ckb_price_1tr5.setBackground(getResources().getDrawable(R.drawable.rounded_button_nav_checked));
 
                 ckb_price_300.setChecked(false);
