@@ -46,7 +46,8 @@ public class ShopActivity extends AppCompatActivity {
     private void setNameShopAndImgShop(){
         requestDB.GetShop(ShopActivity.this, getIdShop(), LinkGetShop);
         tvShopName.setText(DataLocalManager.getNameShop());
-        new DownloadImageTask(imgShop).execute(DataLocalManager.getImageShop());
+        String Shop_Image=DataLocalManager.getImageShop();
+        new DownloadImageTask(imgShop).execute(Shop_Image);
     }
 
     // Get id shop from SearchActivity
