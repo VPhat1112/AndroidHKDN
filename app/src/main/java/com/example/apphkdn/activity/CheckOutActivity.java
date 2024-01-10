@@ -141,6 +141,7 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
         });
         setData();
         setWayPay();
+        //hello
     }
     private void setWayPay(){
         txtSeall.setOnClickListener(new View.OnClickListener() {
