@@ -22,21 +22,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <RatingBar
-                android:id="@+id/productRatingBar"
-                style="@style/Widget.AppCompat.RatingBar.Indicator"
+                android:id="@+id/productRatingBars"
                 android:progressTint="@color/yellow_pri"
                 android:layout_below="@+id/rating_image"
-                android:backgroundTint="#AF1212"
-                android:isIndicator="true"
                 android:numStars="5"
-                android:rating="5"
                 android:stepSize=".5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/txt_Rating"
                 android:padding="10dp"
-                android:layout_below="@+id/productRatingBar"
+                android:layout_below="@+id/productRatingBars"
                 android:text="Đánh giá: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

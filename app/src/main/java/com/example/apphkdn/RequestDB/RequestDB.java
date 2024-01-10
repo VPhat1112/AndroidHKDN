@@ -99,8 +99,9 @@ public class RequestDB {
                                 object.getString("id_product"),
                                 object.getString("Name")
                         ));
-                        DataLocalManager.setListRating(ratingArrayList);
                     }
+                    DataLocalManager.setListRating(ratingArrayList);
+//                    Log.d("rating",ratingArrayList.toString());
                     ratingAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
@@ -213,6 +214,45 @@ public class RequestDB {
                                 object.getInt("product_selled"),
                                 object.getInt("status")
                         ));
+                        Log.d("productArrayListSeller",productArrayListSeller.toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                productAdapter.notifyDataSetChanged();
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context,"Error!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        requestQueue.add(jsonArrayRequest);
+    }
+    public void GetProductShop(Context context, ArrayList<Product> productArrayListSeller, ProductAdapter productAdapter, String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for (int i = 0; i < response.length(); i++){
+                    try {
+                        JSONObject object = response.getJSONObject(i);
+                        productArrayListSeller.add(new Product(
+                                object.getInt("id"),
+                                object.getString("product_name"),
+                                serverAddress + object.getString("product_image"),
+                                object.getString("product_decs"),
+                                object.getInt("product_price"),
+                                object.getInt("IDcategory"),
+                                object.getInt("id_shop"),
+                                object.getInt("product_review"),
+                                object.getInt("product_numbersell"),
+                                object.getInt("product_selled"),
+                                object.getInt("status")
+                        ));
                     } catch (JSONException e) {
                         e.printStackTrace();
                         Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
@@ -263,9 +303,11 @@ public class RequestDB {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+
                 try {
                     ArrayList<AutoTextViewItems> items = new ArrayList<>();
                     JSONArray jsonArray = new JSONArray(response);
+
                     for (int i = 0; i < jsonArray.length(); i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         items.add(new AutoTextViewItems(
@@ -274,7 +316,8 @@ public class RequestDB {
                                 jsonObject.getString("id")
                         ));
                     }
-                DataLocalManager.setListAutotextview(items);
+
+                    DataLocalManager.setListAutotextview(items);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -287,48 +330,48 @@ public class RequestDB {
         });
         requestQueue.add(stringRequest);
     }
-    public void GetOrder(Context context, ArrayList<Order> orderArrayList, OrderAdapter orderAdapter, String url){
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                for (int i = 0; i < response.length(); i++){
-                    try {
-                        JSONObject object = response.getJSONObject(i);
-                        orderArrayList.add(new Order(
-                                object.getInt("user_id"),
-                                object.getInt("shop_id"),
-                                object.getInt("order_id"),
-                                object.getInt("contact_id"),
-                                object.getInt("product_id"),
-                                object.getInt("FinalTotal"),
-                                object.getInt("Order_status"),
-                                object.getInt("Number_pay"),
-                                object.getString("product_name"),
-                                serverAddress+object.getString("product_image"),
-                                object.getString("CreatedAt"),
-                                object.getString("Name"),
-                                object.getString("Phone"),
-                                object.getString("Address_ship"),
-                                object.getString("Shop_name")
-
-                        ));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                orderAdapter.notifyDataSetChanged();
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context,"Error!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-        requestQueue.add(jsonArrayRequest);
-    }
+//    public void GetOrder(Context context, ArrayList<Order> orderArrayList, OrderAdapter orderAdapter, String url){
+//        RequestQueue requestQueue = Volley.newRequestQueue(context);
+//        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+//            @Override
+//            public void onResponse(JSONArray response) {
+//                for (int i = 0; i < response.length(); i++){
+//                    try {
+//                        JSONObject object = response.getJSONObject(i);
+//                        orderArrayList.add(new Order(
+//                                object.getInt("user_id"),
+//                                object.getInt("shop_id"),
+//                                object.getInt("order_id"),
+//                                object.getInt("contact_id"),
+//                                object.getInt("product_id"),
+//                                object.getInt("FinalTotal"),
+//                                object.getInt("Order_status"),
+//                                object.getInt("Number_pay"),
+//                                object.getString("product_name"),
+//                                serverAddress+object.getString("product_image"),
+//                                object.getString("CreatedAt"),
+//                                object.getString("Name"),
+//                                object.getString("Phone"),
+//                                object.getString("Address_ship"),
+//                                object.getString("Shop_name")
+//
+//                        ));
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                        Toast.makeText(context, "Error parsing JSON", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//                orderAdapter.notifyDataSetChanged();
+//            }
+//        },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Toast.makeText(context,"Error!", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//        requestQueue.add(jsonArrayRequest);
+//    }
     public void GetShop(Context context,String idShop, String url){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -339,7 +382,7 @@ public class RequestDB {
                     jsonObject.getString("shop_name");
                     jsonObject.getString("Image_shop");
                     DataLocalManager.setNameShop(jsonObject.getString("shop_name"));
-                    DataLocalManager.setImageShop(jsonObject.getString("Image_shop"));
+                    DataLocalManager.setImageShop(serverAddress+jsonObject.getString("Image_shop"));
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }

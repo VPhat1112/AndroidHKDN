@@ -1,6 +1,7 @@
 package com.example.apphkdn.DataLocalManager;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.apphkdn.MySharedPreferences.MySharedPreferences;
 import com.example.apphkdn.model.AutoTextViewItems;
@@ -189,6 +190,7 @@ public class DataLocalManager {
                 rating = gson.fromJson(jsonObject.toString(), Rating.class);
                 list.add(rating);
             }
+            Log.d("JsonA",list.toString());
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -216,6 +218,7 @@ public class DataLocalManager {
                 autoTextViewItems = gson.fromJson(jsonObject.toString(), AutoTextViewItems.class);
                 list.add(autoTextViewItems);
             }
+            Log.d("Etsa",list.toString());
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

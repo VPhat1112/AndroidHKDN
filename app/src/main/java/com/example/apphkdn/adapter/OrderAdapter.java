@@ -54,12 +54,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ItemHolder> 
     @Override
     public void onBindViewHolder(@NonNull OrderAdapter.ItemHolder holder, int position) {
         Order order= orderArrayList.get(position);
-        holder.TxtProductNameShopOrder.setText(order.getProduct_name());
+        //holder.TxtProductNameShopOrder.setText(order.getProduct_name());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         holder.Price_Order.setText(decimalFormat.format(order.getFinalTotal())+"đ");
-        new DownloadImageTask(holder.ImgVIewProductShopOrder).execute(order.getProduct_image());
-        holder.SL_order.setText("SL: "+order.getNumber_pay());
-        int status=order.getOrder_status();
+        //new DownloadImageTask(holder.ImgVIewProductShopOrder).execute(order.getProduct_image());
+        //holder.SL_order.setText("SL: "+order.getNumber_pay());
+        int status=order.getStatusOrder();
         if (status==0){
             holder.edit_accept_product.setText("Nhận đơn");
         } else if (status==1) {
@@ -72,7 +72,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ItemHolder> 
         holder.edit_accept_product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String order_id = String.valueOf(order.getOrder_id());
+                String order_id = String.valueOf(order.getIdOrder());
                 String mess="";
                 int request=0;
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -154,7 +154,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ItemHolder> 
         holder.edit_deni_product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String order_id = String.valueOf(order.getOrder_id());
+                String order_id = String.valueOf(order.getIdOrder());
                 String mess="";
                 int request=3;
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);

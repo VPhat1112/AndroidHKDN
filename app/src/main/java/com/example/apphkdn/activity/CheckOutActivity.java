@@ -7,7 +7,6 @@ import static com.example.apphkdn.ultil.Server.UpdateOrder;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -169,9 +168,9 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
         totalMoney();
         txtMoneyFast.setText(decimalFormat.format(totalBill)+"đ");
         txtMoneyShip.setText("42,000 đ");
-        txtMoneyTotal.setText(decimalFormat.format(totalBill+42000)+"đ");
+        txtMoneyTotal.setText(decimalFormat.format(totalBill+(totalBill*5/100))+"đ");
 
-        CheckMoneyTotal.setText(decimalFormat.format(totalBill+42000)+"đ");
+        CheckMoneyTotal.setText(decimalFormat.format(totalBill+(totalBill*5/100))+"đ");
         Update_Address_order.setText(DataLocalManager.getAddressUser());
     }
     private void totalMoney(){

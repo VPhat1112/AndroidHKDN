@@ -36,6 +36,13 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.ItemHolder
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
         Rating rating= ratingArrayList.get(position);
         holder.productRatingBar_rcv.setRating(rating.getRating());
+        if (rating.getRating()>4){
+            holder.txtRating_rcv.setText("Vô cùng hài lòng");
+        } else if (rating.getRating()<=4&&rating.getRating()>=3) {
+            holder.txtRating_rcv.setText("Tạm được");
+        } else if (rating.getRating()<3) {
+            holder.txtRating_rcv.setText("Không hài lòng");
+        }
         holder.Text_Rating_pr.setText(rating.getComment());
         holder.text_user_ratiing.setText(rating.getUser_name());
 
