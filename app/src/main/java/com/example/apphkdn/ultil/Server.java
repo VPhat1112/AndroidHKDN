@@ -34,11 +34,16 @@ public class Server {
     public static String AddProduct = serverAddress+"InsertProduct.php";
 
     public static String LinkDataAutotextViewSearch = serverAddress+"getDataAutoTextView.php";
+
     public static String UpdateProduct=serverAddress+"UpdateProduct.php";
 
     public static String LockProduct=serverAddress+"LockProduct.php";
 
-    public static String SaveOrder=serverAddress+"InserOrder.php";
+    public static String InsertOrder=serverAddress+"InserOrder.php";
+
+    public static String InsertOrderDetail = serverAddress+"InsertOrderDetails.php";
+
+    public static String UpdateOrder = serverAddress+"UpdateOrder.php";
 
     public static String AcceptOrder=serverAddress+"AcceptOrder.php?";
 

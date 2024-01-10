@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RequestDB {
+
     public void GetProduct(Context context, ArrayList<Product> productArrayList, ProductAdapter productAdapter, String url){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -88,6 +89,7 @@ public class RequestDB {
             @Override
             public void onResponse(String response) {
                 try {
+                    Log.d("test", response);
                     JSONArray jsonArray= new JSONArray(response);
                     for (int i = 0; i < jsonArray.length(); i++){
                         JSONObject object = jsonArray.getJSONObject(i);
@@ -256,54 +258,6 @@ public class RequestDB {
         });
         requestQueue.add(jsonArrayRequest);
     }
-    public void InsertOrder(Context context,Integer BillTotal, Integer shopId, Integer buyerId, Integer productId, Integer numberOfProduct, Integer productPrice, Integer totalsOfOneProduct,String Address_ship,String Phone, String url){
-        RequestQueue queue =Volley.newRequestQueue(context);
-
-        StringRequest stringRequest= new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    String title="Đặt hàng";
-                    if (!jsonObject.getBoolean("successOrder")){
-                        String remess= "Error insert order!";
-                        RequestDB.showInvalidOtpDialogERRORSaveOrder(context,title,remess);
-                    } else if (!jsonObject.getBoolean("successContact")){
-                        String remess= "Error insert order_contact!";
-                        RequestDB.showInvalidOtpDialogERRORSaveOrder(context,title,remess);
-                    } else if (!jsonObject.getBoolean("successOrderDetail")){
-                        String remess= "Error insert order_detail!";
-                        RequestDB.showInvalidOtpDialogERRORSaveOrder(context,title,remess);
-                    } else {
-                        String remess= "Bạn đã đặt hàng thành công \n Xin Chân thành cảm ơn!";
-                        RequestDB.showInvalidOtpDialogSaveOrder(context,title,remess);
-                    }
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context,"Error!", Toast.LENGTH_SHORT).show();
-            }
-        }){
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<>();
-                params.put("BillTotal", String.valueOf(BillTotal));
-                params.put("Shop_id", String.valueOf(shopId));
-                params.put("buyer_id", String.valueOf(buyerId));
-                params.put("Product_id", String.valueOf(productId));
-                params.put("Number_pay", String.valueOf(numberOfProduct));
-                params.put("product_price", String.valueOf(productPrice));
-                params.put("Product_TotalPay", String.valueOf(totalsOfOneProduct));
-                params.put("Address_ship", Address_ship);
-                params.put("Phone", Phone);
-                return params;
-            }
-        };
-        queue.add(stringRequest);
-    }
     public void getDataAutotextViewSearch(Context context, String url){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -414,24 +368,16 @@ public class RequestDB {
                     try {
                         JSONObject object = response.getJSONObject(i);
                         orderArrayList.add(new Order(
+                                object.getInt("order_id"),
                                 object.getInt("user_id"),
                                 object.getInt("shop_id"),
-                                object.getInt("order_id"),
-                                object.getInt("contact_id"),
-                                object.getInt("product_id"),
                                 object.getInt("FinalTotal"),
                                 object.getInt("Order_status"),
-                                object.getInt("Number_pay"),
-                                object.getString("product_name"),
-                                serverAddress+object.getString("product_image"),
-                                object.getString("CreatedAt"),
-                                object.getString("Name"),
-                                object.getString("Phone"),
                                 object.getString("Address_ship"),
-                                object.getString("Shop_name")
-
-
-
+                                object.getString("Phone"),
+                                object.getString("CreatedAt"),
+                                object.getString("Shop_name"),
+                                object.getString("shop_image")
                         ));
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -454,27 +400,31 @@ public class RequestDB {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    for (int i = 0; i < jsonArray.length(); i++){
-                        JSONObject object = jsonArray.getJSONObject(i);
-                        productArrayList.add(new Product(
-                                object.getInt("id"),
-                                object.getString("product_name"),
-                                serverAddress + object.getString("product_image"),
-                                object.getString("product_decs"),
-                                object.getInt("product_price"),
-                                object.getInt("IDcategory"),
-                                object.getInt("id_shop"),
-                                object.getInt("product_review"),
-                                object.getInt("product_numbersell"),
-                                object.getInt("product_selled"),
-                                object.getInt("status")
-                        ));
+                if (response.equals("not found")){
+                    Toast.makeText(context, "Khong tim thay", Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        JSONArray jsonArray = new JSONArray(response);
+                        for (int i = 0; i < jsonArray.length(); i++){
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            productArrayList.add(new Product(
+                                    object.getInt("id"),
+                                    object.getString("product_name"),
+                                    serverAddress + object.getString("product_image"),
+                                    object.getString("product_decs"),
+                                    object.getInt("product_price"),
+                                    object.getInt("IDcategory"),
+                                    object.getInt("id_shop"),
+                                    object.getInt("product_review"),
+                                    object.getInt("product_numbersell"),
+                                    object.getInt("product_selled"),
+                                    object.getInt("status")
+                            ));
+                        }
+                        productAdapter.notifyDataSetChanged();
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
                     }
-                    productAdapter.notifyDataSetChanged();
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
                 }
             }
         }, new Response.ErrorListener() {
@@ -494,7 +444,6 @@ public class RequestDB {
     }
     public void WriteRating(Context context,String product_id,String user_id , String comment, String rating,String url) {
         RequestQueue queue = Volley.newRequestQueue(context);
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -530,6 +479,98 @@ public class RequestDB {
         };
         queue.add(stringRequest);
     }
+    public void InsertOrder(Context context, String id, String idUser, String idShop, String finalTotal, String address, String phone, String url){
+        RequestQueue queue =Volley.newRequestQueue(context);
+        StringRequest stringRequest= new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (!jsonObject.getBoolean("successOrder")){
+                        Toast.makeText(context, "Error insert data", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Success insert data", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context,"Error!", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("id", id);
+                params.put("idUser", idUser);
+                params.put("idShop", idShop);
+                params.put("BillTotal", finalTotal);
+                params.put("Address_ship", address);
+                params.put("Phone", phone);
+                return params;
+            }
+        };
+        queue.add(stringRequest);
+    }
+    public void InsertOrderDetail(Context context, String idOrder, String idShop, String idProduct, String quantity, String productPrice, String productTotalPay, String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (!jsonObject.getBoolean("successOrderDetail")){
+                        Toast.makeText(context, "Error insert data", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Success insert data", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "ERROR PARSING JSON", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("id_order", idOrder);
+                params.put("id_shop", idShop);
+                params.put("id_product", idProduct);
+                params.put("quantity", quantity);
+                params.put("product_price", productPrice);
+                params.put("Product_TotalPay", productTotalPay);
+                return params;
+            }
+        };
+    }
+    public void UpdateBills(Context context, String idOrder, String finalTotal, String url){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "ERROR PARSING JSON", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("order_id", idOrder);
+                params.put("FinalBill", finalTotal);
+                return params;
+            }
+        };
+        queue.add(stringRequest);
+    }
+
 
 
     //DiaLog success and failed

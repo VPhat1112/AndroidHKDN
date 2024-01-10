@@ -1,7 +1,9 @@
 package com.example.apphkdn.activity;
 
 import static com.example.apphkdn.activity.CartActivity.cartLists;
-import static com.example.apphkdn.ultil.Server.SaveOrder;
+import static com.example.apphkdn.ultil.Server.InsertOrder;
+import static com.example.apphkdn.ultil.Server.InsertOrderDetail;
+import static com.example.apphkdn.ultil.Server.UpdateOrder;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -26,7 +28,10 @@ import com.example.apphkdn.ultil.ChoiceWayPayDialog;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayDialog.ChoiceWayPayDialogListener {
     RecyclerView rcv_Order;
@@ -92,24 +97,47 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
         btn_Order_complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Collections.sort(filteredCartList, new Cart.SortByShopId());
 
+                Integer billTotal = 0;
 
-                Integer id_shop=0,id_User=0,product_id=0,numberProduct=0,prot_price=0,totalofPrice=0;
-                String Address_ship=Update_Address_order.getText().toString();
-                String Phone=txtSDT.getText().toString();
+                Random random = new Random();
+                Integer idOrder = random.nextInt(999999);
+                Integer idUser = DataLocalManager.getIdUser();
+                Integer idShop = filteredCartList.get(0).getShop_id();
+                Integer finalTotal = 0;
+                String Address_ship = Update_Address_order.getText().toString();
+                String Phone = txtSDT.getText().toString();
+
+                requestDB.InsertOrder(CheckOutActivity.this, String.valueOf(idOrder), String.valueOf(idUser),
+                        String.valueOf(idShop), String.valueOf(finalTotal), Address_ship, Phone, InsertOrder);
+
                 for (int i=0;i<filteredCartList.size();i++){
-                     id_shop=filteredCartList.get(i).getShop_id();
-                     id_User=DataLocalManager.getIdUser();
-                     product_id=filteredCartList.get(i).getProduct_id();
-                     numberProduct=filteredCartList.get(i).getProduct_pay();
-                     prot_price=filteredCartList.get(i).getProduct_price();
-                     totalofPrice=prot_price*numberProduct;
+                    Integer idShopOrDetail = filteredCartList.get(i).getShop_id();
+                    Integer idProductOrDetail = filteredCartList.get(i).getProduct_id();
+                    Integer quantity = filteredCartList.get(i).getProduct_pay();
+                    Integer price = filteredCartList.get(i).getProduct_price();
+                    Integer totalpayOrDetail = quantity*price + (quantity*price*5/100);
 
+                    if (idShopOrDetail == idShop){
+                        billTotal = billTotal + totalpayOrDetail;
+                        requestDB.InsertOrderDetail(CheckOutActivity.this, String.valueOf(idOrder),
+                                String.valueOf(idShopOrDetail), String.valueOf(idProductOrDetail), String.valueOf(quantity),
+                                String.valueOf(price), String.valueOf(totalpayOrDetail), InsertOrderDetail);
+                    } else {
+                        requestDB.UpdateBills(CheckOutActivity.this, String.valueOf(idOrder), String.valueOf(billTotal),
+                                UpdateOrder);
+                        idShop = idShopOrDetail;
+                        idOrder = random.nextInt(999999);
+                        requestDB.InsertOrder(CheckOutActivity.this, String.valueOf(idOrder), String.valueOf(idUser),
+                                String.valueOf(idShop), String.valueOf(finalTotal), Address_ship, Phone, InsertOrder);
+                    }
 
-                    Log.d("Result aaa", id_shop + " " + id_User + " " + product_id + " " + numberProduct + " " + prot_price + " " + totalofPrice);
-                    requestDB.InsertOrder(CheckOutActivity.this,totalofPrice,id_shop,id_User,product_id,numberProduct,prot_price,totalofPrice,Address_ship,Phone,SaveOrder);
+                    if (i == filteredCartList.size()){
+                        requestDB.UpdateBills(CheckOutActivity.this, String.valueOf(idOrder), String.valueOf(billTotal),
+                                UpdateOrder);
+                    }
                 }
-
             }
         });
         setData();

@@ -88,6 +88,7 @@ public class ActivitySellerAddProduct extends AppCompatActivity {
 
             }
         });
+        categoryAdapterSpAdd.notifyDataSetChanged();
     }
 
     public ArrayList<Category> getListCategoryAdd() {

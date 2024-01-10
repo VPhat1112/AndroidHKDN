@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,8 +29,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
+import com.example.apphkdn.adapter.AutoTextViewAdapter;
 import com.example.apphkdn.adapter.ProductAdapter;
 import com.example.apphkdn.adapter.RatingAdapter;
+import com.example.apphkdn.model.AutoTextViewItems;
 import com.example.apphkdn.model.Cart;
 import com.example.apphkdn.model.Product;
 import com.example.apphkdn.model.Rating;
@@ -234,14 +237,19 @@ public class Detail_product extends AppCompatActivity {
         Rating.setAdapter(ratingAdapter);
         requestDB.GetRattingProduct(Detail_product.this,ratingArrayList,ratingAdapter,GetRatingPR+id);
 
-        ratingArrayList= DataLocalManager.getListRating();
-        int ratingcount=0;
-        for (int i =0;i<ratingArrayList.size();i++){
-            ratingcount+=ratingArrayList.get(i).getRating();
-        }
-        int ratingsum=ratingcount/ratingArrayList.size();
-        Log.d("ratingsum", String.valueOf(ratingsum));
-        ratingshop.setRating(ratingsum);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ratingArrayList= DataLocalManager.getListRating();
+                int ratingcount=0;
+                for (int i =0;i<ratingArrayList.size();i++){
+                    ratingcount+=ratingArrayList.get(i).getRating();
+                }
+                int ratingsum=ratingcount/ratingArrayList.size();
+                Log.d("ratingsum", String.valueOf(ratingsum));
+                ratingshop.setRating(ratingsum);
+            }
+        }, 200);
     }
 
 

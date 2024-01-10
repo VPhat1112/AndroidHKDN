@@ -99,7 +99,7 @@ public class Activity_Seller_Update_Product extends AppCompatActivity {
 
             }
         });
-
+        categoryAdapterSpiner.notifyDataSetChanged();
     }
     private int index(ArrayList<Category> inArray,int categorychoose){
         for (int i=0;i<=inArray.size();i++){

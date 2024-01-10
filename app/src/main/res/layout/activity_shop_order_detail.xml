@@ -342,6 +342,7 @@
             android:textSize="18dp" />
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_danhgia"
             android:layout_width="150dp"
             android:layout_height="50dp"
             android:background="@drawable/rounded_corner_btn_nav"

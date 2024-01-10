@@ -1,26 +1,37 @@
 package com.example.apphkdn.activity;
 
+import static com.example.apphkdn.ultil.Server.WriteRating;
+
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
+import com.example.apphkdn.RequestDB.RequestDB;
+import com.example.apphkdn.ultil.DownloadImageTask;
 import com.example.apphkdn.ultil.ImageDownloadTask;
 
 import java.text.DecimalFormat;
 
-public class ShopOrderDetailActivity extends AppCompatActivity {
-    AppCompatButton back_Btn_Detail;
+public class ShopOrderDetailActivity extends AppCompatActivity implements View.OnClickListener {
+    AppCompatButton back_Btn_Detail, btn_danhgia;
     ImageView img_producr_buyer_order;
     TextView txtOrder_ID,txtCreatedAt,StatusDetail,tv_name_buyer_order,txtSDTDetail,txtAddress,tv_name_shop_seller_order,tv_product_name_order,tv_product_quantity_order,tv_product_price_order;
     Integer Order_Id,Status,Price,Quantity;
     String CreatedAt,NameBuyer,SDT,Address,Name_Shop,Product_Name,Image;
     DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+    RequestDB requestDB = new RequestDB();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +44,7 @@ public class ShopOrderDetailActivity extends AppCompatActivity {
     }
     private void EventAction(){
 
-        back_Btn_Detail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        back_Btn_Detail.setOnClickListener(this);
     }
 
     private void GetData(){
@@ -92,6 +98,57 @@ public class ShopOrderDetailActivity extends AppCompatActivity {
         tv_product_quantity_order=findViewById(R.id.tv_product_quantity_order);
         tv_product_price_order=findViewById(R.id.tv_product_price_order);
         img_producr_buyer_order=findViewById(R.id.img_producr_buyer_order);
+        btn_danhgia = findViewById(R.id.btn_danhgia);
+    }
 
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.back_Btn_Detail){
+            finish();
+        }
+        if (v.getId() == R.id.btn_danhgia){
+            AlertDialog.Builder builder= new AlertDialog.Builder(ShopOrderDetailActivity.this,R.style.Theme_AppHKDN);
+
+            final  View customRatingLayout= LayoutInflater.from(ShopOrderDetailActivity.this).inflate(R.layout.dialog_rating_product,null);
+            builder.setView(customRatingLayout);
+            builder.setTitle("Đánh giá sản phẩm");
+
+            ImageView imageView=customRatingLayout.findViewById(R.id.rating_image);
+            TextView textView=customRatingLayout.findViewById(R.id.rating_product_name);
+
+            textView.setText(Product_Name);
+            new DownloadImageTask(imageView).execute(Image);
+
+            builder.setPositiveButton("xác nhận", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    EditText comment= customRatingLayout.findViewById(R.id.edt_rating_product);
+                    RatingBar ratingBar=customRatingLayout.findViewById(R.id.productRatingBar);
+
+
+
+                    String Comment="";
+                    String rating="5";
+                    if (comment.getText().toString()==""){
+                        Comment="Sản phẩm rất tốt !!!";
+                    }else {
+                        Comment=comment.getText().toString();
+                        rating= String.valueOf(ratingBar.getRating());
+                    }
+//                    String product_id= String.valueOf(order.getProduct_id());
+                    String user_id= String.valueOf(DataLocalManager.getIdUser());
+//                    requestDB.WriteRating(ShopOrderDetailActivity.this,product_id,user_id,Comment,rating,WriteRating);
+
+                }
+            });
+            builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            AlertDialog dialog= builder.create();
+            dialog.show();
+        }
     }
 }

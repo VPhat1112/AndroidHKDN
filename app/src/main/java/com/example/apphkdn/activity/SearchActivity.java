@@ -50,6 +50,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     NavigationView nav;
     DrawerLayout drawerLayout;
     AutoTextViewAdapter autoTextViewAdapter;
+
     RequestDB requestDB = new RequestDB();
 
     @Override
@@ -156,9 +157,15 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     // Set autotextview
     private void setAutoFillSearch(){
         requestDB.getDataAutotextViewSearch(SearchActivity.this, LinkDataAutotextViewSearch);
-        ArrayList<AutoTextViewItems> arrayList = DataLocalManager.getListAutotextview();
-        autoTextViewAdapter = new AutoTextViewAdapter(SearchActivity.this, R.layout.item_autotv_row, arrayList);
-        atvSearchBox.setAdapter(autoTextViewAdapter);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<AutoTextViewItems> arrayList = DataLocalManager.getListAutotextview();
+                //ArrayList<AutoTextViewItems> arrayList = new ArrayList<>();
+                autoTextViewAdapter = new AutoTextViewAdapter(SearchActivity.this, R.layout.item_autotv_row, arrayList);
+                atvSearchBox.setAdapter(autoTextViewAdapter);
+            }
+        }, 200);
         atvSearchBox.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
             @Override
             public void onDismiss() {

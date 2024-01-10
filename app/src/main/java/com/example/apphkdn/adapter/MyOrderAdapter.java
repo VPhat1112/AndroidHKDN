@@ -61,31 +61,32 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ItemHold
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ShopOrderDetailActivity.class);
-                intent.putExtra("id",String.valueOf(order.getOrder_id()));
-                intent.putExtra("Shop_id",String.valueOf(order.getShop_id()));
-                intent.putExtra("CreatedAt",order.getCreateAt());
-                intent.putExtra("status",String.valueOf(order.getOrder_status()));
-                intent.putExtra("Name",order.getName());
-                intent.putExtra("SDT",order.getPhone());
-                intent.putExtra("Address_ship",order.getAddress_ship());
-                intent.putExtra("shopName",order.getShop_name());
-                intent.putExtra("Product_name",order.getProduct_name());
-                intent.putExtra("ImageProduct",order.getProduct_image());
-                intent.putExtra("Number_Pay",String.valueOf(order.getNumber_pay()));
-                intent.putExtra("Product_price",String.valueOf(order.getFinalTotal()));
+//                intent.putExtra("id",String.valueOf(order.getOrder_id()));
+//                intent.putExtra("Shop_id",String.valueOf(order.getShop_id()));
+//                intent.putExtra("CreatedAt",order.getCreateAt());
+//                intent.putExtra("status",String.valueOf(order.getOrder_status()));
+//                intent.putExtra("Name",order.getName());
+//                intent.putExtra("SDT",order.getPhone());
+//                intent.putExtra("Address_ship",order.getAddress_ship());
+//                intent.putExtra("shopName",order.getShop_name());
+//                intent.putExtra("Product_name",order.getProduct_name());
+//                intent.putExtra("ImageProduct",order.getProduct_image());
+//                intent.putExtra("Number_Pay",String.valueOf(order.getNumber_pay()));
+//                intent.putExtra("Product_price",String.valueOf(order.getFinalTotal()));
+//                intent.putExtra("Product_id",String.valueOf(order.get));
                 context.startActivity(intent);
             }
         });
 
-        if (order.getOrder_status()==0){
+        if (order.getStatusOrder()==0){
             holder.txtStatus.setText("Đang chờ duyệt");
             holder.btn_buy_back_item_myorder.setVisibility(View.GONE);
-        } else if (order.getOrder_status()==1) {
+        } else if (order.getStatusOrder()==1) {
             holder.txtStatus.setText("Đang Giao");
             holder.btn_buy_back_item_myorder.setVisibility(View.GONE);
-        } else if (order.getOrder_status()==2) {
+        } else if (order.getStatusOrder()==2) {
             holder.txtStatus.setText("Đã hoàn thành");
-        } else if (order.getOrder_status()==3) {
+        } else if (order.getStatusOrder()==3) {
             holder.txtStatus.setText("Đơn hàng đã hủy");
         }
         holder.write_rating.setOnClickListener(new View.OnClickListener() {
@@ -100,8 +101,8 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ItemHold
                 ImageView imageView=customRatingLayout.findViewById(R.id.rating_image);
                 TextView textView=customRatingLayout.findViewById(R.id.rating_product_name);
 
-                textView.setText(order.getProduct_name());
-                new DownloadImageTask(imageView).execute(order.getProduct_image());
+//                textView.setText(order.getProduct_name());
+//                new DownloadImageTask(imageView).execute(order.getProduct_image());
 
                 builder.setPositiveButton("xác nhận", new DialogInterface.OnClickListener() {
                     @Override
@@ -119,7 +120,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ItemHold
                             Comment=comment.getText().toString();
                             rating= String.valueOf(ratingBar.getRating());
                         }
-                        String product_id= String.valueOf(order.getProduct_id());
+//                        String product_id= String.valueOf(order.getProduct_id());
                         String user_id= String.valueOf(DataLocalManager.getIdUser());
                         requestDB.WriteRating(context,product_id,user_id,Comment,rating,WriteRating);
 
