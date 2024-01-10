@@ -29,10 +29,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
-import com.example.apphkdn.adapter.AutoTextViewAdapter;
 import com.example.apphkdn.adapter.ProductAdapter;
 import com.example.apphkdn.adapter.RatingAdapter;
-import com.example.apphkdn.model.AutoTextViewItems;
 import com.example.apphkdn.model.Cart;
 import com.example.apphkdn.model.Product;
 import com.example.apphkdn.model.Rating;
@@ -241,12 +239,16 @@ public class Detail_product extends AppCompatActivity {
             public void run() {
                 ratingArrayList= DataLocalManager.getListRating();
                 int ratingcount=0;
-                for (int i =0;i<ratingArrayList.size();i++){
-                    ratingcount+=ratingArrayList.get(i).getRating();
+                if (ratingArrayList.size()==0){
+                    ratingshop.setRating(5);
+                }else{
+                    for (int i =0;i<ratingArrayList.size();i++){
+                        ratingcount+=ratingArrayList.get(i).getRating();
+                    }
+                    int ratingsum=ratingcount/ratingArrayList.size();
+                    Log.d("ratingsum", String.valueOf(ratingsum));
+                    ratingshop.setRating(ratingsum);
                 }
-                int ratingsum=ratingcount/ratingArrayList.size();
-                Log.d("ratingsum", String.valueOf(ratingsum));
-                ratingshop.setRating(ratingsum);
             }
         }, 200);
     }

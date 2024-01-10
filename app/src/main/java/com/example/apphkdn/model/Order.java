@@ -2,9 +2,9 @@ package com.example.apphkdn.model;
 
 public class Order {
     int idOrder, idUser, idShop, finalTotal, statusOrder;
-    String address, phone, createAt, nameShop, imgShop;
+    String address, phone, createAt, nameShop, imgShop,username;
 
-    public Order(int idOrder, int idUser, int idShop, int finalTotal, int statusOrder, String address, String phone, String createAt, String nameShop, String imgShop) {
+    public Order(int idOrder, int idUser, int idShop, int finalTotal, int statusOrder, String address, String phone, String createAt, String nameShop, String imgShop, String username) {
         this.idOrder = idOrder;
         this.idUser = idUser;
         this.idShop = idShop;
@@ -15,6 +15,15 @@ public class Order {
         this.createAt = createAt;
         this.nameShop = nameShop;
         this.imgShop = imgShop;
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public int getIdOrder() {

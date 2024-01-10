@@ -34,6 +34,10 @@ public class DataLocalManager {
     private static final String PREF_NAME_SHOP = "PREF_NAME_SHOP";
     private static final String PREF_IMAGE_SHOP = "PREF_IMAGE_SHOP";
     private static final String PREF_LIST_RATING = "PREF_LIST_RATING";
+    private static final String PREF_PRODUCT_QUANTITY = "PREF_PRODUCT_QUANTITY";
+    private static final String PREF_PRODUCT_NAME = "PREF_PRODUCT_NAME";
+    private static final String PREF_PRODUCT_IMAGE = "PREF_PRODUCT_IMAGE";
+    private static final String PREF_PRODUCT_TOTALPAY = "PREF_PRODUCT_TOTALPAY";
     private static DataLocalManager instance;
     private MySharedPreferences mySharedPreferences;
 
@@ -143,6 +147,35 @@ public class DataLocalManager {
     public static String getImageShop(){
         return DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_IMAGE_SHOP);
     }
+    public static void setquantity(String value){
+        DataLocalManager.getInstance().mySharedPreferences.putStringValue(PREF_PRODUCT_QUANTITY, value);
+    }
+
+    public static String getquantity(){
+        return DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_PRODUCT_QUANTITY);
+    }
+    public static void setproduct_name(String value){
+        DataLocalManager.getInstance().mySharedPreferences.putStringValue(PREF_PRODUCT_NAME, value);
+    }
+
+    public static String getproduct_name(){
+        return DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_PRODUCT_NAME);
+    }
+    public static void setproduct_image(String value){
+        DataLocalManager.getInstance().mySharedPreferences.putStringValue(PREF_PRODUCT_IMAGE, value);
+    }
+
+    public static String getproduct_image(){
+        return DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_PRODUCT_IMAGE);
+    }
+    public static void setproduct_totalPay(String value){
+        DataLocalManager.getInstance().mySharedPreferences.putStringValue(PREF_PRODUCT_TOTALPAY, value);
+    }
+
+    public static String getproduct_totalPay(){
+        return DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_PRODUCT_TOTALPAY);
+    }
+
 
     public static void setListCategorySpinner(ArrayList<Category> list){
         Gson gson = new Gson();

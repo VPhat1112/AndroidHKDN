@@ -1,6 +1,8 @@
 package com.example.apphkdn.adapter;
 
 import static com.example.apphkdn.ultil.Server.AcceptOrder;
+import static com.example.apphkdn.ultil.Server.GetInforProductFirst;
+import static com.example.apphkdn.ultil.Server.serverAddress;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,10 +26,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
 import com.example.apphkdn.model.Order;
 import com.example.apphkdn.ultil.DownloadImageTask;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -54,11 +61,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ItemHolder> 
     @Override
     public void onBindViewHolder(@NonNull OrderAdapter.ItemHolder holder, int position) {
         Order order= orderArrayList.get(position);
-        //holder.TxtProductNameShopOrder.setText(order.getProduct_name());
+        GetandSetDataProductFirstOrder(GetInforProductFirst+String.valueOf(order.getIdOrder()));
+        holder.TxtProductNameShopOrder.setText(DataLocalManager.getproduct_name());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         holder.Price_Order.setText(decimalFormat.format(order.getFinalTotal())+"đ");
-        //new DownloadImageTask(holder.ImgVIewProductShopOrder).execute(order.getProduct_image());
-        //holder.SL_order.setText("SL: "+order.getNumber_pay());
+        new DownloadImageTask(holder.ImgVIewProductShopOrder).execute(DataLocalManager.getproduct_image());
+        holder.SL_order.setText("SL: "+DataLocalManager.getquantity());
         int status=order.getStatusOrder();
         if (status==0){
             holder.edit_accept_product.setText("Nhận đơn");
@@ -222,6 +230,40 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ItemHolder> 
                 }
             }
         });
+    }
+
+    private void GetandSetDataProductFirstOrder(String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+
+                    for (int i = 0; i < jsonArray.length(); i++){
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        jsonObject.getString("quantity");
+                        jsonObject.getString("Product_TotalPay");
+                        jsonObject.getString("product_name");
+                        jsonObject.getString("product_image");
+                        DataLocalManager.setquantity(jsonObject.getString("quantity"));
+                        DataLocalManager.setproduct_totalPay(jsonObject.getString("Product_TotalPay"));
+                        DataLocalManager.setproduct_name(jsonObject.getString("product_name"));
+                        DataLocalManager.setproduct_image(serverAddress+jsonObject.getString("product_image"));
+                    }
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Error Parsing Json", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        requestQueue.add(stringRequest);
     }
 
     @Override

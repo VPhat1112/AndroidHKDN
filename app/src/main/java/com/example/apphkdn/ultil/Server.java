@@ -50,6 +50,7 @@ public class Server {
     public static String GetShopOrder=serverAddress+"GetShopOrder.php?id_shop=";
 
     public static String GetMyOrder=serverAddress+"GetMyOrder.php?id_user=";
+    public static String GetInforProductFirst=serverAddress+"GetProductTopByOrder.php?order_id=";
 
     public static String GetAllMyOrderApp=serverAddress+"GetAllMyOrder.php?id_user=";
 
@@ -58,4 +59,6 @@ public class Server {
     public static String WriteRating=serverAddress+"WriteRating.php";
 
     public static String GetRatingPR=serverAddress+"GetRating.php?id_product=";
+
+    public static String getProductOder=serverAddress+"GetProductOrder.php?id_order=";
 }
