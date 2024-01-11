@@ -5,6 +5,8 @@ import static com.example.apphkdn.ultil.Server.serverAddress;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +28,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
-import com.example.apphkdn.activity.ShopOrderDetailActivity;
+import com.example.apphkdn.activity.ShopOrderDetailBuyerActivity;
 import com.example.apphkdn.model.Order;
 import com.example.apphkdn.ultil.DownloadImageTask;
 
@@ -61,12 +63,40 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ItemHold
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
         Order order= orderArrayList.get(position);
-        GetandSetDataProductFirstOrder(GetInforProductFirst+String.valueOf(order.getIdOrder()));
-        holder.TxtProductNameMyOrder.setText(DataLocalManager.getproduct_name());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, GetInforProductFirst+String.valueOf(order.getIdOrder()), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    for (int i = 0; i < jsonArray.length(); i++){
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        jsonObject.getString("quantity");
+                        jsonObject.getString("Product_TotalPay");
+                        jsonObject.getString("product_name");
+                        jsonObject.getString("product_image");
+
+                        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+                        holder.TxtProductNameMyOrder.setText(jsonObject.getString("product_name"));
+                        holder.SL_MyOrder.setText("SL: "+jsonObject.getString("quantity"));
+                        holder.Price_MyOrder.setText(decimalFormat.format(Integer.parseInt(jsonObject.getString("Product_TotalPay")))+"đ");
+                        new DownloadImageTask(holder.ImgVIewProductMyOrder).execute(serverAddress+jsonObject.getString("product_image"));
+                        Log.d("kiem tra", jsonObject.toString());
+                    }
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Error Parsing Json", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        requestQueue.add(stringRequest);
+
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        holder.Price_MyOrder.setText(decimalFormat.format(Integer.parseInt(DataLocalManager.getproduct_totalPay()))+"đ");
-        new DownloadImageTask(holder.ImgVIewProductMyOrder).execute(DataLocalManager.getproduct_image());
-        holder.SL_MyOrder.setText("SL: "+DataLocalManager.getquantity());
         holder.txt_total_item_myorder.setText(decimalFormat.format(order.getFinalTotal())+"đ");
         holder.tv_item_myorder_status.setText(order.getNameShop());
         new DownloadImageTask(holder.Image_shop).execute(order.getImgShop());
@@ -74,7 +104,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ItemHold
         holder.layoutproductMyOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ShopOrderDetailActivity.class);
+                Intent intent = new Intent(context, ShopOrderDetailBuyerActivity.class);
                 intent.putExtra("id",String.valueOf(order.getIdOrder()));
                 intent.putExtra("Shop_id",String.valueOf(order.getIdShop()));
                 intent.putExtra("CreatedAt",order.getCreateAt());
@@ -102,37 +132,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ItemHold
         }
     }
     private void GetandSetDataProductFirstOrder(String url){
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
 
-                try {
-                    JSONArray jsonArray = new JSONArray(response);
-
-                    for (int i = 0; i < jsonArray.length(); i++){
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        jsonObject.getString("quantity");
-                        jsonObject.getString("Product_TotalPay");
-                        jsonObject.getString("product_name");
-                        jsonObject.getString("product_image");
-                        DataLocalManager.setquantity(jsonObject.getString("quantity"));
-                        DataLocalManager.setproduct_totalPay(jsonObject.getString("Product_TotalPay"));
-                        DataLocalManager.setproduct_name(jsonObject.getString("product_name"));
-                        DataLocalManager.setproduct_image(serverAddress+jsonObject.getString("product_image"));
-                    }
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Error Parsing Json", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        requestQueue.add(stringRequest);
     }
 
     @Override

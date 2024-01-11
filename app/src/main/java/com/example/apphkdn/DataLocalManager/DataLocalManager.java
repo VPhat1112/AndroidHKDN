@@ -38,6 +38,10 @@ public class DataLocalManager {
     private static final String PREF_PRODUCT_NAME = "PREF_PRODUCT_NAME";
     private static final String PREF_PRODUCT_IMAGE = "PREF_PRODUCT_IMAGE";
     private static final String PREF_PRODUCT_TOTALPAY = "PREF_PRODUCT_TOTALPAY";
+    private static final String PREF_PRODUCT_QUANTITY_SHOP = "PREF_PRODUCT_QUANTITY_SHOP";
+    private static final String PREF_PRODUCT_NAME_SHOP = "PREF_PRODUCT_NAME_SHOP";
+    private static final String PREF_PRODUCT_IMAGE_SHOP = "PREF_PRODUCT_IMAGE_SHOP";
+    private static final String PREF_PRODUCT_TOTALPAY_SHOP = "PREF_PRODUCT_TOTALPAY_SHOP";
     private static DataLocalManager instance;
     private MySharedPreferences mySharedPreferences;
 
@@ -174,6 +178,35 @@ public class DataLocalManager {
 
     public static String getproduct_totalPay(){
         return DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_PRODUCT_TOTALPAY);
+    }
+
+    public static void setQuantityShop(String value){
+        DataLocalManager.getInstance().mySharedPreferences.putStringValue(PREF_PRODUCT_QUANTITY_SHOP, value);
+    }
+
+    public static String getQuantityShop(){
+        return DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_PRODUCT_QUANTITY_SHOP);
+    }
+    public static void setProductNameShop(String value){
+        DataLocalManager.getInstance().mySharedPreferences.putStringValue(PREF_PRODUCT_NAME_SHOP, value);
+    }
+
+    public static String getProductNameShop(){
+        return DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_PRODUCT_NAME_SHOP);
+    }
+    public static void setProductImgShop(String value){
+        DataLocalManager.getInstance().mySharedPreferences.putStringValue(PREF_PRODUCT_IMAGE_SHOP, value);
+    }
+
+    public static String getProductImgShop(){
+        return DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_PRODUCT_IMAGE_SHOP);
+    }
+    public static void setProductTotalShop(String value){
+        DataLocalManager.getInstance().mySharedPreferences.putStringValue(PREF_PRODUCT_TOTALPAY_SHOP, value);
+    }
+
+    public static String getProductTotalShop(){
+        return DataLocalManager.getInstance().mySharedPreferences.getStringValue(PREF_PRODUCT_TOTALPAY_SHOP);
     }
 
 

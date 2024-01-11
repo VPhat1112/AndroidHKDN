@@ -1,6 +1,7 @@
 package com.example.apphkdn.activity;
 
 import static com.example.apphkdn.ultil.Server.AddProduct;
+import static com.example.apphkdn.ultil.Server.linkCategory;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -73,9 +74,12 @@ public class ActivitySellerAddProduct extends AppCompatActivity {
         settingSpinner();
     }
 
+    // set data for recycleview
+
     private void settingSpinner(){
         categoryAdapterSpAdd = new CategoryAdapterSpAdd(ActivitySellerAddProduct.this, R.layout.item_selected_spinner_category, getListCategoryAdd());
         spCategory.setAdapter(categoryAdapterSpAdd);
+        categoryAdapterSpAdd.notifyDataSetChanged();
         spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -88,11 +92,11 @@ public class ActivitySellerAddProduct extends AppCompatActivity {
 
             }
         });
-        categoryAdapterSpAdd.notifyDataSetChanged();
     }
 
     public ArrayList<Category> getListCategoryAdd() {
         ArrayList<Category> ProductCategory = new ArrayList<Category>();
+        //requestDB.GetCategory(ActivitySellerAddProduct.this,ProductCategory,categoryAdapterSpAdd,linkCategory);
         ProductCategory = DataLocalManager.getListCategorySpinner();
         return ProductCategory;
     }

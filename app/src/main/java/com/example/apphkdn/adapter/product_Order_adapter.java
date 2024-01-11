@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,7 +43,7 @@ public class product_Order_adapter extends RecyclerView.Adapter<product_Order_ad
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product_rcv_order_detail,null);
+        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product_rcv_order_detail_for_buyer,null);
         ItemHolder itemHolder=new ItemHolder(v);
         return itemHolder;
     }
@@ -102,8 +103,6 @@ public class product_Order_adapter extends RecyclerView.Adapter<product_Order_ad
                 dialog.show();
             }
         });
-
-
     }
 
     @Override

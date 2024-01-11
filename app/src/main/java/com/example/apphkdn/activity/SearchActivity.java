@@ -161,7 +161,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 autoTextViewAdapter = new AutoTextViewAdapter(SearchActivity.this, R.layout.item_autotv_row, arrayList);
                 atvSearchBox.setAdapter(autoTextViewAdapter);
             }
-        }, 200);
+        }, 1000);
         atvSearchBox.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
             @Override
             public void onDismiss() {

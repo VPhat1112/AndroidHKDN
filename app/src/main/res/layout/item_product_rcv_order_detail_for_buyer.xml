@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rl1"
+    android:id="@+id/rl_item_product_rcv_order_detail"
     android:layout_width="match_parent"
     android:layout_marginTop="5dp"
     android:padding="10dp"

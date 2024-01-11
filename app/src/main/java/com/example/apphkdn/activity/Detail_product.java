@@ -234,6 +234,7 @@ public class Detail_product extends AppCompatActivity {
         Rating.setLayoutManager(layoutManager1);
         Rating.setAdapter(ratingAdapter);
         requestDB.GetRattingProduct(Detail_product.this,ratingArrayList,ratingAdapter,GetRatingPR+id);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -250,7 +251,7 @@ public class Detail_product extends AppCompatActivity {
                     ratingshop.setRating(ratingsum);
                 }
             }
-        }, 200);
+        }, 1000);
     }
 
 

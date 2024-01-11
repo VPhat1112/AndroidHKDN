@@ -24,10 +24,10 @@
             android:name=".activity.FilterActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.OrderDetailActivity"
+            android:name=".activity.ShopOrderDetailSellerActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.ShopOrderDetailActivity"
+            android:name=".activity.ShopOrderDetailBuyerActivity"
             android:exported="false" />
         <activity
             android:name=".activity.SellerOrderActivity"

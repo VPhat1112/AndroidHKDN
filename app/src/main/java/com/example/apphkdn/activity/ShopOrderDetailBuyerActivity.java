@@ -20,7 +20,7 @@ import com.example.apphkdn.model.order_product;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class ShopOrderDetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class ShopOrderDetailBuyerActivity extends AppCompatActivity implements View.OnClickListener {
     AppCompatButton back_Btn_Detail, btn_danhgia;
     ImageView img_producr_buyer_order;
     RecyclerView rcv_productOrder;
@@ -35,7 +35,7 @@ public class ShopOrderDetailActivity extends AppCompatActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shop_order_detail);
+        setContentView(R.layout.activity_shop_order_detail_for_buyer);
         UnitUI();
         GetData();
         setData();
@@ -79,12 +79,11 @@ public class ShopOrderDetailActivity extends AppCompatActivity implements View.O
     }
     private void SetRCV(){
         orderProducts = new ArrayList<>();
-        productOrderAdapter = new product_Order_adapter(ShopOrderDetailActivity.this,orderProducts);
+        productOrderAdapter = new product_Order_adapter(ShopOrderDetailBuyerActivity.this,orderProducts);
         rcv_productOrder.setHasFixedSize(true);
-        rcv_productOrder.setLayoutManager(new GridLayoutManager(ShopOrderDetailActivity.this,1));
+        rcv_productOrder.setLayoutManager(new GridLayoutManager(ShopOrderDetailBuyerActivity.this,1));
         rcv_productOrder.setAdapter(productOrderAdapter);
-
-        requestDB.GetProductOrder(ShopOrderDetailActivity.this,orderProducts,productOrderAdapter,getProductOder+String.valueOf(id));
+        requestDB.GetProductOrder(ShopOrderDetailBuyerActivity.this,orderProducts,productOrderAdapter,getProductOder+String.valueOf(id));
     }
 
     private void UnitUI(){

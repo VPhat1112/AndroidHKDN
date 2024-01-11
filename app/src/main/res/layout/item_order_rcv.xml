@@ -55,23 +55,6 @@
                         android:layout_height="match_parent"/>
                 </RelativeLayout>
             </LinearLayout>
-            <TextView
-                android:id="@+id/edit_accept_product"
-                android:text="Nhận đơn"
-                android:gravity="center"
-                android:textSize="12sp"
-                android:padding="2dp"
-                android:drawableStart="@drawable/baseline_check_circle_24"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"/>
-            <TextView
-                android:id="@+id/edit_deni_product"
-                android:padding="2dp"
-                android:gravity="center"
-                android:text="Hủy"
-                android:drawableStart="@drawable/baseline_restore_from_trash_24"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"/>
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

@@ -107,7 +107,6 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
                 Integer finalTotal = 0;
                 String Address_ship = Update_Address_order.getText().toString();
                 String Phone = txtSDT.getText().toString();
-                Log.d("id_order", String.valueOf(idShop));
 
                 requestDB.InsertOrder(CheckOutActivity.this, String.valueOf(idOrder), String.valueOf(idUser),
                         String.valueOf(idShop), String.valueOf(finalTotal), Address_ship, Phone, InsertOrder);
