@@ -130,7 +130,7 @@ public class MyOrderActivity extends AppCompatActivity {
         requestDB.GetMyOrder(MyOrderActivity.this,orderArrayList,myOrderAdapter,GetMyOrder+id_user+"&status="+status);
     }
     private void setDataMyCancelOrder(){
-        int status=2;
+        int status=3;
         orderArrayList = new ArrayList<>();
         myOrderAdapter = new MyOrderAdapter(MyOrderActivity.this,orderArrayList);
         rcv_Myorder.setHasFixedSize(true);
@@ -141,7 +141,7 @@ public class MyOrderActivity extends AppCompatActivity {
     }
 
     private void setDataMyCompleteOrder(){
-        int status=3;
+        int status=2;
         orderArrayList = new ArrayList<>();
         myOrderAdapter = new MyOrderAdapter(MyOrderActivity.this,orderArrayList);
         rcv_Myorder.setHasFixedSize(true);

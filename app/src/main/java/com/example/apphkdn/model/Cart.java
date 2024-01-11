@@ -1,7 +1,5 @@
 package com.example.apphkdn.model;
 
-import java.util.Comparator;
-
 public class Cart {
     int product_id;
     String product_name;
@@ -87,14 +85,19 @@ public class Cart {
         this.product_numbersell = product_numbersell;
     }
 
-    public static class SortByShopId implements Comparator<Cart>{
-        @Override
-        public int compare(Cart o1, Cart o2) {
-            if (o1.getShop_id() > o2.getShop_id())
-                return 1;
-            if (o1.getShop_id() > o2.getShop_id())
-                return -1;
-            return 0;
-        }
+
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "product_id=" + product_id +
+                ", product_name='" + product_name + '\'' +
+                ", product_price=" + product_price +
+                ", product_image='" + product_image + '\'' +
+                ", check='" + check + '\'' +
+                ", product_pay=" + product_pay +
+                ", product_numbersell=" + product_numbersell +
+                ", shop_id=" + shop_id +
+                '}';
     }
 }

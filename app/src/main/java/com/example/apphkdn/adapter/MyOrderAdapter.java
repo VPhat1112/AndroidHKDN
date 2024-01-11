@@ -5,7 +5,6 @@ import static com.example.apphkdn.ultil.Server.serverAddress;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
 import com.example.apphkdn.activity.ShopOrderDetailBuyerActivity;
@@ -62,14 +60,14 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ItemHold
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
-        Order order= orderArrayList.get(position);
+        Order order = orderArrayList.get(position);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, GetInforProductFirst+String.valueOf(order.getIdOrder()), new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, GetInforProductFirst + String.valueOf(order.getIdOrder()), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     JSONArray jsonArray = new JSONArray(response);
-                    for (int i = 0; i < jsonArray.length(); i++){
+                    for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         jsonObject.getString("quantity");
                         jsonObject.getString("Product_TotalPay");
@@ -78,9 +76,9 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ItemHold
 
                         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
                         holder.TxtProductNameMyOrder.setText(jsonObject.getString("product_name"));
-                        holder.SL_MyOrder.setText("SL: "+jsonObject.getString("quantity"));
-                        holder.Price_MyOrder.setText(decimalFormat.format(Integer.parseInt(jsonObject.getString("Product_TotalPay")))+"đ");
-                        new DownloadImageTask(holder.ImgVIewProductMyOrder).execute(serverAddress+jsonObject.getString("product_image"));
+                        holder.SL_MyOrder.setText("SL: " + jsonObject.getString("quantity"));
+                        holder.Price_MyOrder.setText(decimalFormat.format(Integer.parseInt(jsonObject.getString("Product_TotalPay"))) + "đ");
+                        new DownloadImageTask(holder.ImgVIewProductMyOrder).execute(serverAddress + jsonObject.getString("product_image"));
                         Log.d("kiem tra", jsonObject.toString());
                     }
                 } catch (JSONException e) {
@@ -97,7 +95,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ItemHold
         requestQueue.add(stringRequest);
 
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        holder.txt_total_item_myorder.setText(decimalFormat.format(order.getFinalTotal())+"đ");
+        holder.txt_total_item_myorder.setText(decimalFormat.format(order.getFinalTotal()) + "đ");
         holder.tv_item_myorder_status.setText(order.getNameShop());
         new DownloadImageTask(holder.Image_shop).execute(order.getImgShop());
 
@@ -105,34 +103,31 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ItemHold
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ShopOrderDetailBuyerActivity.class);
-                intent.putExtra("id",String.valueOf(order.getIdOrder()));
-                intent.putExtra("Shop_id",String.valueOf(order.getIdShop()));
-                intent.putExtra("CreatedAt",order.getCreateAt());
-                intent.putExtra("status",String.valueOf(order.getStatusOrder()));
-                intent.putExtra("SDT",order.getPhone());
-                intent.putExtra("Address_ship",order.getAddress());
-                intent.putExtra("shopName",order.getNameShop());
-                intent.putExtra("shop_image",order.getImgShop());
-                intent.putExtra("Product_price",String.valueOf(order.getFinalTotal()));
-                intent.putExtra("user_name",order.getUsername());
+                intent.putExtra("id", String.valueOf(order.getIdOrder()));
+                intent.putExtra("Shop_id", String.valueOf(order.getIdShop()));
+                intent.putExtra("CreatedAt", order.getCreateAt());
+                intent.putExtra("status", String.valueOf(order.getStatusOrder()));
+                intent.putExtra("SDT", order.getPhone());
+                intent.putExtra("Address_ship", order.getAddress());
+                intent.putExtra("shopName", order.getNameShop());
+                intent.putExtra("shop_image", order.getImgShop());
+                intent.putExtra("Product_price", String.valueOf(order.getFinalTotal()));
+                intent.putExtra("user_name", order.getUsername());
                 context.startActivity(intent);
             }
         });
 
-        if (order.getStatusOrder()==0){
+        if (order.getStatusOrder() == 0) {
             holder.write_status.setText("Đang chờ duyệt");
             holder.btn_buy_back_item_myorder.setVisibility(View.GONE);
-        } else if (order.getStatusOrder()==1) {
+        } else if (order.getStatusOrder() == 1) {
             holder.write_status.setText("Đang Giao");
             holder.btn_buy_back_item_myorder.setVisibility(View.GONE);
-        } else if (order.getStatusOrder()==2) {
+        } else if (order.getStatusOrder() == 2) {
             holder.write_status.setText("Đã hoàn thành");
-        } else if (order.getStatusOrder()==3) {
+        } else if (order.getStatusOrder() == 3) {
             holder.write_status.setText("Đơn hàng đã hủy");
         }
-    }
-    private void GetandSetDataProductFirstOrder(String url){
-
     }
 
     @Override

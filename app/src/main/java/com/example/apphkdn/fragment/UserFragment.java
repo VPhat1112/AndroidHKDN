@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -183,7 +184,7 @@ public class UserFragment extends Fragment {
             try {
                 JSONObject jsonObject = new JSONObject(result);
                 boolean success = jsonObject.getBoolean("success");
-
+                Log.d("success", String.valueOf(success));
                 if (success) {
                     // Login successful
                     int userId = jsonObject.getInt("id");

@@ -80,12 +80,18 @@ public class ShopOrderDetailSellerActivity extends AppCompatActivity implements 
         txtCreatedAt.setText(CreatedAt);
         if (Status==0){
             StatusDetail.setText("Đang chờ duyệt");
+            edit_accept_product.setText("Nhận đơn");
         }else if(Status==1){
             StatusDetail.setText("Đang Giao");
+            edit_accept_product.setText("Hoàn thành đơn");
         }else if(Status==2){
+            edit_accept_product.setVisibility(View.GONE);
+            edit_deni_product.setVisibility(View.GONE);
             StatusDetail.setText("Đã hoàn thành");
         }else if(Status==3){
             StatusDetail.setText("Đã Hủy");
+            edit_accept_product.setVisibility(View.GONE);
+            edit_deni_product.setVisibility(View.GONE);
         }
         tv_name_buyer_order.setText(user_name);
         txtSDTDetail.setText(SDT);
@@ -153,7 +159,7 @@ public class ShopOrderDetailSellerActivity extends AppCompatActivity implements 
                                 @Override
                                 public void onResponse(String response) {
                                     //Log.d("Tasas",response);
-                                    if (response=="success"){
+                                    if (response.equals("success")){
                                         String remess= "thành công!";
                                         RequestDB.showInvalidOtpDialogAcceptOrder(ShopOrderDetailSellerActivity.this,remess);
                                     }else if (response.equals("failed")){

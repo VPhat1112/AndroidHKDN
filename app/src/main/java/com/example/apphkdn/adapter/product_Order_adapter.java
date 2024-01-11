@@ -5,13 +5,13 @@ import static com.example.apphkdn.ultil.Server.serverAddress;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -55,7 +55,6 @@ public class product_Order_adapter extends RecyclerView.Adapter<product_Order_ad
         holder.tv_product_name_order.setText(orderProduct.getProduct_name());
         holder.tv_product_price_order.setText(String.valueOf(orderProduct.getProduct_price()));
         holder.tv_product_quantity_order.setText(String.valueOf(orderProduct.getProduct_TotalPay()));
-
         holder.btn_danhgia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,7 +68,7 @@ public class product_Order_adapter extends RecyclerView.Adapter<product_Order_ad
                 TextView textView=customRatingLayout.findViewById(R.id.rating_product_name);
 
                 textView.setText(orderProduct.getProduct_name());
-                new DownloadImageTask(imageView).execute(orderProduct.getProduct_image());
+                new DownloadImageTask(imageView).execute(serverAddress+orderProduct.getProduct_image());
 
                 builder.setPositiveButton("xác nhận", new DialogInterface.OnClickListener() {
                     @Override
@@ -90,6 +89,7 @@ public class product_Order_adapter extends RecyclerView.Adapter<product_Order_ad
                         String product_id= String.valueOf(orderProduct.getProduct_id());
                         String user_id= String.valueOf(DataLocalManager.getIdUser());
                         requestDB.WriteRating(context,product_id,user_id,Comment,rating,WriteRating);
+                        Log.d("writerangting",product_id+"-"+user_id+"-"+Comment+"-"+rating);
 
                     }
                 });

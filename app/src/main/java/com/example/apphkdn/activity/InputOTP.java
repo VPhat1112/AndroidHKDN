@@ -2,7 +2,6 @@ package com.example.apphkdn.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,6 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
 import com.example.apphkdn.ultil.Server;
 
@@ -156,17 +156,14 @@ public class InputOTP extends AppCompatActivity {
                     // and navigate to the next activity
 
                     Toast.makeText(InputOTP.this, "Login successful", Toast.LENGTH_SHORT).show();
-                    SharedPreferences preferences = getSharedPreferences("MyProfile", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putInt("id", userId);
-                    editor.putString("email", email);
-                    editor.putString("Name", Name);
-                    editor.putString("Address", Address);
-                    editor.putInt("role", role);
-                    editor.putString("phone", phone);
-                    editor.putString("Info_pay", Info_pay);
-                    editor.putString("imgUS", imgUS);
-                    editor.apply();
+                    DataLocalManager.setIdUser(userId);
+                    DataLocalManager.setEmailUser(email);
+                    DataLocalManager.setNameUser(Name);
+                    DataLocalManager.setAddressUser(Address);
+                    DataLocalManager.setRoleUser(role);
+                    DataLocalManager.setPhoneUser(phone);
+                    DataLocalManager.setInfoPayUser(Info_pay);
+                    DataLocalManager.setImageUser(imgUS);
                     Intent intent = new Intent(InputOTP.this, MainActivity.class);
                     startActivity(intent);
 
