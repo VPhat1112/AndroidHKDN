@@ -73,11 +73,12 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ItemHold
                         jsonObject.getString("Product_TotalPay");
                         jsonObject.getString("product_name");
                         jsonObject.getString("product_image");
+                        jsonObject.getString("product_price");
 
                         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
                         holder.TxtProductNameMyOrder.setText(jsonObject.getString("product_name"));
                         holder.SL_MyOrder.setText("SL: " + jsonObject.getString("quantity"));
-                        holder.Price_MyOrder.setText(decimalFormat.format(Integer.parseInt(jsonObject.getString("Product_TotalPay"))) + "đ");
+                        holder.Price_MyOrder.setText(decimalFormat.format(Integer.parseInt(jsonObject.getString("product_price"))) + "đ");
                         new DownloadImageTask(holder.ImgVIewProductMyOrder).execute(serverAddress + jsonObject.getString("product_image"));
                         Log.d("kiem tra", jsonObject.toString());
                     }

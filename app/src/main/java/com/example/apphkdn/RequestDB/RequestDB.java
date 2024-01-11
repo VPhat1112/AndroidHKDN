@@ -594,16 +594,17 @@ public class RequestDB {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
+                Log.d("testingaa",response);
+//                try {
+//                    JSONObject jsonObject = new JSONObject(response);
 //                    if (!jsonObject.getBoolean("successOrderDetail")){
 //                        Toast.makeText(context, "Error insert data", Toast.LENGTH_SHORT).show();
 //                    } else {
 //                        Toast.makeText(context, "Success insert data", Toast.LENGTH_SHORT).show();
 //                    }
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
+//                } catch (JSONException e) {
+//                    throw new RuntimeException(e);
+//                }
             }
         }, new Response.ErrorListener() {
             @Override

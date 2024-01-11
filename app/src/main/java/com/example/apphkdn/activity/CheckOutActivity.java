@@ -7,6 +7,7 @@ import static com.example.apphkdn.ultil.Server.UpdateOrder;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
+import com.example.apphkdn.adapter.AutoTextViewAdapter;
 import com.example.apphkdn.adapter.ProductOrderAdapter;
+import com.example.apphkdn.model.AutoTextViewItems;
 import com.example.apphkdn.model.Cart;
 import com.example.apphkdn.ultil.ChoiceWayPayDialog;
 
@@ -94,6 +97,7 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
                 dialog.show();
             }
         });
+        setData();
         btn_Order_complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,28 +123,47 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
 
                     if (idShopOrDetail == idShop){
                         billTotal = billTotal + totalpayOrDetail;
-                        if (i == filteredCartList.size()-1){
+                        if (i == filteredCartList.size()-1) {
+                            Integer id = idOrder;
+                            Integer bill = billTotal;
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.d("carelisttestLast", String.valueOf(id)+"-"+String.valueOf(idShopOrDetail)+"-"+String.valueOf(idProductOrDetail)+"-"+String.valueOf(quantity)+"-"+String.valueOf(price)+"-"+String.valueOf(totalpayOrDetail));
+                                    requestDB.InsertOrderDetail(CheckOutActivity.this, String.valueOf(id),
+                                            String.valueOf(idProductOrDetail), String.valueOf(quantity),
+                                            String.valueOf(price), String.valueOf(totalpayOrDetail), InsertOrderDetail);
 
-                            requestDB.InsertOrderDetail(CheckOutActivity.this, String.valueOf(idOrder),
-                                    String.valueOf(idProductOrDetail), String.valueOf(quantity),
-                                    String.valueOf(price), String.valueOf(totalpayOrDetail), InsertOrderDetail);
-
-                            requestDB.UpdateBills(CheckOutActivity.this, String.valueOf(idOrder), String.valueOf(billTotal),
-                                    UpdateOrder);
-                            String title="Đặt hàng";
-                            String remess= "Bạn đã đặt hàng thành công \n Xin Chân thành cảm ơn!";
-                            RequestDB.showInvalidOtpDialogSaveOrder(CheckOutActivity.this,title,remess);
-                        }else {
-                            requestDB.UpdateBills(CheckOutActivity.this, String.valueOf(idOrder), String.valueOf(billTotal),
-                                    UpdateOrder);
-
-                            requestDB.InsertOrderDetail(CheckOutActivity.this, String.valueOf(idOrder),
-                                    String.valueOf(idProductOrDetail), String.valueOf(quantity),
-                                    String.valueOf(price), String.valueOf(totalpayOrDetail), InsertOrderDetail);
+                                    requestDB.UpdateBills(CheckOutActivity.this, String.valueOf(id), String.valueOf(bill),
+                                            UpdateOrder);
+                                }
+                            }, 500);
+                            String title = "Đặt hàng";
+                            String remess = "Bạn đã đặt hàng thành công \n Xin Chân thành cảm ơn!";
+                            RequestDB.showInvalidOtpDialogSaveOrder(CheckOutActivity.this, title, remess);
+                        } else {
+                            Integer id = idOrder;
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.d("carelisttest", String.valueOf(id)+"-"+String.valueOf(idShopOrDetail)+"-"+String.valueOf(idProductOrDetail)+"-"+String.valueOf(quantity)+"-"+String.valueOf(price)+"-"+String.valueOf(totalpayOrDetail));
+                                    requestDB.InsertOrderDetail(CheckOutActivity.this, String.valueOf(id),
+                                            String.valueOf(idProductOrDetail), String.valueOf(quantity),
+                                            String.valueOf(price), String.valueOf(totalpayOrDetail), InsertOrderDetail);
+                                }
+                            }, 500);
                         }
+//                        }else {
+//                            requestDB.UpdateBills(CheckOutActivity.this, String.valueOf(idOrder), String.valueOf(billTotal),
+//                                    UpdateOrder);
+//
+//                            requestDB.InsertOrderDetail(CheckOutActivity.this, String.valueOf(idOrder),
+//                                    String.valueOf(idProductOrDetail), String.valueOf(quantity),
+//                                    String.valueOf(price), String.valueOf(totalpayOrDetail), InsertOrderDetail);
+//                        }
                     } else {
-                        requestDB.UpdateBills(CheckOutActivity.this, String.valueOf(idOrder), String.valueOf(billTotal),
-                                UpdateOrder);
+//                        requestDB.UpdateBills(CheckOutActivity.this, String.valueOf(idOrder), String.valueOf(billTotal),
+//                                UpdateOrder);
                         idShop = idShopOrDetail;
                         idOrder = random.nextInt(999999);
                         billTotal=totalpayOrDetail;
@@ -148,33 +171,37 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
                                 String.valueOf(idShop), String.valueOf(billTotal), Address_ship, Phone, InsertOrder);
 
                         if (i == filteredCartList.size()-1){
+                            Integer id = idOrder;
+                            Integer bill = billTotal;
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    requestDB.UpdateBills(CheckOutActivity.this, String.valueOf(id), String.valueOf(bill),
+                                            UpdateOrder);
 
-                            Log.d("result shop 2",idOrder+"-"+idShop+"-"+billTotal);
-                            requestDB.UpdateBills(CheckOutActivity.this, String.valueOf(idOrder), String.valueOf(billTotal),
-                                    UpdateOrder);
-
-                            requestDB.InsertOrderDetail(CheckOutActivity.this, String.valueOf(idOrder),
-                                    String.valueOf(idProductOrDetail), String.valueOf(quantity),
-                                    String.valueOf(price), String.valueOf(totalpayOrDetail), InsertOrderDetail);
-                            String title="Đặt hàng";
-                            String remess= "Bạn đã đặt hàng thành công \n Xin Chân thành cảm ơn!";
-                            RequestDB.showInvalidOtpDialogSaveOrder(CheckOutActivity.this,title,remess);
-                        }else {
-                            requestDB.UpdateBills(CheckOutActivity.this, String.valueOf(idOrder), String.valueOf(billTotal),
-                                    UpdateOrder);
-
-                            requestDB.InsertOrderDetail(CheckOutActivity.this, String.valueOf(idOrder),
-                                    String.valueOf(idProductOrDetail), String.valueOf(quantity),
-                                    String.valueOf(price), String.valueOf(totalpayOrDetail), InsertOrderDetail);
+                                    requestDB.InsertOrderDetail(CheckOutActivity.this, String.valueOf(id),
+                                            String.valueOf(idProductOrDetail), String.valueOf(quantity),
+                                            String.valueOf(price), String.valueOf(totalpayOrDetail), InsertOrderDetail);
+                                    String title="Đặt hàng";
+                                    String remess= "Bạn đã đặt hàng thành công \n Xin Chân thành cảm ơn!";
+                                    RequestDB.showInvalidOtpDialogSaveOrder(CheckOutActivity.this,title,remess);
+                                }
+                            }, 500);
                         }
+//                        else {
+//                            requestDB.UpdateBills(CheckOutActivity.this, String.valueOf(idOrder), String.valueOf(billTotal),
+//                                    UpdateOrder);
+//
+//                            requestDB.InsertOrderDetail(CheckOutActivity.this, String.valueOf(idOrder),
+//                                    String.valueOf(idProductOrDetail), String.valueOf(quantity),
+//                                    String.valueOf(price), String.valueOf(totalpayOrDetail), InsertOrderDetail);
+//                        }
                     }
-
                 }
                 cartLists.clear();
                 filteredCartList.clear();
             }
         });
-        setData();
         setWayPay();
     }
     private void setWayPay(){
