@@ -23,9 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.apphkdn.DataLocalManager.DataLocalManager;
 import com.example.apphkdn.R;
 import com.example.apphkdn.RequestDB.RequestDB;
-import com.example.apphkdn.adapter.AutoTextViewAdapter;
 import com.example.apphkdn.adapter.ProductOrderAdapter;
-import com.example.apphkdn.model.AutoTextViewItems;
 import com.example.apphkdn.model.Cart;
 import com.example.apphkdn.ultil.ChoiceWayPayDialog;
 
@@ -153,17 +151,9 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
                                 }
                             }, 500);
                         }
-//                        }else {
-//                            requestDB.UpdateBills(CheckOutActivity.this, String.valueOf(idOrder), String.valueOf(billTotal),
-//                                    UpdateOrder);
-//
-//                            requestDB.InsertOrderDetail(CheckOutActivity.this, String.valueOf(idOrder),
-//                                    String.valueOf(idProductOrDetail), String.valueOf(quantity),
-//                                    String.valueOf(price), String.valueOf(totalpayOrDetail), InsertOrderDetail);
-//                        }
                     } else {
-//                        requestDB.UpdateBills(CheckOutActivity.this, String.valueOf(idOrder), String.valueOf(billTotal),
-//                                UpdateOrder);
+                        requestDB.UpdateBills(CheckOutActivity.this, String.valueOf(idOrder), String.valueOf(billTotal),
+                                UpdateOrder);
                         idShop = idShopOrDetail;
                         idOrder = random.nextInt(999999);
                         billTotal=totalpayOrDetail;
@@ -188,14 +178,6 @@ public class CheckOutActivity extends AppCompatActivity implements ChoiceWayPayD
                                 }
                             }, 500);
                         }
-//                        else {
-//                            requestDB.UpdateBills(CheckOutActivity.this, String.valueOf(idOrder), String.valueOf(billTotal),
-//                                    UpdateOrder);
-//
-//                            requestDB.InsertOrderDetail(CheckOutActivity.this, String.valueOf(idOrder),
-//                                    String.valueOf(idProductOrDetail), String.valueOf(quantity),
-//                                    String.valueOf(price), String.valueOf(totalpayOrDetail), InsertOrderDetail);
-//                        }
                     }
                 }
                 cartLists.clear();

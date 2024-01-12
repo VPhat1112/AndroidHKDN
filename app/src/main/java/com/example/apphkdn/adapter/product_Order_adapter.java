@@ -54,7 +54,7 @@ public class product_Order_adapter extends RecyclerView.Adapter<product_Order_ad
         new ImageDownloadTask(holder.img_producr_buyer_order).execute(serverAddress+orderProduct.getProduct_image());
         holder.tv_product_name_order.setText(orderProduct.getProduct_name());
         holder.tv_product_price_order.setText(String.valueOf(orderProduct.getProduct_price()));
-        holder.tv_product_quantity_order.setText(String.valueOf(orderProduct.getProduct_TotalPay()));
+        holder.tv_product_quantity_order.setText(String.valueOf("SL: "+ orderProduct.getQuantity()));
         holder.btn_danhgia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
